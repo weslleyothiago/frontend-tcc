@@ -1,0 +1,67 @@
+<ion-content>
+  <div class="h-screen flex items-center justify-center">
+    <div
+      class="w-2/3 p-8 shadow-lg shadow-black rounded-3xl flex flex-col text-center items-center justify-center"
+    >
+
+      <!-- Styled error message -->
+      <ion-text *ngIf="errorMessage" class="w-full text-center bg-red-700 text-white p-2 rounded-md mb-5 flex items-center justify-center">
+        <ion-icon name="alert-circle-outline" class="mr-2 size-7"></ion-icon> <!-- Right margin for spacing -->
+        {{ errorMessage }}
+      </ion-text>
+
+      <strong><span>Millions of songs waiting for you</span></strong>
+      <strong><span>Only at Daisuke!</span></strong>
+      <form [formGroup]="loginForm" class="w-full flex flex-col items-center">
+        <ion-input
+          type="email"
+          formControlName="email"
+          [errorText]="controlErrors['email'].errors?.['required'] ? 'Please enter your Daisuke email address.' : ''"
+          label="Email"
+          label-placement="floating"
+          fill="solid"
+          placeholder=""
+          class="w-5/6 mt-4"
+        ></ion-input>
+        <ion-input
+          formControlName="password"
+          [errorText]="controlErrors['password'].errors?.['required'] ? 'Please enter your password.' : ''"
+          type="password"
+          label="Password"
+          label-placement="floating"
+          fill="solid"
+          placeholder=""
+          class="w-5/6 mt-4"
+        ></ion-input>
+        <div class="w-5/6 flex justify-end mt-2">
+          <a
+            class="text-purple-600 link-underline relative cursor-pointer items-end"
+            (click)="openForgotPasswordModal()"
+            >Forgot your password?</a
+          >
+        </div>
+        <ion-button shape="round" class="mt-6 w-5/6 h-12" (click)="login()">Log in</ion-button>
+        <ion-button
+          shape="round"
+          class="mt-6 w-5/6 h-12"
+          fill="outline"
+          (click)="loginWithGoogle()"
+          color="light"
+        >
+          <ion-icon slot="start" name="logo-google"></ion-icon>
+          Log in with Google</ion-button
+        >
+        <div class="w-5/6 flex mt-2 justify-center">
+          <span class="py-3"
+            >Don't have an account?
+            <a
+              class="text-purple-600 link-underline relative cursor-pointer"
+              (click)="openRegisterModal()"
+              >Sign up now</a
+            ></span
+          >
+        </div>
+      </form>
+    </div>
+  </div>
+</ion-content>

@@ -1,0 +1,18 @@
+body {
+  margin: 0px;
+}
+
+.link-underline::after {
+  content: "";
+  position: absolute;
+  left: 0; /* Começa à esquerda */
+  bottom: 0; /* Alinha no final do link */
+  width: 0; /* Inicialmente, a largura é 0 */
+  height: 2px; /* Espessura da linha */
+  background-color: currentColor; /* Usa a cor do texto */
+  transition: width 0.4s ease; /* Transição suave de largura */
+}
+
+.link-underline:hover::after {
+  width: 100%; /* A linha cresce até a largura completa do link */
+}
