@@ -6,17 +6,19 @@ import { ReactiveFormsModule } from '@angular/forms';  // Importado para formul√
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [AppComponent],
   imports: [
+    HttpClientModule,
     BrowserModule,
     IonicModule.forRoot(),
     AppRoutingModule,
-    ReactiveFormsModule,  // Adicionado aqui
+    ReactiveFormsModule, 
   ],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
   bootstrap: [AppComponent],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA],  // Adicionado para componentes customizados
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class AppModule {}

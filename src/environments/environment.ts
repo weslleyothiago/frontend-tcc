@@ -1,5 +1,6 @@
 export const environment = {
   production: false,
+  apiBaseUrl: 'http://localhost:3000',
   firebase: {
     apiKey: 'AIzaSyB6J9EvWTSJz0KMEdtvyIqrBUmRWRg5n3w',
     authDomain: 'daisukekaraoke-auth.firebaseapp.com',

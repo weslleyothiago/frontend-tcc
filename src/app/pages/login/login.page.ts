@@ -5,7 +5,6 @@ import { LoadingController, ModalController } from '@ionic/angular';
 import { ForgotPasswordComponent } from 'src/app/components/forgot-password/forgot-password.component';
 import { RegisterComponent } from 'src/app/components/register/register.component';
 import { GoogleAuthService } from 'src/app/services/google-auth.service';
-import { DefaultAuthService } from 'src/app/services/default-auth.service';
 
 @Component({
   selector: 'app-login',  // Changed from 'login-page' to 'login'
@@ -19,7 +18,6 @@ export class LoginPage implements OnInit {  // Changed from 'LoginPagePage' to '
   constructor(
     public router: Router,
     public googleAuthService: GoogleAuthService,  // Changed from 'authServiceGoogle' to 'googleAuthService'
-    public defaultAuthService: DefaultAuthService,  // Changed from 'authService' to 'emailAuthService'
     public loadingCtrl: LoadingController,
     private formBuilder: FormBuilder,
     private modalController: ModalController
@@ -57,33 +55,33 @@ export class LoginPage implements OnInit {  // Changed from 'LoginPagePage' to '
     await loading.present();
   
     this.loginForm.markAllAsTouched();
-    if (this.loginForm?.valid) {
-      const email = this.loginForm.get('email')?.value;
-      const password = this.loginForm.get('password')?.value;
+    // if (this.loginForm?.valid) {
+    //   const email = this.loginForm.get('email')?.value;
+    //   const password = this.loginForm.get('password')?.value;
       
-      try {
-        // Calling the authentication service to log the user in
-        const user = await this.defaultAuthService.loginUser(email, password);  // Changed from 'logarUsuario' to 'loginUser'
-        console.log('User logged in successfully: ', user);
+    //   try {
+    //     // Calling the authentication service to log the user in
+    //     const user = await this.defaultAuthService.loginUser(email, password);  // Changed from 'logarUsuario' to 'loginUser'
+    //     console.log('User logged in successfully: ', user);
   
-        // Redirect to the homepage after successful login
-        this.router.navigate(['/home']);
-        this.modalController.dismiss();  // Close the register modal (if applicable)
+    //     // Redirect to the homepage after successful login
+    //     this.router.navigate(['/home']);
+    //     this.modalController.dismiss();  // Close the register modal (if applicable)
   
-      } catch (error) {
-        console.error('Error logging in user: ', error);
+    //   } catch (error) {
+    //     console.error('Error logging in user: ', error);
         
-        // Display error message
-        this.errorMessage = 'Incorrect email or password.';
+    //     // Display error message
+    //     this.errorMessage = 'Incorrect email or password.';
   
-      } finally {
-        await loading.dismiss();  // Always close the loading, regardless of success or error
-      }
+    //   } finally {
+    //     await loading.dismiss();  // Always close the loading, regardless of success or error
+    //   }
   
-    } else {
-      // If the form is invalid, close the loading and display an error message
-      await loading.dismiss();
-    }
+    // } else {
+    //   // If the form is invalid, close the loading and display an error message
+    //   await loading.dismiss();
+    // }
   }
 
   // Function to open the register modal

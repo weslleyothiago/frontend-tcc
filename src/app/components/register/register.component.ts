@@ -13,7 +13,7 @@ import {
 import { Router } from '@angular/router';
 import { LoadingController, ModalController } from '@ionic/angular';
 import { GoogleAuthService } from 'src/app/services/google-auth.service';
-import { DefaultAuthService } from 'src/app/services/default-auth.service';
+import { AuthenticationService } from 'src/app/services/authentication.service';
 
 @Component({
   selector: 'app-register',
@@ -50,11 +50,25 @@ export class RegisterComponent implements OnInit {
     private googleAuthService: GoogleAuthService,
     public router: Router,
     private changeDetectorRef: ChangeDetectorRef,
-    public defaultAuthService: DefaultAuthService,
+    private bdRegister: AuthenticationService,
     public loadingCtrl: LoadingController,
     private modalController: ModalController,
     private formBuilder: FormBuilder,
   ) {}
+
+  onSubmit() {
+    this.bdRegister.register(this.registrationForm.value).subscribe(
+      response => {
+        console.log('Registration successful:', response);
+        // Redirect to another page or show a success message
+        this.router.navigate(['/home']);
+      },
+      error => {
+        console.error('Registration error:', error);
+        // Show an error message or handle error feedback
+      }
+    );
+  }  
 
   ngOnInit() {
     this.changeDetectorRef.detectChanges();
@@ -105,28 +119,36 @@ export class RegisterComponent implements OnInit {
     if (this.registrationForm?.valid) {
       const email = this.registrationForm.get('email')?.value;
       const password = this.registrationForm.get('password')?.value;
-      
-      try {
-        // Calling the authentication service to register the user
-        const user = await this.defaultAuthService.registerUser(email, password);
-        console.log('User registered successfully: ', user);
+
+      // Dados para envio ao backend
+      const userData = {
+        email: email,
+        senha: password,
+        tipo: 'Cliente'  // Tipo fixo como "Cliente"
+      };
   
-        // Redirecting to the home page after successful registration
-        this.router.navigate(['/home']);
-        this.modalController.dismiss();  // Close the registration modal if applicable
-  
-      } catch (error) {
-        console.error('Error registering user: ', error);
-  
-      } finally {
-        await loading.dismiss(); // Always close the loading spinner, regardless of success or failure
-      }
+      // Chamando o serviço de autenticação com subscribe
+      this.bdRegister.register(userData).subscribe(
+        response => {
+          console.log('User registered successfully: ', response);
+          this.router.navigate(['/home']);
+          this.modalController.dismiss();  // Fechando o modal de cadastro, se aplicável
+        },
+        error => {
+          console.log(JSON.stringify(userData));
+          console.error('Error registering user: ', error);
+        },
+        () => {
+          loading.dismiss();  // Sempre fechando o spinner de carregamento, independentemente do sucesso ou falha
+        }
+      );
   
     } else {
-      // If the form is invalid, dismiss the loading spinner and show an error
       await loading.dismiss();
+      console.error('Invalid form data'); // Exibir ou lidar com o erro conforme necessário
     }
   }
+
 
   // Method to register with Google
   async registerWithGoogle() {
