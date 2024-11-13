@@ -13,7 +13,7 @@ import {
 import { Router } from '@angular/router';
 import { LoadingController, ModalController } from '@ionic/angular';
 import { GoogleAuthService } from 'src/app/services/google-auth.service';
-import { AuthenticationService } from 'src/app/services/authentication.service';
+import { RegisterService } from 'src/app/services/register.service';
 
 @Component({
   selector: 'app-register',
@@ -50,25 +50,11 @@ export class RegisterComponent implements OnInit {
     private googleAuthService: GoogleAuthService,
     public router: Router,
     private changeDetectorRef: ChangeDetectorRef,
-    private bdRegister: AuthenticationService,
+    private registerService: RegisterService,
     public loadingCtrl: LoadingController,
     private modalController: ModalController,
     private formBuilder: FormBuilder,
   ) {}
-
-  onSubmit() {
-    this.bdRegister.register(this.registrationForm.value).subscribe(
-      response => {
-        console.log('Registration successful:', response);
-        // Redirect to another page or show a success message
-        this.router.navigate(['/home']);
-      },
-      error => {
-        console.error('Registration error:', error);
-        // Show an error message or handle error feedback
-      }
-    );
-  }  
 
   ngOnInit() {
     this.changeDetectorRef.detectChanges();
@@ -128,7 +114,7 @@ export class RegisterComponent implements OnInit {
       };
   
       // Chamando o serviço de autenticação com subscribe
-      this.bdRegister.register(userData).subscribe(
+      this.registerService.register(userData).subscribe(
         response => {
           console.log('User registered successfully: ', response);
           this.router.navigate(['/home']);
