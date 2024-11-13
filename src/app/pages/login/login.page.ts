@@ -63,20 +63,22 @@ export class LoginPage implements OnInit {
       const password = this.loginForm.get('password')?.value;
   
       try {
-        this.authService.login(email, password).subscribe(
-          (response) => {
-            console.log('User logged in successfully: ', response);
-            // Supondo que a resposta tenha a propriedade 'token'
-            sessionStorage.setItem('access_token', response.token);
+        const response = await this.authService.login(email, password).toPromise();
+        console.log('Response object:', response);
   
-            this.router.navigate(['/home']);
-            this.modalController.dismiss();
-          },
-          (error) => {
-            console.error('Error logging in user: ', error);
-            this.errorMessage = 'Incorrect email or password.';
-          }
-        );
+        // Usando o nome correto do token: 'access_token'
+        if (response.access_token) {
+          console.log('Access token to store:', response.access_token);
+          sessionStorage.setItem('access_token', response.access_token);
+        } else {
+          console.error('Access token not found in response');
+        }
+  
+        this.router.navigate(['/home']);
+        this.modalController.dismiss();
+      } catch (error) {
+        console.error('Error logging in user:', error);
+        this.errorMessage = 'Incorrect email or password.';
       } finally {
         await loading.dismiss();
       }
@@ -86,36 +88,37 @@ export class LoginPage implements OnInit {
     }
   }
   
+  
 
   // Function to open the register modal
-  async openRegisterModal() {  // Changed from 'abreModalRegistrar' to 'openRegisterModal'
+  async openRegisterModal() {
     const modal = await this.modalController.create({
-      component: RegisterComponent,  // Changed from 'RegisterModalComponent' to 'RegisterComponent'
+      component: RegisterComponent,
       cssClass: 'backdrop-blur-3xl',
     });
     return await modal.present();
   }
 
   // Function to open the forgot password modal
-  async openForgotPasswordModal() {  // Changed from 'abreModalEsqueciSenha' to 'openForgotPasswordModal'
+  async openForgotPasswordModal() {  
     const modal = await this.modalController.create({
-      component: ForgotPasswordComponent,  // Changed from 'EsqueciSenhaComponent' to 'ForgotPasswordComponent'
+      component: ForgotPasswordComponent, 
       cssClass: 'backdrop-blur-3xl',
     });
     return await modal.present();
   }
 
   // Method to login with Google
-  async loginWithGoogle() {  // Changed from 'logarComGoogle' to 'loginWithGoogle'
+  async loginWithGoogle() { 
     try {
-      await this.googleAuthService.loginWithGoogle();  // Changed from 'fazerLoginComGoogle' to 'loginWithGoogle'
+      await this.googleAuthService.loginWithGoogle(); 
       this.router.navigate(['/home']);
     } catch (error) {
       this.errorMessage = 'Error trying to log in with Google.';
     }
   }
 
-  loginWithGoogleRedirect() {  // Changed from 'loginWithGoogle' to 'loginWithGoogleRedirect'
+  loginWithGoogleRedirect() {
     window.location.href = 'http://localhost:3333/auth/google';
   }
 }
