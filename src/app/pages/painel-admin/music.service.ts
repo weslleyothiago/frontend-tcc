@@ -1,22 +1,22 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Music } from '../models/music.model';
-import { environment } from 'src/environments/environment';
+import { Music } from './music.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class MusicService {
-  private url = `${environment.apiBaseUrl}/musics`;
+  private baseUrl = 'http://localhost:3000/musics';
 
   constructor(private http: HttpClient) {}
 
   create(music: Music): Observable<Music> {
-    return this.http.post<Music>(this.url, music);
+    return this.http.post<Music>(this.baseUrl, music);
   }
 
   getGenres(): Observable<string[]> {
-    return this.http.get<string[]>(this.url);
+    return this.http.get<string[]>(this.baseUrl);
   }
+
 }

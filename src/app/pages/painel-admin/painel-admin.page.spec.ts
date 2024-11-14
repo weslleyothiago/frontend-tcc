@@ -1,12 +1,12 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RegisterMusicPage } from './register-music.page';
+import { PainelAdminPage } from './painel-admin.page';
 
-describe('RegisterMusicPage', () => {
-  let component: RegisterMusicPage;
-  let fixture: ComponentFixture<RegisterMusicPage>;
+describe('PainelAdminPage', () => {
+  let component: PainelAdminPage;
+  let fixture: ComponentFixture<PainelAdminPage>;
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(RegisterMusicPage);
+    fixture = TestBed.createComponent(PainelAdminPage);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

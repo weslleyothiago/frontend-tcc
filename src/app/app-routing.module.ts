@@ -21,9 +21,8 @@ const routes: Routes = [
     loadChildren: () => import('./pages/admin/admin.module').then( m => m.AdminPageModule)
   },
   {
-    path: 'registrarMusicas',
-    loadChildren: () => import('./pages/register-music/register-music.module').then( m => m.RegisterMusicPageModule),
-    canActivate: [AuthGuard]
+    path: 'painel-admin',
+    loadChildren: () => import('./pages/painel-admin/painel-admin.module').then( m => m.PainelAdminPageModule)
   },
 ];
 

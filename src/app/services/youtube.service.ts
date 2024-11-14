@@ -1,36 +1,18 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { catchError, Observable, tap, throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class YoutubeService {
-  private apiKey = 'AIzaSyDEaBpGOb1n0PzI_N6iyGyETkbuAqKuoTw';
+  private apiKey = 'AIzaSyC06LQTCE7vhFsomR2Fr4lrKPDJIGGz0Ps';
 
   constructor(private http: HttpClient) {}
 
-
-  getVideoDuration(videoId: string): Observable<any> {
+  getVideoDuration(videoId: string) {
     const url = `https://www.googleapis.com/youtube/v3/videos?id=${videoId}&part=contentDetails&key=${this.apiKey}`;
-
-    return this.http.get(url).pipe(
-      tap((response: any) => {
-        console.log('API Response:', response);
-      }),
-      catchError((error) => {
-        console.error('Error during API call:', {
-          status: error.status,
-          statusText: error.statusText,
-          message: error.message,
-          url: error.url,
-          errorDetails: error.error,
-        });
-        return throwError(error);
-      })
-    );
+    return this.http.get(url);
   }
-  
 
   extractVideoId(url: string): string | null {
     const videoIdMatch = url.match(/(?:https?:\/\/)?(?:www\.)?youtube\.com\/watch\?v=([^&]+)/);
