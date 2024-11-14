@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MusicService } from '../painel-admin/music.service';
+import { MusicService } from '../../services/music.service';
 
 @Component({
   selector: 'app-admin',

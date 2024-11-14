@@ -1,16 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MusicService } from '../../services/music.service';
+import { MusicService } from 'src/app/services/music.service';
 import { YoutubeService } from 'src/app/services/youtube.service';
-import { Music } from '../painel-admin/music.model';
+import { Music } from '../../models/music.model'
 import { LoadingController } from '@ionic/angular';
 
 @Component({
-  selector: 'app-register-music',
-  templateUrl: './register-music.page.html',
-  styleUrls: ['./register-music.page.scss'],
+  selector: 'app-music-registration',
+  templateUrl: './music-registration.page.html',
+  styleUrls: ['./music-registration.page.scss'],
 })
-export class RegisterMusicPage implements OnInit {
+export class MusicRegistrationPage implements OnInit {
   genres: string[] = [];
   filteredGenres: string[] = [];
   searchGenre: string = '';
@@ -28,22 +28,22 @@ export class RegisterMusicPage implements OnInit {
     genreId: 0,
   };
 
-  musicalGenres = [
-    { genre: 'K-pop', value: 1 },
-    { genre: 'Pop', value: 2 },
-    { genre: 'Rock', value: 3 },
-    { genre: 'Country', value: 4 },
-    { genre: 'Funk', value: 5 },
-    { genre: 'Electronic', value: 6 },
-    { genre: 'Samba', value: 7 },
-    { genre: 'Forró', value: 8 },
-    { genre: 'Gospel', value: 9 },
-    { genre: 'Rap', value: 10 },
-    { genre: 'Reggae', value: 11 },
-    { genre: 'MPB', value: 12 },
-    { genre: 'Metal', value: 13 },
-    { genre: 'Indie', value: 14 },
-    { genre: 'Alternative', value: 15 },
+  generosMusicais = [
+    { genero: 'K-pop', value: 1 },
+    { genero: 'Pop', value: 2 },
+    { genero: 'Rock', value: 3 },
+    { genero: 'Sertanejo', value: 4 },
+    { genero: 'Funk', value: 5 },
+    { genero: 'Eletrônica', value: 6 },
+    { genero: 'Samba', value: 7 },
+    { genero: 'Forró', value: 8 },
+    { genero: 'Gospel', value: 9 },
+    { genero: 'Rap', value: 10 },
+    { genero: 'Reggae', value: 11 },
+    { genero: 'MPB', value: 12 },
+    { genero: 'Metal', value: 13 },
+    { genero: 'Indie', value: 14 },
+    { genero: 'Alternativo', value: 15 },
   ];
 
   constructor(
@@ -81,87 +81,84 @@ export class RegisterMusicPage implements OnInit {
   }
 
   formatDuration(duration: string): string {
-    // Remove 'PT' prefix and split the string based on hours, minutes, and seconds
+    // Remove o prefixo 'PT' e divide a string com base nas partes de horas, minutos e segundos
     const parts = duration.replace('PT', '').split(/H|M|S/);
 
-    // Get hours, minutes, and seconds
+    // Obtemos horas, minutos e segundos
     const hours = parts[2] ? parts[2].padStart(2, '0') : '00';
     const minutes = parts[0] ? parts[0].padStart(2, '0') : '00';
     const seconds = parts[1] ? parts[1].padStart(2, '0') : '00';
 
-    // If no hours, format as MM:SS
+    // Se não houver horas, formate como MM:SS
     if (hours === '00') {
-        return `${minutes}:${seconds}`;
+        return `${hours}:${minutes}:${seconds}`; // Retorna apenas MM:SS
     }
 
-    // If hours present, format as HH:MM:SS
+    // Se houver horas, formate como HH:MM:SS
     return `${hours}:${minutes}:${seconds}`;
-  }
+}
+
 
   onSubmit() {
     const videoUrl = this.musicForm.get('link')?.value;
     const videoId = this.youtubeService.extractVideoId(videoUrl);
-  
+
     if (videoId) {
       const thumbnail = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
-  
-      // Get video duration
-      this.youtubeService.getVideoDuration(videoId).subscribe({
-        next: (response: any) => {
-          const duration = response.items[0]?.contentDetails?.duration || '';
-  
-          // Convert the duration to a readable format
-          this.videoDuration = this.formatDuration(duration);
-  
-          // Prepare the music preview
-          this.musicPreview = {
-            title: this.musicForm.get('title')?.value,
-            artist: this.musicForm.get('artist')?.value,
-            thumbnail: thumbnail,
-          };
-  
-          // Update music data
-          this.music.title = this.musicForm.get('title')?.value;
-          this.music.artist = this.musicForm.get('artist')?.value;
-          this.music.link = this.musicForm.get('link')?.value;
-          this.music.genreId = this.musicForm.get('genre')?.value;
-          this.music.duration = this.videoDuration || '';
-        },
-        error: (error) => {
-          console.error('Error fetching video duration:', error);
-        }
+
+      // Obtenha a duração do vídeo
+      this.youtubeService.getVideoDetails(videoId).subscribe((response: any) => {
+        const duration = response.items[0]?.contentDetails?.duration || ''; // Obtenha a duração
+
+        // Converte a duração para um formato legível
+        this.videoDuration = this.formatDuration(duration);
+
+        // Prepara a prévia da música
+        this.musicPreview = {
+          title: this.musicForm.get('title')?.value,
+          artist: this.musicForm.get('artist')?.value,
+          thumbnail: thumbnail,
+        };
+
+        // Atualiza os dados da música
+        this.music.title = this.musicForm.get('title')?.value;
+        this.music.artist = this.musicForm.get('artist')?.value;
+        this.music.link = this.musicForm.get('link')?.value;
+        this.music.genreId = this.musicForm.get('genre')?.value;
+        this.music.duration = this.videoDuration || '';
+
       });
     } else {
       console.error('Video ID not found');
     }
-  }  
+  }
 
   async registerMusic() {
     const loading = await this.loadingCtrl.create({
-      message: 'Registering...',
+      message: 'Registrando...',
       spinner: 'crescent',
     });
     await loading.present();
   
     try {
-      // Send to the backend and await response
+      // Envia para o backend e aguarda a resposta
       this.musicService.create(this.music).subscribe({
         next: (response) => {
           console.log('Music registered!', response);
   
-          // Only reset if the response is successful
+          // Somente reseta se a resposta for um sucesso
           this.musicPreview = null;
           this.musicForm.reset();
         },
         error: (error) => {
-          console.error('Error registering music: ', error);
+          console.error('Erro ao registrar música: ', error);
         },
         complete: async () => {
           await loading.dismiss();
         }
       });
     } catch (error) {
-      console.error('Error registering music: ', error);
+      console.error('Erro ao registrar música: ', error);
       await loading.dismiss();
     }
   }

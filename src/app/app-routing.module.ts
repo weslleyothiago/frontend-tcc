@@ -22,7 +22,7 @@ const routes: Routes = [
   },
   {
     path: 'painel-admin',
-    loadChildren: () => import('./pages/painel-admin/painel-admin.module').then( m => m.PainelAdminPageModule)
+    loadChildren: () => import('./pages/music-registration/music-registration.module').then( m => m.MusicRegistrationPageModule)
   },
 ];
 

@@ -1,6 +1,8 @@
 export const environment = {
   production: false,
   apiBaseUrl: 'http://localhost:3000',
+  apiYoutubeKey: 'AIzaSyC06LQTCE7vhFsomR2Fr4lrKPDJIGGz0Ps',
+  apiYoutubeUrl: 'https://www.googleapis.com/youtube/v3/videos',
   firebase: {
     apiKey: 'AIzaSyB6J9EvWTSJz0KMEdtvyIqrBUmRWRg5n3w',
     authDomain: 'daisukekaraoke-auth.firebaseapp.com',

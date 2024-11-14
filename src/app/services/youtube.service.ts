@@ -1,17 +1,21 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class YoutubeService {
-  private apiKey = 'AIzaSyC06LQTCE7vhFsomR2Fr4lrKPDJIGGz0Ps';
 
   constructor(private http: HttpClient) {}
 
-  getVideoDuration(videoId: string) {
-    const url = `https://www.googleapis.com/youtube/v3/videos?id=${videoId}&part=contentDetails&key=${this.apiKey}`;
-    return this.http.get(url);
+  getVideoDetails(videoId: string) {
+    const params = new HttpParams()
+      .set('id', videoId)
+      .set('part', 'contentDetails')
+      .set('key', environment.apiYoutubeKey);
+
+    return this.http.get(environment.apiYoutubeUrl, { params, headers: { 'Skip-Interceptor': 'true' } });
   }
 
   extractVideoId(url: string): string | null {
