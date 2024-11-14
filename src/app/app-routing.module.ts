@@ -20,6 +20,11 @@ const routes: Routes = [
     path: 'admin',
     loadChildren: () => import('./pages/admin/admin.module').then( m => m.AdminPageModule)
   },
+  {
+    path: 'registrarMusicas',
+    loadChildren: () => import('./pages/register-music/register-music.module').then( m => m.RegisterMusicPageModule),
+    canActivate: [AuthGuard]
+  },
 ];
 
 @NgModule({
