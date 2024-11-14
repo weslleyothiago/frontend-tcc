@@ -1,2 +1,40 @@
-<button *ngIf="isAdmin">Acesso de Administrador</button>
-<button>To sempre aqui</button>
+<div class="min-h-screen bg-gradient-to-b from-zinc-900 via-zinc-900 to-black text-zinc-100 p-8">
+    <!-- Header Section -->
+    <div class="flex items-center justify-between mb-8">
+      <h1 class="text-3xl font-bold">Daisuke Karaokê - Home</h1>
+      <p class="text-zinc-400">Explore os vídeos e cante com a gente!</p>
+    </div>
+  
+    <!-- Video Library (Cards) -->
+    <div class="space-y-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-6">
+        <!-- Video Card -->
+        <div class="bg-zinc-800/50 border-zinc-700/50 hover:bg-zinc-800/80 transition-colors p-4 rounded-lg">
+          <!-- Video Thumbnail -->
+          <div class="relative">
+            <img src="link-para-thumbnail-do-video" alt="Thumbnail do vídeo" class="w-full h-48 object-cover rounded-lg">
+            <span class="absolute top-2 left-2 bg-purple-600 text-white px-2 py-1 text-xs font-semibold rounded-lg">Novo</span>
+          </div>
+          
+          <!-- Video Information -->
+          <div class="mt-4">
+            <h2 class="text-xl font-semibold">Título do Vídeo</h2>
+            <p class="text-zinc-400 mt-1">Artista: Nome do Artista</p>
+            <p class="text-zinc-400 mt-1">Gênero: Nome do Gênero</p>
+          </div>
+          
+          <!-- Watch Button -->
+          <div class="mt-4 text-center">
+            <button class="bg-purple-600 text-white py-2 px-6 rounded-lg hover:bg-purple-800">
+              Assistir
+            </button>
+          </div>
+        </div>
+  
+        <!-- Outros Cards de Vídeos -->
+        <!-- Repita o card acima para outros vídeos -->
+        
+      </div>
+    </div>
+  </div>
+  

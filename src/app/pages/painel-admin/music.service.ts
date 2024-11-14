@@ -19,4 +19,7 @@ export class MusicService {
     return this.http.get<string[]>(this.baseUrl);
   }
 
+  getMusicas(): Observable<any[]> {
+    return this.http.get<any[]>(this.baseUrl);
+  }
 }

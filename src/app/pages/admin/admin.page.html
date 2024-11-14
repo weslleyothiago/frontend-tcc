@@ -87,32 +87,17 @@
             <tr>
               <th class="text-left p-4 text-sm text-zinc-400">Título</th>
               <th class="text-left p-4 text-sm text-zinc-400">Artista</th>
-              <th class="text-left p-4 text-sm text-zinc-400">Gênero</th> <!-- Nova coluna de Gênero -->
+              <th class="text-left p-4 text-sm text-zinc-400">Gênero</th>
               <th class="text-left p-4 text-sm text-zinc-400">Data de Cadastro</th>
               <th class="p-4 text-sm text-zinc-400">Ação</th>
             </tr>
           </thead>
           <tbody>
-            <!-- Linha de Exemplo de Música -->
-            <tr class="hover:bg-zinc-700">
-              <td class="p-4">Título da Música</td>
-              <td class="p-4">Nome do Artista</td>
-              <td class="p-4">Funk</td> <!-- Gênero -->
-              <td class="p-4">10/11/2024</td>
-              <td class="p-4 flex justify-center">
-                <button class="text-red-400 hover:text-red-300 cursor-pointer">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2v-10H6v10zM18 4h-3V2H9v2H6c-1.1 0-2 .9-2 2v2h16V6c0-1.1-.9-2-2-2z"/>
-                  </svg>
-                </button>
-              </td>
-            </tr>
-            <!-- Replicar linha para mais músicas -->
-            <tr class="hover:bg-zinc-700">
-              <td class="p-4">Título da Música</td>
-              <td class="p-4">Nome do Artista</td>
-              <td class="p-4">Pop</td> <!-- Gênero -->
-              <td class="p-4">09/11/2024</td>
+            <tr *ngFor="let musica of musicas" class="hover:bg-zinc-700">
+              <td class="p-4">{{ musica.titulo }}</td>
+              <td class="p-4">{{ musica.slug }}</td>
+              <td class="p-4">{{ musica.fkGeneroMusicalId }}</td>
+              <td class="p-4">{{ musica.createdAt | date:'dd/MM/yyyy' }}</td>
               <td class="p-4 flex justify-center">
                 <button class="text-red-400 hover:text-red-300 cursor-pointer">
                   <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="currentColor">
@@ -124,6 +109,7 @@
           </tbody>
         </table>
       </div>
+      
     </div>
   </div>
 </div>
