@@ -36,5 +36,11 @@
         
       </div>
     </div>
-  </div>
   
+    <!-- Botão para Administradores -->
+    <div class="text-right mt-8">
+      <button *ngIf="isAdmin" routerLink="/admin" class="bg-purple-600 text-white py-2 px-4 rounded-lg hover:bg-purple-800">
+        Administração
+      </button>
+    </div>
+</div>
