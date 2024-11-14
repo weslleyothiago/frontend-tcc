@@ -119,6 +119,6 @@ export class LoginPage implements OnInit {
   }
 
   loginWithGoogleRedirect() {
-    window.location.href = 'http://localhost:3333/auth/google';
+    window.location.href = 'http://localhost:3000/auth/google';
   }
 }
