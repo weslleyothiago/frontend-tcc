@@ -2,16 +2,38 @@
   <div class="h-screen flex flex-col items-center justify-center">
     
     <!-- Container que envolve o título, formulário e card -->
-    <div class="w-2/3 p-8 shadow-lg shadow-black rounded-3xl flex flex-col items-center text-center">
+    <div class="w-full sm:w-2/3 p-8 shadow-lg shadow-black rounded-3xl flex flex-col items-center text-center mx-auto">
 
-      <!-- Título centralizado dentro da div -->
-      <h1 class="text-xl font-medium">FORMULÁRIO DE CADASTRO DE MÚSICA</h1>
+      <!-- Container para o título e o botão de voltar -->
+      <div class="flex items-center w-full relative">
+
+        <button
+          routerLink="/admin"
+          aria-label="Voltar"
+          class="group flex items-center justify-center w-8 h-8 bg-transparent rounded-full transition duration-300 ease-in-out"
+        >
+          <!-- Botão com o ícone e a mesma estrutura de hover do primeiro -->
+          <div class="relative w-8 h-8 flex items-center justify-center bg-transparent rounded-full transition duration-300 ease-in-out group-hover:bg-white group-hover:bg-opacity-20">
+            <ion-icon name="arrow-back" class="text-white text-xl group-hover:text-purple-600"></ion-icon>
+          </div>
+          
+          <!-- Span posicionado logo abaixo do botão -->
+          <span
+            class="absolute left-4 top-full -translate-x-1/2 opacity-0 text-xs text-white bg-gray-700 px-1 py-1 rounded transition-opacity duration-300 ease-in-out group-hover:opacity-100 group-hover:delay-500 pointer-events-none whitespace-nowrap z-10"
+          >
+            Voltar
+          </span>
+        </button>
+
+        <!-- Título centralizado -->
+        <h1 class="text-xl font-bold mx-auto">FORMULÁRIO DE CADASTRO DE MÚSICA</h1>
+      </div>
 
       <!-- Container para formulário e card de prévia -->
       <div class="w-full flex flex-row justify-between items-start">
         
         <!-- Formulário -->
-        <div class="w-3/5 flex flex-col items-center text-center"> 
+        <div class="w-full sm:w-3/5 flex flex-col items-center text-center"> 
           <form (ngSubmit)="onSubmit()" [formGroup]="musicForm" class="w-full flex flex-col items-start">
             
             <ion-input
@@ -63,7 +85,7 @@
         </div>
 
         <!-- Card de prévia -->
-        <div class="w-2/5 ml-6 flex flex-col items-center text-center">
+        <div class="w-full sm:w-2/5 ml-6 flex flex-col items-center text-center">
           <ion-card class="w-full">
             <div *ngIf="!musicPreview; else previewContent">
               <!-- Skeleton de carregamento -->
@@ -73,7 +95,6 @@
                 <ion-skeleton-text animated class="w-1/2 h-4 mt-2"></ion-skeleton-text>
               </ion-card-header>
             </div>
-            
             
             <!-- Conteúdo da prévia quando disponível -->
             <ng-template #previewContent>
