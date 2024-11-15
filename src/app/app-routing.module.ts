@@ -21,7 +21,7 @@ const routes: Routes = [
     loadChildren: () => import('./pages/admin/admin.module').then( m => m.AdminPageModule)
   },
   {
-    path: 'painel-admin',
+    path: 'admin/musics',
     loadChildren: () => import('./pages/music-registration/music-registration.module').then( m => m.MusicRegistrationPageModule)
   },
 ];
