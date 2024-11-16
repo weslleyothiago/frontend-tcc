@@ -67,13 +67,12 @@ export class RegisterComponent implements OnInit {
       year: ['', Validators.required],
     });
 
-    // Populating the list of years (from 1900 to the current year)
+    // Preenchendo a lista de anos (de 1900 até o ano atual)
     const currentYear = new Date().getFullYear();
     for (let i = currentYear; i >= 1900; i--) {
       this.years.push(i);
     }
 
-    // Initialize the days based on the selected month and year
     this.updateDays();
   }
 
@@ -110,7 +109,7 @@ export class RegisterComponent implements OnInit {
       const userData = {
         email: email,
         senha: password,
-        tipo: 'Cliente'  // Tipo fixo como "Cliente"
+        tipo: 'Cliente'  
       };
   
       // Chamando o serviço de autenticação com subscribe
@@ -118,20 +117,20 @@ export class RegisterComponent implements OnInit {
         response => {
           console.log('User registered successfully: ', response);
           this.router.navigate(['/home']);
-          this.modalController.dismiss();  // Fechando o modal de cadastro, se aplicável
+          this.modalController.dismiss(); 
         },
         error => {
           console.log(JSON.stringify(userData));
           console.error('Error registering user: ', error);
         },
         () => {
-          loading.dismiss();  // Sempre fechando o spinner de carregamento, independentemente do sucesso ou falha
+          loading.dismiss();
         }
       );
   
     } else {
       await loading.dismiss();
-      console.error('Invalid form data'); // Exibir ou lidar com o erro conforme necessário
+      console.error('Invalid form data'); 
     }
   }
 
@@ -140,7 +139,6 @@ export class RegisterComponent implements OnInit {
   async registerWithGoogle() {
     try {
       await this.googleAuthService.registerUserWithGoogle();
-      // Here you can redirect the user or show a success message
     } catch (error) {
       console.log('Error registering with Google: ' + error);
     }
