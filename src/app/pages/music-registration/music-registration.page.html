@@ -72,6 +72,17 @@
               class="w-full mt-4"
             ></ion-input>
 
+            <ion-list *ngIf="artistSuggestions.length > 0" class="w-full mt-2">
+              <ion-item
+                *ngFor="let artist of artistSuggestions"
+                (click)="selectArtist(artist)"
+                class="suggestion-item"
+              >
+                <ion-label>{{ artist.nome }}</ion-label>
+              </ion-item>
+            </ion-list>            
+
+
             <ion-select formControlName="genre" name="genre" class="w-full mt-4" label-placement="solid" fill="solid">
               <div class="w-full" slot="label">Gênero <ion-text color="danger">(Obrigatório)</ion-text></div>
               <ion-select-option *ngFor="let g of generosMusicais" [value]="g.value"> 

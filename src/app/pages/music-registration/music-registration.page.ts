@@ -2,8 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MusicService } from 'src/app/services/music.service';
 import { YoutubeService } from 'src/app/services/youtube.service';
-import { Music } from '../../models/music.model'
+import { Music } from '../../models/music.model';
 import { LoadingController } from '@ionic/angular';
+import { ArtistService } from 'src/app/services/artist.service';
 
 @Component({
   selector: 'app-music-registration',
@@ -15,6 +16,7 @@ export class MusicRegistrationPage implements OnInit {
   musicForm!: FormGroup;
   videoDuration: string | null = null;
   musicPreview: { title: string; artist: string; thumbnail: string } | null = null;
+  artistSuggestions: { id: number; nome: string }[] = []; // Sugestões de artistas
 
   music: Music = {
     title: '',
@@ -47,11 +49,11 @@ export class MusicRegistrationPage implements OnInit {
     public loadingCtrl: LoadingController,
     private youtubeService: YoutubeService,
     private musicService: MusicService,
+    private artistService: ArtistService,
     private formBuilder: FormBuilder,
   ) {}
 
   ngOnInit() {
-
     this.musicForm = this.formBuilder.group({
       title: ['', Validators.required],
       artist: ['', Validators.required],
@@ -59,33 +61,47 @@ export class MusicRegistrationPage implements OnInit {
       genre: ['', Validators.required],
     });
 
+    // Atualiza o slug ao alterar o título ou o artista
     this.musicForm.get('title')?.valueChanges.subscribe(() => this.updateSlug());
     this.musicForm.get('artist')?.valueChanges.subscribe(() => this.updateSlug());
+
+    // Busca sugestões de artistas enquanto o usuário digita
+    this.musicForm.get('artist')?.valueChanges.subscribe(value => {
+      if (value && value.length > 2) { // Começa a procurar após 3 caracteres
+        this.searchArtists(value);
+      } else {
+        this.artistSuggestions = []; // Limpa se o valor for curto
+      }
+    });
   }
 
   updateSlug() {
     const title = this.musicForm.get('title')?.value || '';
-    this.music.slug = this.generateSlug(title);
+    const artist = this.musicForm.get('artist')?.value || '';
+    this.music.slug = this.generateSlug(`${title} ${artist}`);
   }
 
   formatDuration(duration: string): string {
-    // Remove o prefixo 'PT' e divide a string com base nas partes de horas, minutos e segundos
     const parts = duration.replace('PT', '').split(/H|M|S/);
-
-    // Obtemos horas, minutos e segundos
     const hours = parts[2] ? parts[2].padStart(2, '0') : '00';
     const minutes = parts[0] ? parts[0].padStart(2, '0') : '00';
     const seconds = parts[1] ? parts[1].padStart(2, '0') : '00';
 
-    // Se não houver horas, formate como MM:SS
-    if (hours === '00') {
-        return `${hours}:${minutes}:${seconds}`; // Retorna apenas MM:SS
-    }
+    return hours === '00' ? `${minutes}:${seconds}` : `${hours}:${minutes}:${seconds}`;
+  }
 
-    // Se houver horas, formate como HH:MM:SS
-    return `${hours}:${minutes}:${seconds}`;
-}
+  // Método para buscar artistas
+  searchArtists(query: string) {
+    this.artistService.searchArtists(query).subscribe((artists) => {
+      this.artistSuggestions = artists;
+    });
+  }
 
+  // Método para selecionar um artista das sugestões
+  selectArtist(artist: { id: number; nome: string }) {
+    this.musicForm.get('artist')?.setValue(artist.nome);
+    this.artistSuggestions = []; // Limpa as sugestões
+  }
 
   onSubmit() {
     const videoUrl = this.musicForm.get('link')?.value;
@@ -94,14 +110,10 @@ export class MusicRegistrationPage implements OnInit {
     if (videoId) {
       const thumbnail = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
 
-      // Obtenha a duração do vídeo
       this.youtubeService.getVideoDetails(videoId).subscribe((response: any) => {
-        const duration = response.items[0]?.contentDetails?.duration || ''; // Obtenha a duração
-
-        // Converte a duração para um formato legível
+        const duration = response.items[0]?.contentDetails?.duration || '';
         this.videoDuration = this.formatDuration(duration);
 
-        // Prepara a prévia da música
         this.musicPreview = {
           title: this.musicForm.get('title')?.value,
           artist: this.musicForm.get('artist')?.value,
@@ -114,7 +126,6 @@ export class MusicRegistrationPage implements OnInit {
         this.music.link = this.musicForm.get('link')?.value;
         this.music.genreId = this.musicForm.get('genre')?.value;
         this.music.duration = this.videoDuration || '';
-
       });
     } else {
       console.error('Video ID not found');
@@ -127,14 +138,11 @@ export class MusicRegistrationPage implements OnInit {
       spinner: 'crescent',
     });
     await loading.present();
-  
+
     try {
-      // Envia para o backend e aguarda a resposta
       this.musicService.create(this.music).subscribe({
         next: (response) => {
           console.log('Music registered!', response);
-  
-          // Somente reseta se a resposta for um sucesso
           this.musicPreview = null;
           this.musicForm.reset();
         },
@@ -150,7 +158,6 @@ export class MusicRegistrationPage implements OnInit {
       await loading.dismiss();
     }
   }
-  
 
   generateSlug(text: string): string {
     return text
