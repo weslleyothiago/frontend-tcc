@@ -104,35 +104,39 @@ export class RegisterComponent implements OnInit {
     if (this.registrationForm?.valid) {
       const email = this.registrationForm.get('email')?.value;
       const password = this.registrationForm.get('password')?.value;
-
-      // Dados para envio ao backend
+    
       const userData = {
         email: email,
         senha: password,
-        tipo: 'Cliente'  
+        tipo: 'Cliente',  // Tipo de usuário definido como 'Cliente'
       };
-  
-      // Chamando o serviço de autenticação com subscribe
-      this.authService.register(userData).subscribe(
+    
+      const profileData = {
+        nome: this.registrationForm.get('name')?.value,
+        fotoPerfil: this.registrationForm.get('profilePicture')?.value,
+        dataNascimento: this.registrationForm.get('birthDate')?.value,
+        slug: this.registrationForm.get('slug')?.value,
+      };
+    
+      // Envia os dados do usuário e perfil para o backend em uma única requisição
+      this.authService.register(userData, profileData).subscribe(
         response => {
-          console.log('User registered successfully: ', response);
+          console.log('User and profile registered successfully: ', response);
           this.router.navigate(['/home']);
-          this.modalController.dismiss(); 
+          this.modalController.dismiss();
         },
         error => {
-          console.log(JSON.stringify(userData));
-          console.error('Error registering user: ', error);
+          console.log('Error registering user and profile: ', error);
         },
         () => {
           loading.dismiss();
         }
-      );
-  
+      );      
     } else {
       await loading.dismiss();
-      console.error('Invalid form data'); 
+      console.error('Invalid form data');
     }
-  }
+  }  
 
 
   // Method to register with Google
