@@ -104,7 +104,16 @@ export class RegisterComponent implements OnInit {
     if (this.registrationForm?.valid) {
       const email = this.registrationForm.get('email')?.value;
       const password = this.registrationForm.get('password')?.value;
-    
+
+      const day = this.registrationForm.get('day')?.value;
+      const month = this.registrationForm.get('month')?.value;
+      const year = this.registrationForm.get('year')?.value;
+
+      let formattedDate = null;
+      if (day && month && year) {
+        formattedDate = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+      }
+
       const userData = {
         email: email,
         senha: password,
@@ -113,9 +122,7 @@ export class RegisterComponent implements OnInit {
     
       const profileData = {
         nome: this.registrationForm.get('name')?.value,
-        fotoPerfil: this.registrationForm.get('profilePicture')?.value,
-        dataNascimento: this.registrationForm.get('birthDate')?.value,
-        slug: this.registrationForm.get('slug')?.value,
+        dataNascimento: formattedDate,
       };
     
       // Envia os dados do usuário e perfil para o backend em uma única requisição
