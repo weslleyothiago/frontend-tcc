@@ -11,9 +11,6 @@ import { LoadingController } from '@ionic/angular';
   styleUrls: ['./music-registration.page.scss'],
 })
 export class MusicRegistrationPage implements OnInit {
-  genres: string[] = [];
-  filteredGenres: string[] = [];
-  searchGenre: string = '';
 
   musicForm!: FormGroup;
   videoDuration: string | null = null;
@@ -54,10 +51,6 @@ export class MusicRegistrationPage implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.musicService.getGenres().subscribe((genres) => {
-      this.genres = genres;
-      this.filteredGenres = [...genres];
-    });
 
     this.musicForm = this.formBuilder.group({
       title: ['', Validators.required],
@@ -68,11 +61,6 @@ export class MusicRegistrationPage implements OnInit {
 
     this.musicForm.get('title')?.valueChanges.subscribe(() => this.updateSlug());
     this.musicForm.get('artist')?.valueChanges.subscribe(() => this.updateSlug());
-  }
-
-  filterGenres(event: any) {
-    const searchGenre = event.target.value.toLowerCase();
-    this.filteredGenres = this.genres.filter((genre) => genre.toLowerCase().includes(searchGenre));
   }
 
   updateSlug() {

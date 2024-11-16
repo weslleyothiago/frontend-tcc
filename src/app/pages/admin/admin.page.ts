@@ -5,13 +5,13 @@ import { MusicService } from '../../services/music.service';
   selector: 'app-admin',
   templateUrl: './admin.page.html'  // Ajuste o caminho se necessário
 })
-export class AdminPage implements OnInit {
+export class AdminPage implements OnInit{
   musicas: any[] = []; // Armazena as músicas
 
   constructor(private musicService: MusicService) {}
 
-  ngOnInit(): void {
-    this.fetchMusicas();
+  ngOnInit(){
+    this.fetchMusicas()
   }
 
   fetchMusicas() {
@@ -23,5 +23,7 @@ export class AdminPage implements OnInit {
         console.error('Erro ao buscar músicas:', error);
       }
     );
-  }
+  }  
+
+
 }
