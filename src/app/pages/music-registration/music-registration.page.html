@@ -79,6 +79,15 @@
                 class="suggestion-item"
               >
                 <ion-label>{{ artist.nome }}</ion-label>
+                  <ion-button
+                    *ngIf="artistSelected"
+                    fill="clear"
+                    color="danger"
+                    class="ml-auto"
+                    (click)="clearArtistSelection()"
+                  >
+                    <ion-icon name="close-circle-outline"></ion-icon>
+                  </ion-button>
               </ion-item>
             </ion-list>            
 

@@ -17,6 +17,7 @@ export class MusicRegistrationPage implements OnInit {
   videoDuration: string | null = null;
   musicPreview: { title: string; artist: string; thumbnail: string } | null = null;
   artistSuggestions: { id: number; nome: string }[] = []; // Sugestões de artistas
+  artistSelected = false;
 
   music: Music = {
     title: '',
@@ -97,12 +98,6 @@ export class MusicRegistrationPage implements OnInit {
     });
   }
 
-  // Método para selecionar um artista das sugestões
-  selectArtist(artist: { id: number; nome: string }) {
-    this.musicForm.get('artist')?.setValue(artist.nome);
-    this.artistSuggestions = []; // Limpa as sugestões
-  }
-
   onSubmit() {
     const videoUrl = this.musicForm.get('link')?.value;
     const videoId = this.youtubeService.extractVideoId(videoUrl);
@@ -157,6 +152,20 @@ export class MusicRegistrationPage implements OnInit {
       console.error('Erro ao registrar música: ', error);
       await loading.dismiss();
     }
+  }
+
+  // Seleciona o artista e desativa o input
+  selectArtist(artist: any) {
+    this.musicForm.get('artist')?.setValue(artist.nome);
+    this.artistSelected = true;
+    this.musicForm.get('artist')?.disable();
+  }
+  
+  // Limpa a seleção de artista e habilita o campo novamente
+  clearArtistSelection() {
+    this.musicForm.get('artist')?.setValue('');
+    this.artistSelected = false;
+    this.musicForm.get('artist')?.enable();    
   }
 
   generateSlug(text: string): string {
