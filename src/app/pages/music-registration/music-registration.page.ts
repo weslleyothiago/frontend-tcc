@@ -77,7 +77,7 @@ export class MusicRegistrationPage implements OnInit {
 
     // Busca sugestões de artistas enquanto o usuário digita
     this.musicForm.get('artist')?.valueChanges.subscribe(value => {
-      if (value && value.length > 2) { // Começa a procurar após 3 caracteres
+      if (value && value.length > 2) {
         this.searchArtists(value);
       } else {
         this.artistSuggestions = [];
@@ -85,7 +85,6 @@ export class MusicRegistrationPage implements OnInit {
     });
 
     this.musicForm.valueChanges.subscribe(() => {
-      // Desabilita o botão de registrar quando os campos mudam e a prévia não foi atualizada
       this.isPreviewUpdated = false;
     });
   }
@@ -148,14 +147,14 @@ export class MusicRegistrationPage implements OnInit {
 
   // Método para atualizar a prévia
   updatePreview() {
-    this.isPreviewUpdated = false; // Marca que a prévia precisa ser atualizada
-    this.generatePreview(); // Simula uma nova geração de prévia
+    this.isPreviewUpdated = false;
+    this.generatePreview();
   }
 
   // Método de envio do formulário
   onSubmit() {
     if (this.musicForm.valid && !this.isPreviewUpdated) {
-      this.updatePreview(); // Atualiza a prévia quando o formulário é válido mas a prévia não está atualizada
+      this.updatePreview();
     }
     const artistName = this.musicForm.get('artist')?.value;
   
@@ -163,7 +162,7 @@ export class MusicRegistrationPage implements OnInit {
     const artistExists = this.artistSuggestions.some(artist => artist.nome === artistName);
   
     if (!artistExists) {
-      this.presentArtistNotFoundAlert(artistName); // Exibe o alerta
+      this.presentArtistNotFoundAlert(artistName);
     } else {
       const videoUrl = this.musicForm.get('link')?.value;
       const videoId = this.youtubeService.extractVideoId(videoUrl);
@@ -194,8 +193,6 @@ export class MusicRegistrationPage implements OnInit {
     }
   }
   
-
-    // Cancela a mensagem de artista não encontrado
     cancelArtistRegistration() {
       this.artistNotFound = false;
       this.musicForm.get('artist')?.setValue('');
@@ -213,16 +210,14 @@ export class MusicRegistrationPage implements OnInit {
       this.artistService.create({ nome: artistName }).subscribe({
         next: (response) => {
           console.log('Artista registrado com sucesso!', response);
-          this.musicPreview = null; // Resetar a pré-visualização (se necessário)
-          this.musicForm.reset();  // Resetar o formulário (se necessário)
-          this.artistNotFound = false;  // Restabelece o estado após o sucesso
+          this.musicPreview = null; 
+          this.musicForm.reset();
+          this.artistNotFound = false;
         },
         error: (error) => {
           console.error('Erro ao registrar artista: ', error);
-          // Aqui você pode exibir uma mensagem de erro para o usuário, se necessário
         },
         complete: async () => {
-          // Garante que o loading seja removido ao final
           await loading.dismiss();
         }
       });
@@ -240,7 +235,7 @@ export class MusicRegistrationPage implements OnInit {
         this.musicService.create(this.music).subscribe({
           next: (response) => {
             this.messageErrorSucess = 'Música registrada com sucesso!';
-            this.isSuccessMessage = true; // Define como sucesso
+            this.isSuccessMessage = true;
             this.musicPreview = null;
             this.musicForm.reset();
             this.musicForm.get('artist')?.enable();
@@ -248,40 +243,36 @@ export class MusicRegistrationPage implements OnInit {
           },
           error: async (error) => {
             this.messageErrorSucess = 'Erro ao registrar música. Tente novamente.';
-            this.isSuccessMessage = false; // Define como erro
+            this.isSuccessMessage = false;
             this.clearMessageAfterDelay();
             console.error('Erro ao registrar música: ', error);
-            await loading.dismiss(); // Fecha o loading em caso de erro
+            await loading.dismiss();
           },
           complete: async () => {
-            await loading.dismiss(); // Fecha o loading em caso de sucesso
+            await loading.dismiss();
           },
         });
       } catch (error) {
         this.messageErrorSucess = 'Erro ao registrar música. Tente novamente.';
-        this.isSuccessMessage = false; // Define como erro
+        this.isSuccessMessage = false;
         this.clearMessageAfterDelay();
         console.error('Erro ao registrar música: ', error);
-        await loading.dismiss(); // Fecha o loading em caso de erro inesperado
+        await loading.dismiss();
       }
     }
     
-    
-
     clearMessageAfterDelay() {
       setTimeout(() => {
         this.messageErrorSucess = null;
-      }, 5000); // Limpa a mensagem após 5 segundos
+      }, 5000);
     }
 
-  // Seleciona o artista e desativa o input
   selectArtist(artist: any) {
     this.musicForm.get('artist')?.setValue(artist.nome);
     this.artistSelected = true;
     this.musicForm.get('artist')?.disable();
   }
-  
-  // Limpa a seleção de artista e habilita o campo novamente
+
   clearArtistSelection() {
     this.musicForm.get('artist')?.setValue('');
     this.artistSelected = false;
