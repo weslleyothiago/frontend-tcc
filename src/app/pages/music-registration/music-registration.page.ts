@@ -92,7 +92,7 @@ export class MusicRegistrationPage implements OnInit {
   updateSlug() {
     const title = this.musicForm.get('title')?.value || '';
     const artist = this.musicForm.get('artist')?.value || '';
-    this.music.slug = this.generateSlug(`${title} ${artist}`);
+    this.music.slug = this.generateSlug(`${title}`);
   }
 
   formatDuration(duration: string): string {
