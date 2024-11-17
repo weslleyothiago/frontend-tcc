@@ -103,7 +103,15 @@
             </ion-select>
 
             <!-- Botão "Mostrar prévia" abaixo dos inputs -->
-            <ion-button shape="round" class="mt-6 w-full h-12" [disabled]="musicForm.invalid" type="submit">Mostrar prévia</ion-button>
+            <ion-button
+            shape="round"
+            class="mt-6 w-full h-12"
+            [disabled]="musicForm.invalid || isPreviewUpdated"
+            type="submit"
+            (click)="isPreviewUpdated ? updatePreview() : null"
+          >
+            {{ isPreviewUpdated ? 'Atualizar prévia' : 'Mostrar prévia' }}
+          </ion-button>
           </form>
         </div>
 
@@ -130,7 +138,13 @@
           </ion-card>
           
           <!-- Botão "Salvar" abaixo do card -->
-          <ion-button *ngIf="musicPreview" class="mt-4 w-full h-12" shape="round" (click)="registerMusic()" [disabled]="musicForm.invalid" [color]="musicForm.invalid ? 'medium' : 'primary'" >Registrar</ion-button>
+           <ion-button *ngIf="musicPreview" 
+            class="mt-4 w-full h-12" 
+            shape="round" 
+            (click)="registerMusic()" 
+            [disabled]="!isPreviewUpdated || musicForm.invalid"
+            [color]="!isPreviewUpdated || musicForm.invalid ? 'medium' : 'primary'"
+            >Salvar</ion-button>
         </div>
 
       </div>

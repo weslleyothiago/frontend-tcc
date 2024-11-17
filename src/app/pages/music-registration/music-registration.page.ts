@@ -21,6 +21,7 @@ export class MusicRegistrationPage implements OnInit {
   artistSelected = false;
   artistNotFound: boolean = false;
   missingArtistName: string = '';
+  isPreviewUpdated: boolean = false;
 
   music: Music = {
     title: '',
@@ -130,8 +131,23 @@ export class MusicRegistrationPage implements OnInit {
   }
   
   
+  generatePreview() {
+    // Exemplo de lógica para gerar a prévia
+    this.musicPreview;
+    this.isPreviewUpdated = true; // Marca que a prévia foi gerada com sucesso
+  }
 
+  // Método para atualizar a prévia
+  updatePreview() {
+    this.isPreviewUpdated = false; // Marca que a prévia precisa ser atualizada
+    this.generatePreview(); // Simula uma nova geração de prévia
+  }
+
+  // Método de envio do formulário
   onSubmit() {
+    if (this.musicForm.valid && !this.isPreviewUpdated) {
+      this.updatePreview(); // Atualiza a prévia quando o formulário é válido mas a prévia não está atualizada
+    }
     const artistName = this.musicForm.get('artist')?.value;
   
     // Verifica se o artista existe entre as sugestões
