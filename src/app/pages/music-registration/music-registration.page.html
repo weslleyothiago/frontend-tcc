@@ -108,10 +108,12 @@
             class="mt-6 w-full h-12"
             [disabled]="musicForm.invalid || isPreviewUpdated"
             type="submit"
+            [color]="(musicForm.invalid || isPreviewUpdated) ? 'medium' : 'primary'"
             (click)="isPreviewUpdated ? updatePreview() : null"
           >
-            {{ isPreviewUpdated ? 'Atualizar prévia' : 'Mostrar prévia' }}
+            Mostrar prévia
           </ion-button>
+          
           </form>
         </div>
 
