@@ -38,6 +38,7 @@
             
             <ion-input
               name="title"
+              errorText="Preencha o campo com o título da música"
               formControlName="title"
               [(ngModel)]="music.title"
               type="text"
@@ -50,6 +51,7 @@
 
             <ion-input
               name="link"
+              errorText="Parece que você esqueceu de por o link da música"
               formControlName="link"
               [(ngModel)]="music.link"
               type="text"
@@ -62,6 +64,7 @@
 
             <ion-input
               name="artist"
+              errorText="Por favor insira o nome do artista"
               formControlName="artist"
               [(ngModel)]="music.artist"
               type="text"
@@ -127,7 +130,7 @@
           </ion-card>
           
           <!-- Botão "Salvar" abaixo do card -->
-          <ion-button *ngIf="musicPreview" class="mt-4 w-full h-12" shape="round" (click)="registerMusic()">Registrar</ion-button>
+          <ion-button *ngIf="musicPreview" class="mt-4 w-full h-12" shape="round" (click)="registerMusic()" [disabled]="musicForm.invalid" [color]="musicForm.invalid ? 'medium' : 'primary'" >Registrar</ion-button>
         </div>
 
       </div>

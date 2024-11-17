@@ -15,7 +15,7 @@ import { LucideAngularModule, Home } from 'lucide-angular';
     LucideAngularModule.pick({ Home, }),
     HttpClientModule,
     BrowserModule,
-    IonicModule.forRoot(),
+    IonicModule.forRoot({innerHTMLTemplatesEnabled: true}),
     AppRoutingModule,
     ReactiveFormsModule, 
   ],

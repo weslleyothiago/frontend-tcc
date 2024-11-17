@@ -5,6 +5,7 @@ import { YoutubeService } from 'src/app/services/youtube.service';
 import { Music } from '../../models/music.model';
 import { LoadingController } from '@ionic/angular';
 import { ArtistService } from 'src/app/services/artist.service';
+import { AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-music-registration',
@@ -18,6 +19,8 @@ export class MusicRegistrationPage implements OnInit {
   musicPreview: { title: string; artist: string; thumbnail: string } | null = null;
   artistSuggestions: { id: number; nome: string }[] = []; // Sugestões de artistas
   artistSelected = false;
+  artistNotFound: boolean = false;
+  missingArtistName: string = '';
 
   music: Music = {
     title: '',
@@ -52,6 +55,7 @@ export class MusicRegistrationPage implements OnInit {
     private musicService: MusicService,
     private artistService: ArtistService,
     private formBuilder: FormBuilder,
+    private alertCtrl: AlertController
   ) {}
 
   ngOnInit() {
@@ -98,42 +102,115 @@ export class MusicRegistrationPage implements OnInit {
     });
   }
 
+  async presentArtistNotFoundAlert(artistName: string) {
+    const alert = await this.alertCtrl.create({
+      header: 'Artista Não Encontrado',
+      message: `O artista <strong>${artistName}</strong> não existe no banco de dados. Deseja registrá-lo?`,
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          cssClass: 'btn-cancel', 
+          handler: () => {
+            this.cancelArtistRegistration();
+          },
+        },
+        {
+          text: 'Registrar',
+          cssClass: 'btn-register',
+          handler: () => {
+            this.registerNewArtist(artistName);
+          },
+        },
+      ],
+      cssClass: 'alert-custom backdrop-blur-3xl',
+    });
+  
+    await alert.present();
+  }
+  
+  
+
   onSubmit() {
-    const videoUrl = this.musicForm.get('link')?.value;
-    const videoId = this.youtubeService.extractVideoId(videoUrl);
-
-    if (videoId) {
-      const thumbnail = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
-
-      this.youtubeService.getVideoDetails(videoId).subscribe((response: any) => {
-        const duration = response.items[0]?.contentDetails?.duration || '';
-        this.videoDuration = this.formatDuration(duration);
-
-        this.musicPreview = {
-          title: this.musicForm.get('title')?.value,
-          artist: this.musicForm.get('artist')?.value,
-          thumbnail: thumbnail,
-        };
-
-        // Atualiza os dados da música
-        this.music.title = this.musicForm.get('title')?.value;
-        this.music.artist = this.musicForm.get('artist')?.value;
-        this.music.link = this.musicForm.get('link')?.value;
-        this.music.genreId = this.musicForm.get('genre')?.value;
-        this.music.duration = this.videoDuration || '';
-      });
+    const artistName = this.musicForm.get('artist')?.value;
+  
+    // Verifica se o artista existe entre as sugestões
+    const artistExists = this.artistSuggestions.some(artist => artist.nome === artistName);
+  
+    if (!artistExists) {
+      this.presentArtistNotFoundAlert(artistName); // Exibe o alerta
     } else {
-      console.error('Video ID not found');
+      const videoUrl = this.musicForm.get('link')?.value;
+      const videoId = this.youtubeService.extractVideoId(videoUrl);
+  
+      if (videoId) {
+        const thumbnail = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
+  
+        this.youtubeService.getVideoDetails(videoId).subscribe((response: any) => {
+          const duration = response.items[0]?.contentDetails?.duration || '';
+          this.videoDuration = this.formatDuration(duration);
+  
+          this.musicPreview = {
+            title: this.musicForm.get('title')?.value,
+            artist: this.musicForm.get('artist')?.value,
+            thumbnail: thumbnail,
+          };
+  
+          // Atualiza os dados da música
+          this.music.title = this.musicForm.get('title')?.value;
+          this.music.artist = this.musicForm.get('artist')?.value;
+          this.music.link = this.musicForm.get('link')?.value;
+          this.music.genreId = this.musicForm.get('genre')?.value;
+          this.music.duration = this.videoDuration || '';
+        });
+      } else {
+        console.error('Video ID not found');
+      }
     }
   }
+  
 
+    // Cancela a mensagem de artista não encontrado
+    cancelArtistRegistration() {
+      this.artistNotFound = false;
+      this.musicForm.get('artist')?.setValue('');
+    }
+  
+    // Lógica para registrar um novo artista
+    async registerNewArtist(artistName: string) {
+      const loading = await this.loadingCtrl.create({
+        message: 'Registrando...',
+        spinner: 'crescent',
+      });
+      await loading.present();
+    
+      // Chama o serviço para registrar o artista
+      this.artistService.create({ nome: artistName }).subscribe({
+        next: (response) => {
+          console.log('Artista registrado com sucesso!', response);
+          this.musicPreview = null; // Resetar a pré-visualização (se necessário)
+          this.musicForm.reset();  // Resetar o formulário (se necessário)
+          this.artistNotFound = false;  // Restabelece o estado após o sucesso
+        },
+        error: (error) => {
+          console.error('Erro ao registrar artista: ', error);
+          // Aqui você pode exibir uma mensagem de erro para o usuário, se necessário
+        },
+        complete: async () => {
+          // Garante que o loading seja removido ao final
+          await loading.dismiss();
+        }
+      });
+    }
+    
+  
   async registerMusic() {
     const loading = await this.loadingCtrl.create({
       message: 'Registrando...',
       spinner: 'crescent',
     });
     await loading.present();
-
+    
     try {
       this.musicService.create(this.music).subscribe({
         next: (response) => {

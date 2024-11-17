@@ -58,3 +58,16 @@
 ion-select::part(label) {
   color: white;
 }
+
+.alert-custom .btn-cancel {
+  @apply bg-red-500 text-white font-bold py-2 px-4 rounded-full w-auto mx-2; /* Botão Cancelar */
+}
+
+.alert-custom .btn-register {
+  @apply bg-green-500 text-white font-bold py-2 px-4 rounded-full w-auto mx-2; /* Botão Registrar */
+}
+
+/* Centraliza os botões dentro do Alert e adiciona gap */
+.alert-custom .alert-button-group {
+  @apply flex justify-center gap-4 mt-4; /* Espaçamento entre os botões */
+}
