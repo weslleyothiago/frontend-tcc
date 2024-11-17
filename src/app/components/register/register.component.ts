@@ -31,18 +31,18 @@ export class RegisterComponent implements OnInit {
 
   days: number[] = [];
   months = [
-    { name: 'January', value: 1 },
-    { name: 'February', value: 2 },
-    { name: 'March', value: 3 },
-    { name: 'April', value: 4 },
-    { name: 'May', value: 5 },
-    { name: 'June', value: 6 },
-    { name: 'July', value: 7 },
-    { name: 'August', value: 8 },
-    { name: 'September', value: 9 },
-    { name: 'October', value: 10 },
-    { name: 'November', value: 11 },
-    { name: 'December', value: 12 },
+    { name: 'Janeiro', value: 1 },
+    { name: 'Fevereiro', value: 2 },
+    { name: 'Março', value: 3 },
+    { name: 'Abril', value: 4 },
+    { name: 'Maio', value: 5 },
+    { name: 'Junho', value: 6 },
+    { name: 'Julho', value: 7 },
+    { name: 'Agosto', value: 8 },
+    { name: 'Setembro', value: 9 },
+    { name: 'Outubro', value: 10 },
+    { name: 'Novembro', value: 11 },
+    { name: 'Dezembro', value: 12 },
   ];
   years: number[] = [];
 
@@ -96,7 +96,7 @@ export class RegisterComponent implements OnInit {
 
   async register() {
     const loading = await this.loadingCtrl.create({
-      message: 'Registering...',
+      message: 'Registrando...',
       spinner: 'crescent',
     });
     await loading.present();

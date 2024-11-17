@@ -22,6 +22,9 @@ export class MusicRegistrationPage implements OnInit {
   artistNotFound: boolean = false;
   missingArtistName: string = '';
   isPreviewUpdated: boolean = false;
+  messageErrorSucess: string | null = null;
+  isSuccessMessage: boolean = false;
+
 
   music: Music = {
     title: '',
@@ -226,32 +229,50 @@ export class MusicRegistrationPage implements OnInit {
     }
     
   
-  async registerMusic() {
-    const loading = await this.loadingCtrl.create({
-      message: 'Registrando...',
-      spinner: 'crescent',
-    });
-    await loading.present();
-    
-    try {
-      this.musicService.create(this.music).subscribe({
-        next: (response) => {
-          console.log('Music registered!', response);
-          this.musicPreview = null;
-          this.musicForm.reset();
-        },
-        error: (error) => {
-          console.error('Erro ao registrar música: ', error);
-        },
-        complete: async () => {
-          await loading.dismiss();
-        }
+    async registerMusic() {
+      const loading = await this.loadingCtrl.create({
+        message: 'Registrando...',
+        spinner: 'crescent',
       });
-    } catch (error) {
-      console.error('Erro ao registrar música: ', error);
-      await loading.dismiss();
+      await loading.present();
+    
+      try {
+        this.musicService.create(this.music).subscribe({
+          next: (response) => {
+            this.messageErrorSucess = 'Música registrada com sucesso!';
+            this.isSuccessMessage = true; // Define como sucesso
+            this.musicPreview = null;
+            this.musicForm.reset();
+            this.musicForm.get('artist')?.enable();
+            this.clearMessageAfterDelay();
+          },
+          error: async (error) => {
+            this.messageErrorSucess = 'Erro ao registrar música. Tente novamente.';
+            this.isSuccessMessage = false; // Define como erro
+            this.clearMessageAfterDelay();
+            console.error('Erro ao registrar música: ', error);
+            await loading.dismiss(); // Fecha o loading em caso de erro
+          },
+          complete: async () => {
+            await loading.dismiss(); // Fecha o loading em caso de sucesso
+          },
+        });
+      } catch (error) {
+        this.messageErrorSucess = 'Erro ao registrar música. Tente novamente.';
+        this.isSuccessMessage = false; // Define como erro
+        this.clearMessageAfterDelay();
+        console.error('Erro ao registrar música: ', error);
+        await loading.dismiss(); // Fecha o loading em caso de erro inesperado
+      }
     }
-  }
+    
+    
+
+    clearMessageAfterDelay() {
+      setTimeout(() => {
+        this.messageErrorSucess = null;
+      }, 5000); // Limpa a mensagem após 5 segundos
+    }
 
   // Seleciona o artista e desativa o input
   selectArtist(artist: any) {
@@ -264,7 +285,7 @@ export class MusicRegistrationPage implements OnInit {
   clearArtistSelection() {
     this.musicForm.get('artist')?.setValue('');
     this.artistSelected = false;
-    this.musicForm.get('artist')?.enable();    
+    this.musicForm.get('artist')?.enable();
   }
 
   generateSlug(text: string): string {

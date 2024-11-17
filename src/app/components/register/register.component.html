@@ -4,7 +4,7 @@
   </ion-title>
   <button
     (click)="closeModal()"
-    aria-label="Close modal"
+    aria-label="Fechar modal"
     class="group absolute top-4 right-4 flex items-center justify-center w-8 h-8 bg-transparent rounded-full transition duration-300 ease-in-out"
   >
     <div
@@ -31,7 +31,7 @@
   <ng-template #emailScreen>
     <div class="container items-center flex flex-col">
       <ion-title class="mt-0 text-base">
-        Register now to start enjoying!
+        Registre-se agora para começar a aproveitar!
       </ion-title>
       <div class="flex flex-col items-center w-5/6 m-4">
         
@@ -44,8 +44,8 @@
         </div>
 
         <div class="flex flex-col w-5/6 justify-start mt-4">
-          <span class="text-gray-400">Step 1 of 3</span>
-          <span class="font-semibold">Enter your email</span>
+          <span class="text-gray-400">Etapa 1 de 3</span>
+          <span class="font-semibold">Escolha sua forma de cadastro</span>
         </div>
 
         <ion-button
@@ -56,7 +56,7 @@
           color="light"
         >
           <ion-icon slot="start" name="logo-google"></ion-icon>
-          Register with Google
+          Registre-se com o Google
         </ion-button>
 
         <form
@@ -65,7 +65,7 @@
         >
           <div class="flex items-center w-5/6 mt-2">
             <hr class="flex-grow border-t border-gray-400" />
-            <span class="mx-4 text-gray-500">or</span>
+            <span class="mx-4 text-gray-500">ou</span>
             <hr class="mx-0 flex-grow border-t border-gray-400" />
           </div>
           <ion-input
@@ -75,7 +75,7 @@
             label="Email"
             label-placement="floating"
             fill="solid"
-            placeholder="name@domain.com"
+            placeholder="nome@dominio.com"
             class="w-5/6 mt-4"
           ></ion-input>
 
@@ -85,13 +85,13 @@
             <!-- Required field check -->
             <ion-text *ngIf="controlErrors['email'].errors?.['required']" color="danger" class="flex items-baseline text-base">
               <ion-icon name="alert-circle" class="mr-2"></ion-icon>
-              The email field is required.
+              O campo de email é obrigatório.
             </ion-text>
 
             <!-- Email structure check -->
             <ion-text *ngIf="controlErrors['email'].errors?.['pattern']" color="danger" class="flex items-baseline text-base">
               <ion-icon name="alert-circle" class="mr-2"></ion-icon>
-              This email is invalid. The correct format is: example&#64;email.com
+              Este e-mail é inválido. O formato correto é: examplo&#64;email.com
             </ion-text>
 
           </div>
@@ -101,7 +101,7 @@
             class="mt-6 w-5/6 h-12"
             [disabled]="registrationForm.get('email')?.invalid"
             (click)="activateTemplate('passwordScreen')"
-            >Next</ion-button
+            >Próximo</ion-button
           >
         </form>
       </div>
@@ -136,15 +136,15 @@
               <span
                 class="absolute left-1/2 bottom-[-30px] -translate-x-1/2 opacity-0 text-xs text-white bg-gray-700 px-2 py-1 rounded transition-opacity duration-300 ease-in-out group-hover:opacity-100 pointer-events-none whitespace-nowrap"
               >
-                Back
+                Voltar
               </span>
             </div>
 
             <!-- Text "Step 2 of 3" aligned with the icon -->
-            <span class="text-gray-400">Step 2 of 3</span>
+            <span class="text-gray-400">Etapa 2 de 3</span>
           </div>
           
-          <span class="font-semibold">Create a password</span>
+          <span class="font-semibold">Crie uma senha</span>
         </div>
   
         <form
@@ -156,7 +156,7 @@
             name="password"
             type="password"
             formControlName="password"
-            label="Password"
+            label="Senha"
             label-placement="floating"
             fill="solid"
             class="w-5/6 mt-4"
@@ -172,19 +172,19 @@
             <!-- Letter check -->
             <ion-text [color]="passwordValid.hasLetter ? 'success' : 'danger'" class="flex items-baseline text-base">
               <ion-icon name="alert-circle" class="mr-2"></ion-icon>
-              Must contain at least one letter
+              Deve conter pelo menos uma letra
             </ion-text>
   
             <!-- Number check -->
             <ion-text [color]="passwordValid.hasNumber ? 'success' : 'danger'" class="flex items-baseline text-base">
               <ion-icon name="alert-circle" class="mr-2"></ion-icon>
-              Must contain at least one number
+              Deve conter pelo menos um número
             </ion-text>
   
             <!-- Minimum length check -->
             <ion-text [color]="passwordValid.minLength ? 'success' : 'danger'" class="flex items-baseline text-base">
               <ion-icon name="alert-circle" class="mr-2"></ion-icon>
-              Must have at least 8 characters
+              Deve conter pelo menos 8 caracteres
             </ion-text>
           </div>
   
@@ -193,7 +193,7 @@
             class="mt-6 w-5/6 h-12"
             [disabled]="registrationForm.get('password')?.invalid"
             (click)="activateTemplate('nameAndDobScreen')"
-            >Next</ion-button
+            >Próximo</ion-button
           >
         </form>
       </div>
@@ -226,13 +226,13 @@
               <span
                 class="absolute left-1/2 bottom-[-30px] -translate-x-1/2 opacity-0 text-xs text-white bg-gray-700 px-2 py-1 rounded transition-opacity duration-300 ease-in-out group-hover:opacity-100 pointer-events-none whitespace-nowrap"
               >
-                Back
+                Voltar
               </span>
             </div>
 
-            <span class="text-gray-400">Step 3 of 3</span>
+            <span class="text-gray-400">Etapa 3 de 3</span>
           </div>
-          <span class="font-semibold">Tell us about you</span>
+          <span class="font-semibold">Conte-nos sobre você</span>
         </div>
         <form
           [formGroup]="registrationForm"
@@ -241,17 +241,17 @@
           <ion-input
             autofocus="true"
             formControlName="name"
-            label="Name"
+            label="Nome"
             label-placement="floating"
             fill="solid"
-            helperText="This name will appear on your profile"
-            errorText="Please enter a name for your profile!"
+            helperText="Esse nome aparecerá em seu perfil"
+            errorText="Digite um nome para seu perfil!"
             class="w-5/6 mt-4"
           ></ion-input>
 
           <div class="flex mt-4 justify-start w-5/6">
             <ion-text>
-              <p>Date of Birth</p>
+              <p>Data de aniversário</p>
             </ion-text>
           </div>
 
@@ -259,7 +259,7 @@
           <div class="flex w-5/6">
             <ion-select
               interface="popover"
-              label="Day"
+              label="Dia"
               label-placement="floating"
               fill="solid"
               formControlName="day"
@@ -270,7 +270,7 @@
 
             <ion-select
               interface="popover"
-              label="Month"
+              label="Mês"
               label-placement="floating"
               fill="solid"
               formControlName="month"
@@ -281,7 +281,7 @@
 
             <ion-select
               interface="popover"
-              label="Year"
+              label="Ano"
               label-placement="floating"
               fill="solid"
               formControlName="year"
@@ -297,7 +297,7 @@
             <!-- Required field check -->
             <ion-text *ngIf="controlErrors['day'].errors?.['required']" color="danger" class="flex items-baseline text-base">
               <ion-icon name="alert-circle" class="mr-2"></ion-icon>
-              First select the month and year fields
+              Primeiro, selecione os campos de mês e ano
             </ion-text>
           </div>
 
@@ -306,7 +306,7 @@
             class="mt-6 w-5/6 h-12"
             [disabled]="!registrationForm.valid"
             (click)="register()"
-            >Start the show</ion-button
+            >Começar o show</ion-button
           >
         </form>
       </div>

@@ -51,7 +51,7 @@ export class LoginPage implements OnInit {
 
   async login() {
     const loading = await this.loadingCtrl.create({
-      message: 'Logging in...',
+      message: 'Logando...',
       spinner: 'crescent',
     });
     await loading.present();
@@ -78,13 +78,13 @@ export class LoginPage implements OnInit {
         this.modalController.dismiss();
       } catch (error) {
         console.error('Error logging in user:', error);
-        this.errorMessage = 'Incorrect email or password.';
+        this.errorMessage = 'E-mail ou senha incorretos.';
       } finally {
         await loading.dismiss();
       }
     } else {
       await loading.dismiss();
-      this.errorMessage = 'Please fill out the form correctly.';
+      this.errorMessage = 'Por favor preencha o formulário corretamente.';
     }
   }
   
@@ -114,7 +114,7 @@ export class LoginPage implements OnInit {
       await this.googleAuthService.loginWithGoogle(); 
       this.router.navigate(['/home']);
     } catch (error) {
-      this.errorMessage = 'Error trying to log in with Google.';
+      this.errorMessage = 'Erro ao tentar fazer login no Google.';
     }
   }
 

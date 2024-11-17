@@ -4,6 +4,20 @@
     <!-- Container que envolve o título, formulário e card -->
     <div class="w-full sm:w-2/3 p-8 shadow-lg shadow-black rounded-3xl flex flex-col items-center text-center mx-auto">
 
+      <ion-text 
+      *ngIf="messageErrorSucess" 
+      [ngClass]="{
+        'bg-green-700': isSuccessMessage,
+        'bg-red-700': !isSuccessMessage
+      }"
+      class="w-full text-center text-white p-2 rounded-md mb-5 flex items-center justify-center">
+      <ion-icon 
+        name="alert-circle-outline" 
+        class="mr-2 size-7">
+      </ion-icon>
+      {{ messageErrorSucess }}
+    </ion-text>
+
       <!-- Container para o título e o botão de voltar -->
       <div class="flex items-center w-full relative">
 

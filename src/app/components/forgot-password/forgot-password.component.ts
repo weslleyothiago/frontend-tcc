@@ -12,8 +12,8 @@ import { DefaultAuthService } from 'src/app/services/default-auth.service';
 export class ForgotPasswordComponent implements OnInit {
   activeTemplate: string = 'forgotPasswordScreen';
   forgotPasswordForm!: FormGroup;
-  errorMessage: string = '';  // To store error messages
-  successMessage: string = '';  // To store success message
+  errorMessage: string = '';  
+  successMessage: string = '';
 
   @ViewChild('forgotPasswordScreen') forgotPasswordScreen!: TemplateRef<any>;
   @ViewChild('resetPasswordSuccessScreen') resetPasswordSuccessScreen!: TemplateRef<any>;
@@ -42,7 +42,6 @@ export class ForgotPasswordComponent implements OnInit {
     }
 
     try {
-      // Wait for the reset email to be sent
       await this.defaultAuthService.resetPassword(email);
       this.successMessage = 'Password reset link sent successfully.';
       console.log('Password reset link sent.');
