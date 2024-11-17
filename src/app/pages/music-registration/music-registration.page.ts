@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MusicService } from 'src/app/services/music.service';
 import { YoutubeService } from 'src/app/services/youtube.service';
@@ -56,7 +56,8 @@ export class MusicRegistrationPage implements OnInit {
     private musicService: MusicService,
     private artistService: ArtistService,
     private formBuilder: FormBuilder,
-    private alertCtrl: AlertController
+    private alertCtrl: AlertController,
+    private cdr: ChangeDetectorRef,
   ) {}
 
   ngOnInit() {
@@ -76,8 +77,13 @@ export class MusicRegistrationPage implements OnInit {
       if (value && value.length > 2) { // Começa a procurar após 3 caracteres
         this.searchArtists(value);
       } else {
-        this.artistSuggestions = []; // Limpa se o valor for curto
+        this.artistSuggestions = [];
       }
+    });
+
+    this.musicForm.valueChanges.subscribe(() => {
+      // Desabilita o botão de registrar quando os campos mudam e a prévia não foi atualizada
+      this.isPreviewUpdated = false;
     });
   }
 
@@ -132,9 +138,9 @@ export class MusicRegistrationPage implements OnInit {
   
   
   generatePreview() {
-    // Exemplo de lógica para gerar a prévia
     this.musicPreview;
-    this.isPreviewUpdated = true; // Marca que a prévia foi gerada com sucesso
+    this.isPreviewUpdated = true;
+    this.cdr.detectChanges();
   }
 
   // Método para atualizar a prévia
