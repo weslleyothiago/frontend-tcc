@@ -12,15 +12,17 @@ export class MusicService {
 
   constructor(private http: HttpClient) {}
 
-  create(music: Music): Observable<Music> {
-    return this.http.post<Music>(this.baseUrl, music);
+  createMusicWithArtistRelation(
+    music: Music,
+    artistId: number
+  ): Observable<any> {
+    const body = {
+      music,
+      artistRelation: { artistaId: artistId },
+    };
+    return this.http.post<any>(this.baseUrl, body);
   }
-
-    createMusicArtistRelation(musicId: number, artistId: number): Observable<any> {
-      const url = `${this.baseUrl}/music-artist`;
-      const body = { musicId, artistId };
-      return this.http.post<any>(url, body);
-    }
+  
 
   getMusicas(): Observable<any[]> {
     return this.http.get<any[]>(this.baseUrl);

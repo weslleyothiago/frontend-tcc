@@ -108,9 +108,13 @@ export class MusicRegistrationPage implements OnInit {
   // Método para buscar artistas
   searchArtists(query: string) {
     this.artistService.searchArtists(query).subscribe((artists) => {
-      this.artistSuggestions = artists;
+      console.log('Resposta da API:', artists);
+      this.artistSuggestions = artists.map((artist) => ({
+        id: artist.id,
+        nome: artist.nome
+      }));
     });
-  }
+  }  
 
   async presentArtistNotFoundAlert(artistName: string) {
     const alert = await this.alertCtrl.create({
@@ -224,7 +228,6 @@ export class MusicRegistrationPage implements OnInit {
       });
     }
     
-  
     async registerMusic() {
       const loading = await this.loadingCtrl.create({
         message: 'Registrando...',
@@ -233,31 +236,36 @@ export class MusicRegistrationPage implements OnInit {
       await loading.present();
     
       try {
-        this.musicService.create(this.music).subscribe({
+        // Obtém o ID do artista selecionado
+        const artistId = this.artistSuggestions.find((artist) => {
+          const comparisonResult = artist.nome.trim().toLowerCase() === this.music.artist.trim().toLowerCase();
+          console.log(
+            'Comparando:',
+            `artist.nome: "${artist.nome.trim().toLowerCase()}"`,
+            `this.music.artist: "${this.music.artist.trim().toLowerCase()}"`,
+            `Resultado da comparação: ${comparisonResult}`,
+          );
+          return comparisonResult;
+        })?.id;
+        
+    
+        if (!artistId) {
+          this.messageErrorSucess = 'Artista não encontrado. Tente novamente.';
+          console.log('ArtistId:', artistId);
+          console.log('Artista selecionado:', this.music.artist.trim().toLowerCase());
+          console.log('Sugestões normalizadas:', this.artistSuggestions.map(a => a.nome.trim().toLowerCase()));
+          console.log(this.artistSuggestions)
+          this.isSuccessMessage = false;
+          this.clearMessageAfterDelay();
+          await loading.dismiss();
+          return;
+        }
+    
+        // Chama o serviço para criar música e relação
+        this.musicService.createMusicWithArtistRelation(this.music, artistId).subscribe({
           next: (response) => {
-            // Mensagem de sucesso
             this.messageErrorSucess = 'Música registrada com sucesso!';
             this.isSuccessMessage = true;
-    
-            // Obtém o ID do artista e da música para criar a relação
-            const artistId = this.artistSuggestions.find(
-              (artist) => artist.nome === this.music.artist
-            )?.id;
-    
-            if (artistId && response.id) {
-              // Chama o método para criar a relação entre a música e o artista
-              this.musicService.createMusicArtistRelation(response.id, artistId).subscribe({
-                next: (relationResponse) => {
-                  console.log('Relação música-artista criada com sucesso:', relationResponse);
-                },
-                error: (error) => {
-                  console.error('Erro ao criar a relação música-artista:', error);
-                },
-              });
-            } else {
-              console.log(`Artist:${artistId} Response:${response.id}`)
-              console.error('Não foi possível encontrar o ID do artista ou da música');
-            }
     
             // Limpa a pré-visualização e o formulário
             this.musicPreview = null;
@@ -266,6 +274,8 @@ export class MusicRegistrationPage implements OnInit {
     
             // Limpa a mensagem após um tempo
             this.clearMessageAfterDelay();
+    
+            console.log('Música e relação criadas:', response);
           },
           error: async (error) => {
             this.messageErrorSucess = 'Erro ao registrar música. Tente novamente.';
@@ -288,6 +298,7 @@ export class MusicRegistrationPage implements OnInit {
     }
     
     
+
     clearMessageAfterDelay() {
       setTimeout(() => {
         this.messageErrorSucess = null;
