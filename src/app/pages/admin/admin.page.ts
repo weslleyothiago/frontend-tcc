@@ -6,7 +6,8 @@ import { MusicService } from '../../services/music.service';
   templateUrl: './admin.page.html'  // Ajuste o caminho se necessário
 })
 export class AdminPage implements OnInit{
-  musicas: any[] = []; // Armazena as músicas
+  musicas: any[] = [];
+  artistas: any[] = []
 
   constructor(private musicService: MusicService) {}
 
@@ -23,7 +24,6 @@ export class AdminPage implements OnInit{
         console.error('Erro ao buscar músicas:', error);
       }
     );
-  }  
-
+  }
 
 }

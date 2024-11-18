@@ -16,6 +16,12 @@ export class MusicService {
     return this.http.post<Music>(this.baseUrl, music);
   }
 
+    createMusicArtistRelation(musicId: number, artistId: number): Observable<any> {
+      const url = `${this.baseUrl}/music-artist`;
+      const body = { musicId, artistId };
+      return this.http.post<any>(url, body);
+    }
+
   getMusicas(): Observable<any[]> {
     return this.http.get<any[]>(this.baseUrl);
   }

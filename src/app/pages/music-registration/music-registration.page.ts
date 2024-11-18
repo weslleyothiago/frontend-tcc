@@ -7,6 +7,7 @@ import { LoadingController } from '@ionic/angular';
 import { ArtistService } from 'src/app/services/artist.service';
 import { AlertController } from '@ionic/angular';
 
+
 @Component({
   selector: 'app-music-registration',
   templateUrl: './music-registration.page.html',
@@ -234,11 +235,36 @@ export class MusicRegistrationPage implements OnInit {
       try {
         this.musicService.create(this.music).subscribe({
           next: (response) => {
+            // Mensagem de sucesso
             this.messageErrorSucess = 'Música registrada com sucesso!';
             this.isSuccessMessage = true;
+    
+            // Obtém o ID do artista e da música para criar a relação
+            const artistId = this.artistSuggestions.find(
+              (artist) => artist.nome === this.music.artist
+            )?.id;
+    
+            if (artistId && response.id) {
+              // Chama o método para criar a relação entre a música e o artista
+              this.musicService.createMusicArtistRelation(response.id, artistId).subscribe({
+                next: (relationResponse) => {
+                  console.log('Relação música-artista criada com sucesso:', relationResponse);
+                },
+                error: (error) => {
+                  console.error('Erro ao criar a relação música-artista:', error);
+                },
+              });
+            } else {
+              console.log(`Artist:${artistId} Response:${response.id}`)
+              console.error('Não foi possível encontrar o ID do artista ou da música');
+            }
+    
+            // Limpa a pré-visualização e o formulário
             this.musicPreview = null;
             this.musicForm.reset();
             this.musicForm.get('artist')?.enable();
+    
+            // Limpa a mensagem após um tempo
             this.clearMessageAfterDelay();
           },
           error: async (error) => {
@@ -260,6 +286,7 @@ export class MusicRegistrationPage implements OnInit {
         await loading.dismiss();
       }
     }
+    
     
     clearMessageAfterDelay() {
       setTimeout(() => {
