@@ -9,13 +9,15 @@
     <h2 class="text-xl font-semibold">{{ header }}</h2>
   </div>
 
-<div class="relative w-full md:w-1/3 mb-4 md:mb-0">
-  <input 
-    type="text" 
-    class="p-2 pl-8 w-full rounded-full bg-transparent border border-zinc-500 text-white focus:outline-none focus:border-purple-600 focus:ring-1 focus:ring-purple-600"
-    [placeholder]="placeholder">
-  <ion-icon name="search-outline" class="absolute left-3 top-1/2 transform -translate-y-1/2 text-zinc-400"></ion-icon>
-</div>
+  <div class="relative w-full md:w-1/3 mb-4 md:mb-0">
+    <input 
+      type="text" 
+      class="p-2 pl-8 w-full rounded-full bg-transparent border border-zinc-500 text-white focus:outline-none focus:border-purple-600 focus:ring-1 focus:ring-purple-600"
+      [(ngModel)]="searchText"
+      [placeholder]="placeholder">
+    <ion-icon name="search-outline" class="absolute left-3 top-1/2 transform -translate-y-1/2 text-zinc-400"></ion-icon>
+  </div>
+  
 
   <button (click)="onActionClick()" class="bg-purple-600 text-white py-2 px-6 rounded-lg hover:bg-purple-800">
     <ion-icon class="align-middle text-2xl" [name]="actionButtonIcon"></ion-icon> {{ actionButtonLabel }}
@@ -39,20 +41,24 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let row of data" class="hover:bg-zinc-700 border-b border-zinc-700">
+        <tr *ngFor="let row of filteredData" class="hover:bg-zinc-700 border-b border-zinc-700">
           <td *ngFor="let column of columns" class="p-4">
             {{ row[column.key] || '—' }}
           </td>
           <td *ngIf="deleteAction" class="p-4 flex justify-center">
             <button class="text-red-400 hover:text-red-300 cursor-pointer" (click)="deleteAction(row)">
               <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="currentColor">
-                <path
-                  d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2v-10H6v10zM18 4h-3V2H9v2H6c-1.1 0-2 .9-2 2v2h16V6c0-1.1-.9-2-2-2z" />
+                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2v-10H6v10zM18 4h-3V2H9v2H6c-1.1 0-2 .9-2 2v2h16V6c0-1.1-.9-2-2-2z" />
               </svg>
             </button>
           </td>
         </tr>
+        <tr *ngIf="filteredData.length === 0">
+          <td colspan="100%" class="text-center text-zinc-400 p-4">Nenhum item encontrado.</td>
+        </tr>
       </tbody>
+      
+      
     </table>
   </div>
 </div>

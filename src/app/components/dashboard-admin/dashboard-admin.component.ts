@@ -16,6 +16,21 @@ export class DashBoardAdminComponent {
   @Input() placeholder: string = '';
   @Output() actionButtonClick = new EventEmitter<void>();
 
+  searchText: string = ''; // Adicione esta variável
+
+  get filteredData(): any[] {
+    if (!this.searchText) {
+      return this.data;
+    }
+  
+    const search = this.searchText.toLowerCase();
+  
+    return this.data.filter(item =>
+      item && item.titulo && item.titulo.toLowerCase().includes(search)
+    );
+  }
+  
+
   onActionClick(): void {
     this.actionButtonClick.emit();
   }
