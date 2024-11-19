@@ -1,33 +1,45 @@
 <div class="bg-zinc-800/50 p-6 rounded-lg mt-6">
-<!-- Header da Tabela -->
-<div class="flex flex-col md:flex-row justify-between items-center mb-6">
-  <div class="flex items-center gap-2 mb-4 md:mb-0">
-    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-purple-500" viewBox="0 0 24 24" fill="currentColor">
-      <path
-        d="M12 1c-2.21 0-4 1.79-4 4v6c0 2.21 1.79 4 4 4s4-1.79 4-4V5c0-2.21-1.79-4-4-4zM6 11V5c0-3.31 2.69-6 6-6s6 2.69 6 6v6c0 3.31-2.69 6-6 6-1.2 0-2.34-.33-3.33-.91L7.61 15.5c1.52.65 3.17 1.04 4.39 1.04 2.62 0 5-2.15 5-5V5c0-2.21-1.79-4-4-4s-4 1.79-4 4v6c0 1.66-1.34 3-3 3s-3-1.34-3-3z" />
-    </svg>
-    <h2 class="text-xl font-semibold">{{ header }}</h2>
+  <!-- Header da Tabela -->
+  <div class="flex flex-col md:flex-row justify-between items-center mb-6 gap-6 flex-wrap">
+    <!-- Título -->
+    <div class="flex items-center gap-2">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-purple-500" viewBox="0 0 24 24" fill="currentColor">
+        <path
+          d="M12 1c-2.21 0-4 1.79-4 4v6c0 2.21 1.79 4 4 4s4-1.79 4-4V5c0-2.21-1.79-4-4-4zM6 11V5c0-3.31 2.69-6 6-6s6 2.69 6 6v6c0 3.31-2.69 6-6 6-1.2 0-2.34-.33-3.33-.91L7.61 15.5c1.52.65 3.17 1.04 4.39 1.04 2.62 0 5-2.15 5-5V5c0-2.21-1.79-4-4-4s-4 1.79-4 4v6c0 1.66-1.34 3-3 3s-3-1.34-3-3z" />
+      </svg>
+      <h2 class="text-xl font-semibold">{{ header }}</h2>
+    </div>
+
+    <!-- Barra de Pesquisa -->
+    <div class="relative w-full md:w-2/3 flex justify-center">
+      <div class="flex items-center w-full">
+        <!-- Select para filtrar pesquisa -->
+        <select 
+          [(ngModel)]="searchType" 
+          class="h-10 px-4 rounded-l-full bg-transparent border border-zinc-500 text-white focus:outline-none focus:border-purple-600 focus:ring-1 focus:ring-purple-600">
+          <option value="titulo">Música</option>
+          <option value="artistas">Artista</option>
+        </select>
+        
+        <!-- Input de Pesquisa -->
+        <div class="relative flex-grow">
+          <ion-icon 
+            name="search-outline" 
+            class="absolute left-3 top-1/2 transform -translate-y-1/2 text-zinc-400"></ion-icon>
+          <input 
+            type="text" 
+            [(ngModel)]="searchText" 
+            [placeholder]="placeholder || 'O que você está procurando?'" 
+            class="h-10 pl-10 pr-4 w-full rounded-r-full bg-transparent border border-zinc-500 text-white focus:outline-none focus:border-purple-600 focus:ring-1 focus:ring-purple-600">
+        </div>
+      </div>
+    </div>
+
+    <!-- Botão de Ação -->
+    <button (click)="onActionClick()" class="bg-purple-600 text-white py-2 px-6 rounded-lg hover:bg-purple-800">
+      <ion-icon class="align-middle text-2xl" [name]="actionButtonIcon"></ion-icon> {{ actionButtonLabel }}
+    </button>
   </div>
-
-  <div class="relative w-full md:w-1/3 mb-4 md:mb-0">
-    <input 
-      type="text" 
-      class="p-2 pl-8 w-full rounded-full bg-transparent border border-zinc-500 text-white focus:outline-none focus:border-purple-600 focus:ring-1 focus:ring-purple-600"
-      [(ngModel)]="searchText"
-      [placeholder]="placeholder">
-    <ion-icon name="search-outline" class="absolute left-3 top-1/2 transform -translate-y-1/2 text-zinc-400"></ion-icon>
-  </div>
-  
-
-  <button (click)="onActionClick()" class="bg-purple-600 text-white py-2 px-6 rounded-lg hover:bg-purple-800">
-    <ion-icon class="align-middle text-2xl" [name]="actionButtonIcon"></ion-icon> {{ actionButtonLabel }}
-  </button>
-</div>
-
-
-  
-  
-
 
   <!-- Subtítulo da Tabela -->
   <p class="text-zinc-400 mb-6">{{ subtitle }}</p>
@@ -54,11 +66,9 @@
           </td>
         </tr>
         <tr *ngIf="filteredData.length === 0">
-          <td colspan="100%" class="text-center text-zinc-400 p-4">Nenhum item encontrado.</td>
+          <td colspan="100%" class="text-center text-zinc-400 p-4">Que silêncio... nada encontrado por aqui! 🎵 Tente outra busca!</td>
         </tr>
       </tbody>
-      
-      
     </table>
   </div>
 </div>

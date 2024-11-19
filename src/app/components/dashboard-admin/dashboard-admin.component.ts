@@ -17,16 +17,18 @@ export class DashBoardAdminComponent {
   @Output() actionButtonClick = new EventEmitter<void>();
 
   searchText: string = ''; // Adicione esta variável
+  searchType: string = 'titulo'; // Tipo da busca (default: música)
 
   get filteredData(): any[] {
     if (!this.searchText) {
       return this.data;
     }
-  
+
     const search = this.searchText.toLowerCase();
-  
+
+    // Filtrar com base no tipo de busca (artista ou música)
     return this.data.filter(item =>
-      item && item.titulo && item.titulo.toLowerCase().includes(search)
+      item?.[this.searchType]?.toLowerCase().includes(search)
     );
   }
   
