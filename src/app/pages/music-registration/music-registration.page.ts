@@ -108,7 +108,6 @@ export class MusicRegistrationPage implements OnInit {
   // Método para buscar artistas
   searchArtists(query: string) {
     this.artistService.searchArtists(query).subscribe((artists) => {
-      console.log('Resposta da API:', artists);
       this.artistSuggestions = artists.map((artist) => ({
         id: artist.id,
         nome: artist.nome

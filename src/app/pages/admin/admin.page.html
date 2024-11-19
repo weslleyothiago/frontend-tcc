@@ -4,13 +4,15 @@
     <div class="flex items-center gap-3 mb-8">
       <a class="rounded-lg">
         <!-- Novo Ícone de Karaokê (Microfone com Pedestal) -->
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-purple-500" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M12 1c-2.21 0-4 1.79-4 4v6c0 2.21 1.79 4 4 4s4-1.79 4-4V5c0-2.21-1.79-4-4-4zM6 11V5c0-3.31 2.69-6 6-6s6 2.69 6 6v6c0 3.31-2.69 6-6 6-1.2 0-2.34-.33-3.33-.91L7.61 15.5c1.52.65 3.17 1.04 4.39 1.04 2.62 0 5-2.15 5-5V5c0-2.21-1.79-4-4-4s-4 1.79-4 4v6c0 1.66-1.34 3-3 3s-3-1.34-3-3z"/>
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-purple-500" viewBox="0 0 24 24"
+          fill="currentColor">
+          <path
+            d="M12 1c-2.21 0-4 1.79-4 4v6c0 2.21 1.79 4 4 4s4-1.79 4-4V5c0-2.21-1.79-4-4-4zM6 11V5c0-3.31 2.69-6 6-6s6 2.69 6 6v6c0 3.31-2.69 6-6 6-1.2 0-2.34-.33-3.33-.91L7.61 15.5c1.52.65 3.17 1.04 4.39 1.04 2.62 0 5-2.15 5-5V5c0-2.21-1.79-4-4-4s-4 1.79-4 4v6c0 1.66-1.34 3-3 3s-3-1.34-3-3z" />
         </svg>
       </a>
       <div>
         <h1 class="text-3xl font-bold">Daisuke Karaokê</h1>
-        <p class="text-zinc-400 mt-1">Gerencie seu catálogo de músicas</p>
+        <p class="text-zinc-400 mt-1">Gerencie o ritmo, libere o show!</p>
       </div>
     </div>
   </div>
@@ -19,7 +21,8 @@
   <div class="space-y-6">
     <div class="flex flex-wrap gap-4 mt-6">
       <!-- Card de Songs -->
-      <div class="bg-zinc-800/50 border-zinc-700/50 hover:bg-zinc-800/80 transition-colors p-6 rounded-lg flex items-center gap-4 flex-grow">
+      <div
+        class="bg-zinc-800/50 border-zinc-700/50 hover:bg-zinc-800/80 transition-colors p-6 rounded-lg flex items-center gap-4 flex-grow">
         <div class="p-3 rounded-lg bg-green-500">
           <span class="text-white">💿</span>
         </div>
@@ -29,7 +32,8 @@
         </div>
       </div>
       <!-- Card de Albums -->
-      <div class="bg-zinc-800/50 border-zinc-700/50 hover:bg-zinc-800/80 transition-colors p-6 rounded-lg flex items-center gap-4 flex-grow">
+      <div
+        class="bg-zinc-800/50 border-zinc-700/50 hover:bg-zinc-800/80 transition-colors p-6 rounded-lg flex items-center gap-4 flex-grow">
         <div class="p-3 rounded-lg bg-blue-500">
           <span class="text-white">📀</span>
         </div>
@@ -39,7 +43,8 @@
         </div>
       </div>
       <!-- Card de Total Usuários -->
-      <div class="bg-zinc-800/50 border-zinc-700/50 hover:bg-zinc-800/80 transition-colors p-6 rounded-lg flex items-center gap-4 flex-grow">
+      <div
+        class="bg-zinc-800/50 border-zinc-700/50 hover:bg-zinc-800/80 transition-colors p-6 rounded-lg flex items-center gap-4 flex-grow">
         <div class="p-3 rounded-lg bg-orange-500">
           <span class="text-white">👥</span>
         </div>
@@ -49,7 +54,8 @@
         </div>
       </div>
       <!-- Card de Artistas -->
-      <div class="bg-zinc-800/50 border-zinc-700/50 hover:bg-zinc-800/80 transition-colors p-6 rounded-lg flex items-center gap-4 flex-grow">
+      <div
+        class="bg-zinc-800/50 border-zinc-700/50 hover:bg-zinc-800/80 transition-colors p-6 rounded-lg flex items-center gap-4 flex-grow">
         <div class="p-3 rounded-lg bg-purple-500">
           <span class="text-white">🎤</span>
         </div>
@@ -60,55 +66,34 @@
       </div>
     </div>
 
-    <!-- Tabela de Músicas -->
-    <div class="bg-zinc-800/50 p-6 rounded-lg mt-6">
-      <!-- Header da Tabela -->
-      <div class="flex justify-between items-center mb-6">
-        <div class="flex items-center gap-2">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-purple-500" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M12 1c-2.21 0-4 1.79-4 4v6c0 2.21 1.79 4 4 4s4-1.79 4-4V5c0-2.21-1.79-4-4-4zM6 11V5c0-3.31 2.69-6 6-6s6 2.69 6 6v6c0 3.31-2.69 6-6 6-1.2 0-2.34-.33-3.33-.91L7.61 15.5c1.52.65 3.17 1.04 4.39 1.04 2.62 0 5-2.15 5-5V5c0-2.21-1.79-4-4-4s-4 1.79-4 4v6c0 1.66-1.34 3-3 3s-3-1.34-3-3z"/>
-          </svg>
-          <h2 class="text-xl font-semibold">Biblioteca de Músicas</h2>
-        </div>
-        <button routerLink="/admin/musics" class="bg-purple-600 text-white py-2 px-6 rounded-lg hover:bg-purple-800">
-          <ion-icon class="align-middle text-2xl" name="add-outline"></ion-icon> Adicionar música
-        </button>  
-      </div>
+    <div class="inline-flex bg-zinc-800/50 p-1 rounded-lg">
+      <!-- Botão ativo -->
+      <button
+        class="tab-btn-active flex items-center space-x-2 px-4 py-2 rounded-lg text-white font-medium transition duration-300 ease-in-out transform">
+        <ion-icon name="musical-notes-outline" class="text-lg"></ion-icon>
+        <span>Músicas</span>
+      </button>
 
-      <!-- Subtítulo da Tabela -->
-      <p class="text-zinc-400 mb-6">Gerencie suas faixas de música</p>
-
-      <!-- Corpo da Tabela -->
-<div class="overflow-x-auto">
-  <table class="min-w-full table-auto border-collapse">
-    <thead>
-      <tr class="border-b border-zinc-700">
-        <th class="text-left p-4 text-sm text-zinc-400">Título</th>
-        <th class="text-left p-4 text-sm text-zinc-400">Artista</th>
-        <th class="text-left p-4 text-sm text-zinc-400">Gênero</th>
-        <th class="text-center p-4 text-sm text-zinc-400">Data de Cadastro</th> 
-        <th class="text-center p-4 text-sm text-zinc-400">Deletar</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let musica of musicas" class="hover:bg-zinc-700 border-b border-zinc-700">
-        <td class="p-4">{{ musica.titulo }}</td>
-        <td class="p-4">{{ musica.slug }}</td>
-        <td class="p-4">{{ musica.generoMusical?.generoMusical || 'Desconhecido' }}</td>
-        <td class="p-4 text-center">{{ musica.createdAt | date:'dd/MM/yyyy' }}</td>
-        <td class="p-4 flex justify-center">
-          <button class="text-red-400 hover:text-red-300 cursor-pointer">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2v-10H6v10zM18 4h-3V2H9v2H6c-1.1 0-2 .9-2 2v2h16V6c0-1.1-.9-2-2-2z"/>
-            </svg>
-          </button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-
-      
+      <!-- Botão inativo -->
+      <button
+        class="tab-btn-inactive flex items-center space-x-2 px-4 py-2 rounded-lg text-gray-400 font-medium transition duration-300 ease-in-out transform">
+        <ion-icon name="albums-outline" class="text-lg"></ion-icon>
+        <span>Contas</span>
+      </button>
     </div>
+
+<app-dashboard-admin
+  [header]="currentTable === 'musicas' ? 'Músicas Cadastradas' : 'Usuários Registrados'"
+  [subtitle]="(currentTable === 'musicas' ? 'Mantenha suas músicas organizadas e prepare o palco!' : 'contas de usuário')"
+  [columns]="currentColumns"
+  [data]="currentData"
+  [actionButtonLabel]="actionButtonLabel"
+  [actionButtonIcon]="'add-outline'"
+  [deleteAction]="currentTable === 'musicas' ? onDeleteMusica.bind(this) : undefined"
+  [placeholder]="getPlaceholder()"
+  (actionButtonClick)="onActionButtonClick()"
+></app-dashboard-admin>
+
+
   </div>
 </div>

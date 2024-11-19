@@ -71,3 +71,22 @@ ion-select::part(label) {
 .alert-custom .alert-button-group {
   @apply flex justify-center gap-4 mt-4; /* Espaçamento entre os botões */
 }
+
+@layer utilities {
+  .tab-btn-active {
+    @apply bg-zinc-600/50 text-white scale-105; /* Aumenta levemente o tamanho do botão ativo */
+  }
+
+  .tab-btn-inactive {
+    @apply bg-transparent text-gray-400 scale-100; /* Mantém o botão inativo sem escala */
+  }
+
+  .tab-btn-active:hover {
+    @apply scale-110; /* Aumenta o botão ativo ao passar o mouse */
+  }
+
+  .tab-btn-inactive:hover {
+    @apply text-white; /* Muda a cor do texto do botão inativo ao passar o mouse */
+  }
+}
+
