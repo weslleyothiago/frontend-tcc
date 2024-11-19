@@ -16,10 +16,12 @@ export class AuthService {
       createProfileDto: profileData  // Dados do perfil
     });
   }
-  
 
     login(email: string, password: string): Observable<any> {
       return this.http.post(`${environment.apiBaseUrl}/login`, { email, password });
     }
   
+    checkEmail(email: string): Observable<any> {
+      return this.http.get(`${environment.apiBaseUrl}/check-email/?email=${email}`);
+    }
 }

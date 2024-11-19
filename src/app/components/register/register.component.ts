@@ -7,6 +7,7 @@ import {
 } from '@angular/core';
 import {
   FormBuilder,
+  FormControl,
   FormGroup,
   Validators,
 } from '@angular/forms';
@@ -14,6 +15,7 @@ import { Router } from '@angular/router';
 import { LoadingController, ModalController } from '@ionic/angular';
 import { GoogleAuthService } from 'src/app/services/google-auth.service';
 import { AuthService } from 'src/app/services/auth.service';
+import { ProfileService } from 'src/app/services/profile.service';
 
 @Component({
   selector: 'app-register',
@@ -24,6 +26,8 @@ export class RegisterComponent implements OnInit {
 
   registrationForm!: FormGroup;
   activeTemplate: string = 'emailScreen';
+  emailExists: boolean = false;
+  nameExists: boolean = false;
 
   @ViewChild('emailScreen') emailScreen!: TemplateRef<any>;
   @ViewChild('passwordScreen') passwordScreen!: TemplateRef<any>;
@@ -50,11 +54,13 @@ export class RegisterComponent implements OnInit {
     private googleAuthService: GoogleAuthService,
     public router: Router,
     private changeDetectorRef: ChangeDetectorRef,
+    private profileService: ProfileService,
     private authService: AuthService,
     public loadingCtrl: LoadingController,
     private modalController: ModalController,
     private formBuilder: FormBuilder,
   ) {}
+
 
   ngOnInit() {
     this.changeDetectorRef.detectChanges();
@@ -76,9 +82,31 @@ export class RegisterComponent implements OnInit {
     this.updateDays();
   }
 
+  checkNomeAvailability() {
+    const name = this.registrationForm.get('name')?.value;
+    console.log('Verificando nome:', name);
+    if (name) {
+      this.profileService.checkName(name).subscribe((response) => {
+        this.nameExists = response.nameExists;
+        console.log('checkEmailAvailability:', response);
+      });
+    }
+  }
+
+  checkEmailAvailability() {
+    const email = this.registrationForm.get('email')?.value;
+    console.log('Verificando email:', email);
+    if (email) {
+      this.authService.checkEmail(email).subscribe((response) => {
+        this.emailExists = response.emailExists;
+        console.log('checkEmailAvailability:', response);
+      });
+    }
+  }
+  
   get controlErrors() {
     return this.registrationForm?.controls;
-  }
+  }  
 
   get passwordValid() {
     const password = this.registrationForm.controls['password'].value || '';

@@ -69,37 +69,44 @@
             <hr class="mx-0 flex-grow border-t border-gray-400" />
           </div>
           <ion-input
-            autofocus="true"
-            name="email"
-            formControlName="email"
-            label="Email"
-            label-placement="floating"
-            fill="solid"
-            placeholder="nome@dominio.com"
-            class="w-5/6 mt-4"
-          ></ion-input>
+          autofocus="true"
+          name="email"
+          formControlName="email"
+          label="Email"
+          label-placement="floating"
+          fill="solid"
+          placeholder="nome@dominio.com"
+          class="w-5/6 mt-4"
+          (input)="checkEmailAvailability()"
+        ></ion-input>
+        
 
-           <!-- Email field validations -->
-           <div *ngIf="this.registrationForm.controls?.['email']?.touched" class="mt-2 w-5/6">
 
-            <!-- Required field check -->
-            <ion-text *ngIf="controlErrors['email'].errors?.['required']" color="danger" class="flex items-baseline text-base">
-              <ion-icon name="alert-circle" class="mr-2"></ion-icon>
-              O campo de email é obrigatório.
-            </ion-text>
+<!-- Email field validations -->
+<div *ngIf="this.registrationForm.controls?.['email']?.touched" class="mt-2 w-5/6">
 
-            <!-- Email structure check -->
-            <ion-text *ngIf="controlErrors['email'].errors?.['pattern']" color="danger" class="flex items-baseline text-base">
-              <ion-icon name="alert-circle" class="mr-2"></ion-icon>
-              Este e-mail é inválido. O formato correto é: examplo&#64;email.com
-            </ion-text>
+  <!-- Required field check -->
+  <ion-text *ngIf="controlErrors['email']?.errors?.['required']" color="danger" class="flex items-baseline text-base">
+    <ion-icon name="alert-circle" class="mr-2"></ion-icon>
+    O campo de email é obrigatório.
+  </ion-text>
 
-          </div>
+  <!-- Email structure check -->
+  <ion-text *ngIf="controlErrors['email']?.errors?.['pattern']" color="danger" class="flex items-baseline text-base">
+    <ion-icon name="alert-circle" class="mr-2"></ion-icon>
+    Este e-mail é inválido. O formato correto é: examplo&#64;email.com
+  </ion-text>
+
+  <ion-text *ngIf="emailExists" color="danger" class="flex items-baseline text-base">
+    <ion-icon name="alert-circle" class="mr-2"></ion-icon>
+    Este endereço já está vinculado a uma conta existente. Para continuar, faça login.
+  </ion-text>
+</div>
 
           <ion-button
             shape="round"
             class="mt-6 w-5/6 h-12"
-            [disabled]="registrationForm.get('email')?.invalid"
+            [disabled]="registrationForm.get('email')?.invalid || emailExists"
             (click)="activateTemplate('passwordScreen')"
             >Próximo</ion-button
           >
@@ -238,16 +245,24 @@
           [formGroup]="registrationForm"
           class="w-full flex flex-col items-center"
         >
-          <ion-input
-            autofocus="true"
-            formControlName="name"
-            label="Nome"
-            label-placement="floating"
-            fill="solid"
-            helperText="Esse nome aparecerá em seu perfil"
-            errorText="Digite um nome para seu perfil!"
-            class="w-5/6 mt-4"
-          ></ion-input>
+        <ion-input
+        autofocus="true"
+        name="nome"
+        formControlName="name"
+        label="Nome"
+        label-placement="floating"
+        fill="solid"
+        placeholder="Digite seu nome"
+        helperText="Esse nome aparecerá em seu perfil"
+        errorText="Digite um nome para seu perfil!"
+        class="w-5/6 mt-4"
+        (input)="checkNomeAvailability()"
+      ></ion-input>      
+
+      <ion-text *ngIf="nameExists" color="danger" class="flex items-baseline text-base">
+        <ion-icon name="alert-circle" class="mr-2"></ion-icon>
+        Este nome de usuário já está em uso. Por favor escolha outro.
+      </ion-text>
 
           <div class="flex mt-4 justify-start w-5/6">
             <ion-text>
@@ -304,7 +319,7 @@
           <ion-button
             shape="round"
             class="mt-6 w-5/6 h-12"
-            [disabled]="!registrationForm.valid"
+            [disabled]="!registrationForm.valid || nameExists"
             (click)="register()"
             >Começar o show</ion-button
           >
