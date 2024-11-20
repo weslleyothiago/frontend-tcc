@@ -4,6 +4,7 @@ import {
   ViewChild,
   TemplateRef,
   ChangeDetectorRef,
+  Input,
 } from '@angular/core';
 import {
   FormBuilder,
@@ -23,6 +24,8 @@ import { ProfileService } from 'src/app/services/profile.service';
   styleUrls: ['./register.component.scss'],
 })
 export class RegisterComponent implements OnInit {
+
+  @Input() userType: string = 'Cliente';
 
   registrationForm!: FormGroup;
   activeTemplate: string = 'emailScreen';
@@ -145,7 +148,7 @@ export class RegisterComponent implements OnInit {
       const userData = {
         email: email,
         senha: password,
-        tipo: 'Cliente',  // Tipo de usuário definido como 'Cliente'
+        tipo: this.userType,
       };
     
       const profileData = {

@@ -45,7 +45,7 @@ export class LoginPage implements OnInit {
     });
   }
 
-  get controlErrors() {  // Changed from 'controlErros' to 'controlErrors'
+  get controlErrors() {
     return this.loginForm?.controls;
   }
 
@@ -66,7 +66,6 @@ export class LoginPage implements OnInit {
         const response = await this.authService.login(email, password).toPromise();
         console.log('Response object:', response);
   
-        // Usando o nome correto do token: 'access_token'
         if (response.access_token) {
           console.log('Access token to store:', response.access_token);
           sessionStorage.setItem('access_token', response.access_token);
@@ -90,7 +89,6 @@ export class LoginPage implements OnInit {
   
   
 
-  // Function to open the register modal
   async openRegisterModal() {
     const modal = await this.modalController.create({
       component: RegisterComponent,
@@ -99,7 +97,6 @@ export class LoginPage implements OnInit {
     return await modal.present();
   }
 
-  // Function to open the forgot password modal
   async openForgotPasswordModal() {  
     const modal = await this.modalController.create({
       component: ForgotPasswordComponent, 
@@ -108,7 +105,6 @@ export class LoginPage implements OnInit {
     return await modal.present();
   }
 
-  // Method to login with Google
   async loginWithGoogle() { 
     try {
       await this.googleAuthService.loginWithGoogle(); 

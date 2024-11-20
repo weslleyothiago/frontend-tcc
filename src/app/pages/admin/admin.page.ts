@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { MusicService } from '../../services/music.service';
 import { DatePipe } from '@angular/common';
 import { Router } from '@angular/router';
+import { RegisterComponent } from 'src/app/components/register/register.component';
+import { ModalController } from '@ionic/angular';
 
 @Component({
   selector: 'app-admin',
@@ -17,6 +19,7 @@ export class AdminPage implements OnInit{
   searchType = '';
 
   constructor(
+    private modalController: ModalController,
     private datePipe: DatePipe,
     private musicService: MusicService,
     private router: Router
@@ -25,6 +28,17 @@ export class AdminPage implements OnInit{
   ngOnInit(){
     this.fetchMusicas()
     this.setCurrentTable('musicas')
+  }
+
+  async openRegisterModal() {
+    const modal = await this.modalController.create({
+      component: RegisterComponent,
+      cssClass: 'backdrop-blur-3xl',
+      componentProps: {
+        userType: 'Administrador'
+      }
+    });
+    return await modal.present();
   }
 
   setCurrentTable(table: string): void {
@@ -57,16 +71,12 @@ export class AdminPage implements OnInit{
     if (this.currentTable === 'musicas') {
       this.navigateToAddMusic();
     } else if (this.currentTable === 'usuarios') {
-      this.navigateToAddUser();
+      this.openRegisterModal()
     }
   }
 
   navigateToAddMusic() {
-    this.router.navigate(['/admin/musics']);  // Redireciona para a tela de adicionar música
-  }
-
-  navigateToAddUser() {
-    this.router.navigate(['/admin/users']);  // Redireciona para a tela de adicionar usuário
+    this.router.navigate(['/admin/musics']);
   }
 
   get currentData() {
