@@ -89,7 +89,8 @@ export class AdminPage implements OnInit{
           { label: 'Título', key: 'titulo' },
           { label: 'Artista', key: 'artistas' },
           { label: 'Gênero', key: 'genero' },
-          { label: 'Data de Cadastro', key: 'createdAt' }
+          { label: 'Data de Cadastro', key: 'createdAt' },
+          { label: 'Ações', key: 'acoes' },
         ]
       : [
           { label: 'Nome', key: 'nome' },
