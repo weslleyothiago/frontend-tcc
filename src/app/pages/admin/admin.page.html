@@ -67,30 +67,37 @@
     </div>
 
     <div class="inline-flex bg-zinc-800/50 p-1 rounded-lg">
-      <!-- Botão ativo -->
+      <!-- Botão Músicas -->
       <button
-        class="tab-btn-active flex items-center space-x-2 px-4 py-2 rounded-lg text-white font-medium transition duration-300 ease-in-out transform">
+        (click)="setCurrentTable('musicas')"
+        [ngClass]="currentTable === 'musicas' ? 'tab-btn-active text-white' : 'tab-btn-inactive text-gray-400'"
+        class="flex items-center space-x-2 px-4 py-2 rounded-lg font-medium transition duration-300 ease-in-out transform">
         <ion-icon name="musical-notes-outline" class="text-lg"></ion-icon>
         <span>Músicas</span>
       </button>
-
-      <!-- Botão inativo -->
+    
+      <!-- Botão Contas -->
       <button
-        class="tab-btn-inactive flex items-center space-x-2 px-4 py-2 rounded-lg text-gray-400 font-medium transition duration-300 ease-in-out transform">
+        (click)="setCurrentTable('usuarios')"
+        [ngClass]="currentTable === 'usuarios' ? 'tab-btn-active text-white' : 'tab-btn-inactive text-gray-400'"
+        class="flex items-center space-x-2 px-4 py-2 rounded-lg font-medium transition duration-300 ease-in-out transform">
         <ion-icon name="albums-outline" class="text-lg"></ion-icon>
         <span>Contas</span>
       </button>
     </div>
+    
 
 <app-dashboard-admin
   [header]="currentTable === 'musicas' ? 'Músicas Cadastradas' : 'Usuários Registrados'"
-  [subtitle]="(currentTable === 'musicas' ? 'Mantenha suas músicas organizadas e prepare o palco!' : 'contas de usuário')"
+  [subtitle]="(currentTable === 'musicas' ? 'Mantenha suas músicas organizadas e prepare o palco!' : 'Dê o tom perfeito à sua galera: gerencie as contas de usuários do karaokê!')"
   [columns]="currentColumns"
   [data]="currentData"
   [actionButtonLabel]="actionButtonLabel"
   [actionButtonIcon]="'add-outline'"
   [deleteAction]="currentTable === 'musicas' ? onDeleteMusica.bind(this) : undefined"
   [placeholder]="getPlaceholder()"
+  [filterOptions]="getFilterOptions()"
+  [searchType]="searchType"
   (actionButtonClick)="onActionButtonClick()"
 ></app-dashboard-admin>
 

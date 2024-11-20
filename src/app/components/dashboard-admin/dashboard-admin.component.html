@@ -11,29 +11,26 @@
     </div>
 
     <!-- Barra de Pesquisa -->
-    <div class="relative w-full md:w-2/3 flex justify-center">
+    <div class="relative w-full md:w-1/2 flex justify-center">
       <div class="flex items-center w-full">
         <!-- Select para filtrar pesquisa -->
-        <select 
-          [(ngModel)]="searchType" 
-          class="h-10 px-4 rounded-l-full bg-transparent border border-zinc-500 text-white focus:outline-none focus:border-purple-600 focus:ring-1 focus:ring-purple-600">
-          <option value="titulo">Música</option>
-          <option value="artistas">Artista</option>
+        <select [(ngModel)]="searchType"
+          class="h-8 px-3 rounded-l-full bg-transparent border border-zinc-500 text-white text-sm focus:outline-none focus:border-purple-600 focus:ring-1 focus:ring-purple-600">
+          <option *ngFor="let option of filterOptions" [value]="option.value">{{ option.label }}</option>
         </select>
-        
+
         <!-- Input de Pesquisa -->
         <div class="relative flex-grow">
-          <ion-icon 
-            name="search-outline" 
-            class="absolute left-3 top-1/2 transform -translate-y-1/2 text-zinc-400"></ion-icon>
-          <input 
-            type="text" 
-            [(ngModel)]="searchText" 
-            [placeholder]="placeholder || 'O que você está procurando?'" 
-            class="h-10 pl-10 pr-4 w-full rounded-r-full bg-transparent border border-zinc-500 text-white focus:outline-none focus:border-purple-600 focus:ring-1 focus:ring-purple-600">
+          <ion-icon name="search-outline"
+            class="absolute left-2 top-1/2 transform -translate-y-1/2 text-zinc-400 text-base"></ion-icon>
+          <input type="text" [(ngModel)]="searchText" [placeholder]="placeholder || 'O que você está procurando?'"
+            class="h-8 pl-8 pr-3 w-full rounded-r-full bg-transparent border border-zinc-500 text-white text-sm focus:outline-none focus:border-purple-600 focus:ring-1 focus:ring-purple-600">
         </div>
       </div>
     </div>
+
+
+
 
     <!-- Botão de Ação -->
     <button (click)="onActionClick()" class="bg-purple-600 text-white py-2 px-6 rounded-lg hover:bg-purple-800">
@@ -60,13 +57,15 @@
           <td *ngIf="deleteAction" class="p-4 flex justify-center">
             <button class="text-red-400 hover:text-red-300 cursor-pointer" (click)="deleteAction(row)">
               <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2v-10H6v10zM18 4h-3V2H9v2H6c-1.1 0-2 .9-2 2v2h16V6c0-1.1-.9-2-2-2z" />
+                <path
+                  d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2v-10H6v10zM18 4h-3V2H9v2H6c-1.1 0-2 .9-2 2v2h16V6c0-1.1-.9-2-2-2z" />
               </svg>
             </button>
           </td>
         </tr>
         <tr *ngIf="filteredData.length === 0">
-          <td colspan="100%" class="text-center text-zinc-400 p-4">Que silêncio... nada encontrado por aqui! 🎵 Tente outra busca!</td>
+          <td colspan="100%" class="text-center text-zinc-400 p-4">Que silêncio... nada encontrado por aqui! 🎵 Tente
+            outra busca!</td>
         </tr>
       </tbody>
     </table>

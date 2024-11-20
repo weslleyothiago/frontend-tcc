@@ -14,6 +14,7 @@ export class AdminPage implements OnInit{
 
   // Estado atual
   currentTable = 'musicas'; // ou 'usuarios'
+  searchType = '';
 
   constructor(
     private datePipe: DatePipe,
@@ -23,6 +24,22 @@ export class AdminPage implements OnInit{
 
   ngOnInit(){
     this.fetchMusicas()
+    this.setCurrentTable('musicas')
+  }
+
+  setCurrentTable(table: string): void {
+    this.currentTable = table
+
+  if (this.currentTable === 'musicas') {
+    this.searchType = 'titulo';  
+  } else if (this.currentTable === 'usuarios') {
+    this.searchType = 'nome';  
+    }
+  
+    if (this.currentTable === 'musicas') {
+      this.fetchMusicas();
+    } else if (this.currentTable === 'usuarios') {
+    }
   }
 
   getPlaceholder(): string {
@@ -39,10 +56,8 @@ export class AdminPage implements OnInit{
   onActionButtonClick() {
     if (this.currentTable === 'musicas') {
       this.navigateToAddMusic();
-      console.log('está no músicas')
     } else if (this.currentTable === 'usuarios') {
       this.navigateToAddUser();
-      console.log('está no Usuários')
     }
   }
 
@@ -74,7 +89,20 @@ export class AdminPage implements OnInit{
         ];
   }
   
-  
+    getFilterOptions() {
+      if (this.currentTable === 'musicas') {
+        return [
+          { value: 'titulo', label: 'Música' },
+          { value: 'artistas', label: 'Artista' },
+        ];
+      } else if (this.currentTable === 'usuarios') {
+        return [
+          { value: 'nome', label: 'Nome' },
+          { value: 'tipo', label: 'Tipo' },
+        ];
+      }
+      return [];
+    }
 
   get actionButtonLabel() {
     return this.currentTable === 'musicas' ? 'Adicionar música' : 'Registrar administrador';

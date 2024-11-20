@@ -14,19 +14,19 @@ export class DashBoardAdminComponent {
   @Input() actionButtonIcon: string = 'add-outline';
   @Input() deleteAction?: (item: any) => void;
   @Input() placeholder: string = '';
+  @Input() filterOptions: { value: string, label: string }[] = [];
   @Output() actionButtonClick = new EventEmitter<void>();
+  @Input() searchType: string = '';
 
   searchText: string = ''; // Adicione esta variável
-  searchType: string = 'titulo'; // Tipo da busca (default: música)
 
+  // Função para lidar com a busca
   get filteredData(): any[] {
     if (!this.searchText) {
       return this.data;
     }
 
     const search = this.searchText.toLowerCase();
-
-    // Filtrar com base no tipo de busca (artista ou música)
     return this.data.filter(item =>
       item?.[this.searchType]?.toLowerCase().includes(search)
     );
