@@ -34,6 +34,7 @@ export class MusicRegistrationPage implements OnInit {
     duration: '',
     slug: '',
     genreId: 0,
+    thumbnail: '',
   };
 
   generosMusicais = [
@@ -190,6 +191,7 @@ export class MusicRegistrationPage implements OnInit {
           this.music.link = this.musicForm.get('link')?.value;
           this.music.genreId = this.musicForm.get('genre')?.value;
           this.music.duration = this.videoDuration || '';
+          this.music.thumbnail = thumbnail
         });
       } else {
         console.error('Video ID not found');

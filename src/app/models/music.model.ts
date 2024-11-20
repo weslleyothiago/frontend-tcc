@@ -6,4 +6,5 @@ export interface Music {
   duration: string;
   slug: string;
   genreId: number;
+  thumbnail: string;
 }
