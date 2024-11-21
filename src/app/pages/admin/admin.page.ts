@@ -4,6 +4,7 @@ import { DatePipe } from '@angular/common';
 import { Router } from '@angular/router';
 import { RegisterComponent } from 'src/app/components/register/register.component';
 import { ModalController } from '@ionic/angular';
+import { MusicDeletionComponent, } from 'src/app/components/music-deletion/music-deletion.component';
 
 @Component({
   selector: 'app-admin',
@@ -14,9 +15,9 @@ export class AdminPage implements OnInit{
   artistas: any[] = []
   usuarios: any[] = [];
 
-  // Estado atual
-  currentTable = 'musicas'; // ou 'usuarios'
+  currentTable = 'musicas'; 
   searchType = '';
+  linkCopied: boolean = false;
 
   constructor(
     private modalController: ModalController,
@@ -28,6 +29,39 @@ export class AdminPage implements OnInit{
   ngOnInit(){
     this.fetchMusicas()
     this.setCurrentTable('musicas')
+  }
+
+  // Método que será chamado quando o botão for clicado
+  onCopyClick(link: string): void {
+    this.copyLink(link);  
+    this.linkCopied = true;
+
+    setTimeout(() => {
+      this.linkCopied = false;
+    }, 2000);
+  }
+
+  // Método que copia o link para a área de transferência
+  copyLink(link: string): void {
+    if (!link) {
+      console.warn('Nenhum link disponível para copiar.');
+      return;
+    }
+
+    const textarea = document.createElement('textarea');
+    textarea.value = link;
+    document.body.appendChild(textarea);
+    textarea.select();
+    document.execCommand('copy');
+    document.body.removeChild(textarea);
+  }
+
+  async openDeleteModal() {
+    const modal = await this.modalController.create({
+      component: MusicDeletionComponent,
+      cssClass: 'backdrop-blur-3xl',
+    });
+    return await modal.present();
   }
 
   async openRegisterModal() {
@@ -87,6 +121,7 @@ export class AdminPage implements OnInit{
     return this.currentTable === 'musicas'
       ? [
           { label: 'Título', key: 'titulo' },
+          { label: 'Link', key: 'link' },
           { label: 'Artista', key: 'artistas' },
           { label: 'Gênero', key: 'genero' },
           { label: 'Data de Cadastro', key: 'createdAt' },
@@ -117,10 +152,6 @@ export class AdminPage implements OnInit{
 
   get actionButtonLabel() {
     return this.currentTable === 'musicas' ? 'Adicionar música' : 'Registrar administrador';
-  }
-
-  onDeleteMusica(musica: any) {
-    console.log('Deletar música:', musica);
   }
 
   fetchMusicas() {

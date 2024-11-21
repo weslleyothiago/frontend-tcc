@@ -14,9 +14,12 @@ export class DashBoardAdminComponent {
   @Input() actionButtonIcon: string = 'add-outline';
   @Input() deleteAction?: (item: any) => void;
   @Input() placeholder: string = '';
-  @Input() filterOptions: { value: string, label: string }[] = [];
-  @Output() actionButtonClick = new EventEmitter<void>();
   @Input() searchType: string = '';
+  @Input() filterOptions: { value: string, label: string }[] = [];
+  @Input() boolLink: boolean = true;
+  @Output() actionButtonClick = new EventEmitter<void>();
+  @Output() deleteItem = new EventEmitter<any>();
+  @Output() linkCopied = new EventEmitter<string>();
 
   searchText: string = ''; // Adicione esta variável
 
@@ -31,9 +34,18 @@ export class DashBoardAdminComponent {
       item?.[this.searchType]?.toLowerCase().includes(search)
     );
   }
-  
+
+  onCopyClick(link: string,) {
+    this.linkCopied.emit(link)
+    console.log('Dashboard: '+this.boolLink)
+  }
+
+  onDeleteClick(): void {
+    this.deleteItem.emit();
+  }
 
   onActionClick(): void {
     this.actionButtonClick.emit();
   }
+
 }

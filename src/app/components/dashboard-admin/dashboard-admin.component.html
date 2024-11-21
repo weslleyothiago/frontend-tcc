@@ -52,40 +52,51 @@
       <tbody>
         <tr *ngFor="let row of filteredData" class="hover:bg-zinc-700 border-b border-zinc-700">
           <td *ngFor="let column of columns" class="p-4">
-            <!-- Verifica se a chave da coluna é 'thumbnail' ou 'titulo' -->
+            <!-- Renderiza o botão copiar link na coluna 'link' -->
+            <ng-container *ngIf="column.key === 'link'">
+              <button 
+                class="button"
+                [ngClass]="{ 'copied': boolLink }" 
+                (click)="onCopyClick(row[column.key])">
+                {{ boolLink ? 'Copiado!' : 'Copiar Link' }}
+              </button>
+            </ng-container>
+            
+            
+        
+            <!-- Colunas de imagem ou título -->
             <ng-container *ngIf="column.key === 'thumbnail' || column.key === 'titulo'">
               <div class="flex items-center space-x-4">
-                <!-- Se for a coluna thumbnail, exibe a imagem -->
+                <!-- Exibe thumbnail -->
                 <img *ngIf="row['thumbnail']" [src]="row['thumbnail']" alt="Thumbnail" class="w-12 h-12 object-cover rounded mr-3" />
-                <!-- Exibe o título da música -->
+                <!-- Exibe título -->
                 <span class="text-sm">{{ row[column.key] || '—' }}</span>
               </div>
             </ng-container>
         
-            <!-- Verifica se a chave da coluna é 'createdAt' -->
+            <!-- Coluna de data -->
             <ng-container *ngIf="column.key === 'createdAt'">
               <div class="flex items-center space-x-2">
-                <!-- Ícone -->
                 <ion-icon name="calendar-clear-outline" class="mr-2"></ion-icon>
-                <!-- Data -->
                 <span class="text-sm">{{ row[column.key] || '—' }}</span>
               </div>
             </ng-container>
         
-            <!-- Exibe a coluna de Ações -->
+            <!-- Coluna de ações -->
             <ng-container *ngIf="column.key === 'acoes'">
               <div class="flex items-start space-x-4">
-                <ion-icon name="trash-outline" class="text-red-500 cursor-pointer text-xl" ></ion-icon>
-                <ion-icon name="create-outline" class="text-blue-500 cursor-pointer text-xl" ></ion-icon>
+                <ion-icon name="trash-outline" class="text-red-500 cursor-pointer text-xl"></ion-icon>
+                <ion-icon name="create-outline" class="text-blue-500 cursor-pointer text-xl"></ion-icon>
               </div>
             </ng-container>
         
-            <!-- Para outras colunas, apenas exibe o valor -->
-            <ng-container *ngIf="column.key !== 'thumbnail' && column.key !== 'titulo' && column.key !== 'createdAt' && column.key !== 'acoes'">
+            <!-- Outras colunas -->
+            <ng-container *ngIf="column.key !== 'thumbnail' && column.key !== 'titulo' && column.key !== 'createdAt' && column.key !== 'acoes' && column.key !== 'link'">
               <span class="text-sm">{{ row[column.key] || '—' }}</span>
             </ng-container>
           </td>
         </tr>
+        
         
         
            

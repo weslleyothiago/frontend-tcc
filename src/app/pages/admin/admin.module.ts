@@ -9,6 +9,7 @@ import { AdminPageRoutingModule } from './admin-routing.module';
 import { AdminPage } from './admin.page';
 import { DashBoardAdminComponent } from 'src/app/components/dashboard-admin/dashboard-admin.component';
 import { AdminSearchFilterPipe } from 'src/app/pipes/admin-search-filter.pipe';
+import { MusicDeletionComponent } from 'src/app/components/music-deletion/music-deletion.component';
 
 @NgModule({
   imports: [
@@ -17,7 +18,7 @@ import { AdminSearchFilterPipe } from 'src/app/pipes/admin-search-filter.pipe';
     IonicModule,
     AdminPageRoutingModule
   ],
-  declarations: [AdminPage, DashBoardAdminComponent, AdminSearchFilterPipe],
+  declarations: [AdminPage, DashBoardAdminComponent, AdminSearchFilterPipe, MusicDeletionComponent],
   providers: [DatePipe]
 })
 export class AdminPageModule {}

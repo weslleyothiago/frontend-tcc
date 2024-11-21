@@ -94,11 +94,12 @@
   [data]="currentData"
   [actionButtonLabel]="actionButtonLabel"
   [actionButtonIcon]="'add-outline'"
-  [deleteAction]="currentTable === 'musicas' ? onDeleteMusica.bind(this) : undefined"
   [placeholder]="getPlaceholder()"
   [filterOptions]="getFilterOptions()"
   [searchType]="searchType"
   (actionButtonClick)="onActionButtonClick()"
+  (linkCopied)="onCopyClick($event)"
+  [boolLink]="linkCopied"
 ></app-dashboard-admin>
 
 

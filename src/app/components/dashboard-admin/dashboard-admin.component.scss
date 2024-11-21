@@ -1,8 +1,43 @@
 input::placeholder {
-    text-align: center;
+  text-align: center;
+}
+
+input {
+  text-align: left;
+}
+
+.button {
+  background-color: transparent;
+  color: white;
+  padding: 0.5rem 1rem; /* py-2 px-4 */
+  border-radius: 0.375rem; /* rounded */
+  font-size: 0.875rem; /* text-sm */
+  border: 1px solid transparent;
+  background-image: linear-gradient(to right, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.1));
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+
+  &:hover {
+    background-color: rgba(66, 74, 87, 0.8); /* hover:bg-zinc-700/80 */
+    border-color: rgba(66, 74, 87, 0.8);
+    cursor: pointer;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(66, 74, 87, 0.3);
   }
-  
-  input {
-    text-align: left;
+
+  &:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   }
-  
+
+  &:focus {
+    outline: none;
+    border-color: rgba(66, 74, 87, 0.8);
+  }
+
+  &.copied {
+    background-color: #38a169; /* cor verde */
+    border-color: #38a169;
+  }
+}
+
