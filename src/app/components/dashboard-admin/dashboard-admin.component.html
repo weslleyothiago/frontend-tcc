@@ -51,6 +51,7 @@
       </thead>
       
       <tbody>
+
         <tr *ngFor="let row of filteredData" class="hover:bg-zinc-700 border-b border-zinc-700">
           <td *ngFor="let column of columns" class="p-4">
             <!-- Renderiza o botão copiar link na coluna 'link' -->
@@ -62,8 +63,6 @@
                 {{ boolLink ? 'Copiado!' : 'Copiar Link' }}
               </button>
             </ng-container>
-            
-            
         
             <!-- Colunas de imagem ou título -->
             <ng-container *ngIf="column.key === 'thumbnail' || column.key === 'titulo'">
@@ -75,7 +74,15 @@
               </div>
             </ng-container>
         
-            <!-- Coluna de data -->
+            <!-- Coluna de data de nascimento -->
+            <ng-container *ngIf="column.key === 'dataNascimento'">
+              <div class="flex items-center space-x-2">
+                <ion-icon name="calendar-outline" class="mr-2"></ion-icon> <!-- Ícone de data -->
+                <span class="text-sm">{{ row[column.key] || '—' }}</span>
+              </div>
+            </ng-container>
+        
+            <!-- Coluna de data de cadastro -->
             <ng-container *ngIf="column.key === 'createdAt'">
               <div class="flex items-center space-x-2">
                 <ion-icon name="calendar-clear-outline" class="mr-2"></ion-icon>
@@ -92,11 +99,12 @@
             </ng-container>
         
             <!-- Outras colunas -->
-            <ng-container *ngIf="column.key !== 'thumbnail' && column.key !== 'titulo' && column.key !== 'createdAt' && column.key !== 'acoes' && column.key !== 'link'">
+            <ng-container *ngIf="column.key !== 'thumbnail' && column.key !== 'titulo' && column.key !== 'createdAt' && column.key !== 'acoes' && column.key !== 'link' && column.key !== 'dataNascimento'">
               <span class="text-sm">{{ row[column.key] || '—' }}</span>
             </ng-container>
           </td>
         </tr>
+        
         
         
         
