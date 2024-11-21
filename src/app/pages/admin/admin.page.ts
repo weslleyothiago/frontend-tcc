@@ -12,6 +12,10 @@ import { ProfileService } from 'src/app/services/profile.service';
   templateUrl: './admin.page.html'  // Ajuste o caminho se necessário
 })
 export class AdminPage implements OnInit{
+  musicCount: number = 0;
+  artistCount: number = 0;
+  playlistCount: number = 0;
+  profileCount: number = 0;
   musicas: any[] = [];
   usuarios: any[] = [];
 
@@ -28,9 +32,10 @@ export class AdminPage implements OnInit{
   ) {}
 
   ngOnInit(){
-    this.fetchMusicas()
-    this.fetchPerfis()
-    this.setCurrentTable('musicas')
+    this.loadCounts();
+    this.fetchMusicas();
+    this.fetchPerfis();
+    this.setCurrentTable('musicas');
   }
 
   // Método que será chamado quando o botão for clicado
@@ -210,6 +215,15 @@ export class AdminPage implements OnInit{
         console.error('Erro ao buscar perfis:', error);
       }
     );
+  }
+
+  loadCounts() {
+    this.musicService.getCounts().subscribe((counts) => {
+      this.musicCount = counts.musicCount;
+      this.artistCount = counts.artistCount;
+      this.playlistCount = counts.playlistCount;
+      this.profileCount = counts.profileCount;
+    });
   }
   
   

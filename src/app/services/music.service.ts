@@ -23,6 +23,10 @@ export class MusicService {
     return this.http.post<any>(this.baseUrl, body);
   }
 
+  getCounts(): Observable<{ musicCount: number; artistCount: number; playlistCount: number; profileCount: number }> {
+    return this.http.get<{ musicCount: number; artistCount: number; playlistCount: number; profileCount: number }>(`${this.baseUrl}/counts`);
+  }  
+
   getMusicas(): Observable<any[]> {
     return this.http.get<any[]>(this.baseUrl);
   }
