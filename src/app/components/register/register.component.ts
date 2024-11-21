@@ -26,6 +26,7 @@ import { ProfileService } from 'src/app/services/profile.service';
 export class RegisterComponent implements OnInit {
 
   @Input() userType: string = 'Cliente';
+  @Input() routerNavigate: string = '/home';
 
   registrationForm!: FormGroup;
   activeTemplate: string = 'emailScreen';
@@ -160,7 +161,7 @@ export class RegisterComponent implements OnInit {
       this.authService.register(userData, profileData).subscribe(
         response => {
           console.log('User and profile registered successfully: ', response);
-          this.router.navigate(['/home']);
+          this.router.navigate([this.routerNavigate]);
           this.modalController.dismiss();
         },
         error => {

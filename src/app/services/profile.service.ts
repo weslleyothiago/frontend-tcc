@@ -14,5 +14,8 @@ export class ProfileService {
     return this.http.get(`${environment.apiBaseUrl}/user/check-name/?name=${name}`);
   }
   
+  getProfiles(): Observable<any[]> {
+    return this.http.get<any[]>(`${environment.apiBaseUrl}/user`);
+  }
 }
 

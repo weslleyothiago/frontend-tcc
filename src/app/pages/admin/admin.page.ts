@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { RegisterComponent } from 'src/app/components/register/register.component';
 import { ModalController } from '@ionic/angular';
 import { MusicDeletionComponent, } from 'src/app/components/music-deletion/music-deletion.component';
+import { ProfileService } from 'src/app/services/profile.service';
 
 @Component({
   selector: 'app-admin',
@@ -12,7 +13,6 @@ import { MusicDeletionComponent, } from 'src/app/components/music-deletion/music
 })
 export class AdminPage implements OnInit{
   musicas: any[] = [];
-  artistas: any[] = []
   usuarios: any[] = [];
 
   currentTable = 'musicas'; 
@@ -22,12 +22,14 @@ export class AdminPage implements OnInit{
   constructor(
     private modalController: ModalController,
     private datePipe: DatePipe,
+    private profileService: ProfileService,
     private musicService: MusicService,
     private router: Router
   ) {}
 
   ngOnInit(){
     this.fetchMusicas()
+    this.fetchPerfis()
     this.setCurrentTable('musicas')
   }
 
@@ -69,7 +71,8 @@ export class AdminPage implements OnInit{
       component: RegisterComponent,
       cssClass: 'backdrop-blur-3xl',
       componentProps: {
-        userType: 'Administrador'
+        userType: 'Administrador',
+        routerNavigate: '/admin'
       }
     });
     return await modal.present();
@@ -87,6 +90,7 @@ export class AdminPage implements OnInit{
     if (this.currentTable === 'musicas') {
       this.fetchMusicas();
     } else if (this.currentTable === 'usuarios') {
+      this.fetchMusicas();
     }
   }
 
@@ -118,21 +122,27 @@ export class AdminPage implements OnInit{
   }
 
   get currentColumns() {
-    return this.currentTable === 'musicas'
-      ? [
-          { label: 'Título', key: 'titulo' },
-          { label: 'Link', key: 'link' },
-          { label: 'Artista', key: 'artistas' },
-          { label: 'Gênero', key: 'genero' },
-          { label: 'Data de Cadastro', key: 'createdAt' },
-          { label: 'Ações', key: 'acoes' },
-        ]
-      : [
-          { label: 'Nome', key: 'nome' },
-          { label: 'Email', key: 'email' },
-          { label: 'Tipo', key: 'tipo' },
-          { label: 'Data de Registro', key: 'createdAt' }
-        ];
+    if (this.currentTable === 'musicas') {
+      return [
+        { label: 'Título', key: 'titulo' },
+        { label: 'Link', key: 'link' },
+        { label: 'Artista', key: 'artistas' },
+        { label: 'Gênero', key: 'genero' },
+        { label: 'Data de Cadastro', key: 'createdAt' },
+        { label: 'Ações', key: 'acoes' },
+      ];
+    } else if (this.currentTable === 'usuarios') {
+      return [
+        { label: 'Nome', key: 'nome' },
+        { label: 'Email', key: 'email' },
+        { label: 'Tipo', key: 'tipo' },
+        { label: 'Data de nascimento', key: 'dataNascimento' },
+        { label: 'Data de Registro', key: 'createdAt' },
+        { label: 'Ações', key: 'acoes' },
+      ];
+    } else {
+      return [];
+    }
   }
   
     getFilterOptions() {
@@ -176,6 +186,32 @@ export class AdminPage implements OnInit{
       }
     );
   }
+
+  fetchPerfis() {
+    this.profileService.getProfiles().subscribe(
+      (data: any[]) => {
+        this.usuarios = data.map((perfil: any) => {
+          const { usuario, ...rest } = perfil;
+          
+          // Formatar a data de registro
+          const dataFormatada = this.datePipe.transform(usuario?.createdAt, 'dd/MM/yyyy');
+          const dataNascimento = this.datePipe.transform(perfil?.dataNascimento, 'dd/MM/yyyy');
+
+          return {
+            ...rest,
+            email: usuario?.email,
+            tipo: usuario?.tipo,
+            createdAt: dataFormatada,
+            dataNascimento: dataNascimento
+          };
+        });
+      },
+      (error) => {
+        console.error('Erro ao buscar perfis:', error);
+      }
+    );
+  }
+  
   
   
 

@@ -49,6 +49,7 @@
           <th *ngFor="let column of columns" class="text-left p-4 text-sm text-zinc-400">{{ column.label }}</th>
         </tr>
       </thead>
+      
       <tbody>
         <tr *ngFor="let row of filteredData" class="hover:bg-zinc-700 border-b border-zinc-700">
           <td *ngFor="let column of columns" class="p-4">
