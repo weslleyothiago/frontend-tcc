@@ -8,14 +8,14 @@
       <img
         [src]="thumbnail"
         alt="Thumbnail"
-        class="w-full h-32 object-cover rounded-lg"
+        class="thumbnail"
       />
-      <!-- Badge "Vídeo" -->
-      <span
-        class="absolute top-2 left-2 bg-purple-600 text-white px-2 py-1 text-xs font-semibold rounded-lg"
-      >
-        Vídeo
-      </span>
+      <!-- Ícone de play -->
+      <div class="play-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+          <path d="M8 5v14l11-7z" />
+        </svg>
+      </div>
     </ng-container>
     <ng-template #iframeView>
       <iframe
