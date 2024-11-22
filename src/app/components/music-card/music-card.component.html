@@ -1,23 +1,45 @@
-<div class="bg-gray-700 rounded-lg w-40 p-4 flex-none hover:bg-gray-600 transition-colors cursor-pointer">
+<div
+  class="bg-gray-700 rounded-lg w-40 p-4 flex-none hover:bg-gray-600 transition-colors cursor-pointer"
+  (click)="loadVideo()"
+>
   <!-- Player ou Thumbnail -->
   <div class="relative">
-    <ng-container *ngIf="!showThumbnail; else thumbnailView">
+    <ng-container *ngIf="!isIframeLoaded; else iframeView">
+      <img
+        [src]="thumbnail"
+        alt="Thumbnail"
+        class="w-full h-32 object-cover rounded-lg"
+      />
+      <!-- Badge "Vídeo" -->
+      <span
+        class="absolute top-2 left-2 bg-purple-600 text-white px-2 py-1 text-xs font-semibold rounded-lg"
+      >
+        Vídeo
+      </span>
+    </ng-container>
+    <ng-template #iframeView>
       <iframe
+        #videoIframe
         [src]="videoUrl | safeUrl"
         title="YouTube video player"
         frameborder="0"
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
         allowfullscreen
-        class="w-full h-32 object-cover rounded-lg">
-      </iframe>
-    </ng-container>
-    <ng-template #thumbnailView>
-      <img [src]="thumbnail" alt="Thumbnail" class="w-full h-32 object-cover rounded-lg">
+        class="w-full h-32 object-cover rounded-lg"
+      ></iframe>
+      <!-- Botão para sair da tela cheia -->
+      <button
+        class="absolute top-2 right-2 bg-red-600 text-white px-2 py-1 text-xs rounded-lg hover:bg-red-500"
+        (click)="exitFullscreen($event)"
+      >
+        Sair
+      </button>
     </ng-template>
-    <span class="absolute top-2 left-2 bg-purple-600 text-white px-2 py-1 text-xs font-semibold rounded-lg">Vídeo</span>
   </div>
 
   <!-- Informações do Vídeo -->
-  <p class="mt-2 text-sm font-semibold">{{ title }}</p>
-  <p class="text-xs text-gray-400">Artista: {{ artist }}</p>
+  <div class="mt-2">
+    <p class="text-sm font-semibold text-white truncate">{{ title }}</p>
+    <p class="text-xs text-gray-400 truncate">{{ artist }}</p>
+  </div>
 </div>

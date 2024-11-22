@@ -13,10 +13,9 @@
   <app-music-card
   *ngFor="let music of musicList"
   [title]="music.titulo"
-  [artist]="music.MusicaArtista?.[0]?.artista?.nome || 'Artista desconhecido'" 
+  [artist]="music.MusicaArtista?.[0]?.artista?.nome || 'Artista desconhecido'"
   [videoUrl]="'https://www.youtube.com/embed/' + music.link.split('v=')[1]"
-  [thumbnail]="music.thumbnail"
-  [showThumbnail]="false">
+  [thumbnail]="music.thumbnail">
 </app-music-card>
 
 </div>
