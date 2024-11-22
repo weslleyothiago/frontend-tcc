@@ -15,6 +15,7 @@ export class HomePage implements OnInit {
 
   ngOnInit(): void {
     this.loadMusics();
+    this.checkUserType();
   }
 
   // Método para carregar músicas do backend

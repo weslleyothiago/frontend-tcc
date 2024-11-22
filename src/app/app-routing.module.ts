@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
-import { LoginPage } from './pages/login/login.page';
 import { AuthGuard } from './guards/routes.guard';
+import { AdminGuard } from './guards/admin.guard';
 
 const routes: Routes = [
   {
@@ -18,11 +18,13 @@ const routes: Routes = [
   },
   {
     path: 'admin',
-    loadChildren: () => import('./pages/admin/admin.module').then( m => m.AdminPageModule)
+    loadChildren: () => import('./pages/admin/admin.module').then( m => m.AdminPageModule),
+    canActivate: [AdminGuard]
   },
   {
     path: 'admin/musics',
-    loadChildren: () => import('./pages/music-registration/music-registration.module').then( m => m.MusicRegistrationPageModule)
+    loadChildren: () => import('./pages/music-registration/music-registration.module').then( m => m.MusicRegistrationPageModule),
+    canActivate: [AdminGuard]
   },
 ];
 
