@@ -7,6 +7,8 @@ import { IonicModule } from '@ionic/angular';
 import { HomePageRoutingModule } from './home-routing.module';
 
 import { HomePage } from './home.page';
+import { MusicCardComponent } from 'src/app/components/music-card/music-card.component';
+import { SafeUrlPipe } from '../../pipes/safe-url.pipe';
 
 @NgModule({
   imports: [
@@ -15,6 +17,7 @@ import { HomePage } from './home.page';
     IonicModule,
     HomePageRoutingModule
   ],
-  declarations: [HomePage]
+  declarations: [HomePage, MusicCardComponent, SafeUrlPipe],
+  exports: [MusicCardComponent, SafeUrlPipe]
 })
 export class HomePageModule {}
