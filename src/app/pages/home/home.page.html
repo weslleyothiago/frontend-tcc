@@ -43,11 +43,24 @@
         <ion-icon name="library-outline" class="text-2xl text-zinc-400"></ion-icon>
         <span class="text-lg font-semibold text-zinc-100">Sua Biblioteca</span>
       </div>
-      <ion-icon name="add-outline" class="text-2xl cursor-pointer hover:text-zinc-400"></ion-icon>
+      <div class="relative group">
+        <!-- O ícone do botão -->
+        <div class="flex items-center justify-center w-8 h-8 rounded-full hover:bg-zinc-600 transition mr-2">
+          <ion-icon name="add-outline" class="text-2xl cursor-pointer hover:text-zinc-400"></ion-icon>
+        </div>
+      
+        <!-- Tooltip -->
+        <div class="text-base z-10 absolute bottom-full mb-2 left-1/2 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 bg-gray-700 text-white rounded px-2 py-1 whitespace-nowrap transition-opacity duration-300">
+          Criar uma nova playlist
+        </div>
+      </div>
+      
+      
     </header>
 
     <!-- Lista de Playlists -->
     <div class="flex-1 overflow-y-auto">
+      
       <!-- Itens da lista de playlists aqui -->
     </div>
   </div>
