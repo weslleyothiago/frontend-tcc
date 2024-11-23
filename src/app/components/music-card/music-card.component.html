@@ -5,11 +5,13 @@
   <!-- Player ou Thumbnail -->
   <div class="relative">
     <ng-container *ngIf="!isIframeLoaded; else iframeView">
-      <img
-        [src]="thumbnail"
-        alt="Thumbnail"
-        class=" thumbnail"
-      />
+      <div class="thumbnail-container">
+        <img
+          [src]="thumbnail"
+          alt="Thumbnail"
+          class="thumbnail"
+        />
+      </div>
       <!-- Ícone de play -->
       <div class="play-icon">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
@@ -17,6 +19,9 @@
         </svg>
       </div>
     </ng-container>
+    
+    
+    
     <ng-template #iframeView>
       <iframe
         #videoIframe

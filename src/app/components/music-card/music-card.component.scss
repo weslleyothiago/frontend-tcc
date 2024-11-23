@@ -12,14 +12,25 @@
   background-color: #3a3a3a; /* Muda a cor de fundo no hover */
 }
 
-.thumbnail {
+.thumbnail-container {
   width: 100%;
-  height: 180px; /* Aumente a altura para tornar a imagem maior */
-  object-fit: cover; /* Assegura que a imagem cubra completamente o espaço */
-  border-radius: 0.75rem;
-  position: relative;
-  transition: transform 0.3s ease; /* Adiciona transição suave no zoom */
+  height: 105px; 
+  overflow: hidden;
 }
+
+.thumbnail {
+  border-radius: 0.75rem;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+
+
+
+
+
+
 
 .relative {
   position: relative;
