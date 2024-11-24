@@ -129,14 +129,14 @@
             <span
               class="absolute left-1/2 bottom-[-30px] -translate-x-1/2 opacity-0 text-xs text-white bg-gray-700 px-2 py-1 rounded transition-opacity duration-300 ease-in-out group-hover:opacity-100 pointer-events-none whitespace-nowrap"
             >
-              Back
+              Voltar
             </span>
           </div>
           <!-- Text "Step 2 of 3" aligned with the icon -->
-          <span class="text-gray-400">Step 2 of 3</span>
+          <span class="text-gray-400">Etapa 2 de 3</span>
         </div>
         
-        <span class="font-semibold">Create a password</span>
+        <span class="font-semibold">Crie uma senha</span>
       </div>
 
       <form
@@ -148,7 +148,7 @@
           name="password"
           type="password"
           formControlName="password"
-          label="Password"
+          label="Senha"
           label-placement="floating"
           fill="solid"
           class="w-5/6 mt-4"
@@ -164,19 +164,19 @@
           <!-- Letter check -->
           <ion-text [color]="passwordValid.hasLetter ? 'success' : 'danger'" class="flex items-baseline text-base">
             <ion-icon name="alert-circle" class="mr-2"></ion-icon>
-            Must contain at least one letter
+            Precisa ter pelo menos uma letra
           </ion-text>
 
           <!-- Number check -->
           <ion-text [color]="passwordValid.hasNumber ? 'success' : 'danger'" class="flex items-baseline text-base">
             <ion-icon name="alert-circle" class="mr-2"></ion-icon>
-            Must contain at least one number
+            Precisa ter pelo menos um número
           </ion-text>
 
           <!-- Minimum length check -->
           <ion-text [color]="passwordValid.minLength ? 'success' : 'danger'" class="flex items-baseline text-base">
             <ion-icon name="alert-circle" class="mr-2"></ion-icon>
-            Must have at least 8 characters
+            Precisa ter pelo menos 8 caracteres
           </ion-text>
         </div>
 
@@ -185,7 +185,7 @@
           class="mt-6 w-5/6 h-12"
           [disabled]="registrationForm.get('password')?.invalid"
           (click)="activateTemplate('nameAndDobScreen')"
-          >Next</ion-button
+          >Próximo</ion-button
         >
       </form>
     </div>
