@@ -1,3 +1,60 @@
-<p>
-  playlist-create works!
-</p>
+<ion-header class="ion-no-border bg-gradient-to-r from-purple-600 to-indigo-500 p-4 rounded-t-lg shadow-lg">
+  <div class="flex items-center justify-between w-full">
+    <ion-title class="text-white font-japa text-2xl font-semibold tracking-wide">
+      Daisuke Karaokê
+    </ion-title>
+    <button (click)="closeModal()" aria-label="Fechar modal"
+      class="group flex items-center justify-center w-10 h-10 bg-transparent rounded-full transition duration-300 ease-in-out hover:bg-white hover:bg-opacity-20">
+      <div class="relative w-8 h-8 flex items-center justify-center bg-transparent rounded-full transition duration-300 ease-in-out group-hover:bg-white group-hover:bg-opacity-20">
+        <div class="absolute top-1/2 left-1/2 w-4 h-0.5 bg-white rotate-45 transform -translate-x-1/2 -translate-y-1/2 rounded-full transition duration-300 ease-in-out group-hover:bg-white"></div>
+        <div class="absolute top-1/2 left-1/2 w-4 h-0.5 bg-white -rotate-45 transform -translate-x-1/2 -translate-y-1/2 rounded-full transition duration-300 ease-in-out group-hover:bg-white"></div>
+      </div>
+    </button>
+  </div>
+</ion-header>
+
+<ion-content class="bg-gray-100 px-6 py-8 rounded-b-lg shadow-lg">
+  <div class="flex flex-col items-center mt-4 text-center space-y-6">
+
+    <!-- Input de Arquivo -->
+    <label for="fileInput"
+      class="mt-2 w-48 h-48 border-2 border-gray-500 text-gray-500 cursor-pointer transition duration-300 hover:border-purple-600 hover:text-purple-600 rounded-lg flex items-center justify-center relative group">
+      <ion-icon *ngIf="!previewImage" name="musical-notes-outline" class="text-5xl transition group-hover:hidden"></ion-icon>
+      <div *ngIf="!previewImage" class="hidden group-hover:flex flex-col items-center">
+        <ion-icon name="pencil-outline" class="text-5xl"></ion-icon>
+        <span class="text-sm mt-2">Escolha uma imagem</span>
+      </div>
+      <img *ngIf="previewImage" [src]="previewImage" alt="Prévia da imagem"
+        class="absolute inset-0 w-full h-full object-cover rounded-lg" />
+      <input type="file" id="fileInput" accept="image/*" class="hidden" (change)="onFileSelected($event)" />
+    </label>
+
+    <!-- Formulário de Título da Playlist -->
+    <form [formGroup]="playlistForm" class="w-full max-w-md mt-6">
+      <!-- Input de Texto (Título da playlist) -->
+      <ion-input
+        formControlName="title"
+        type="text"
+        label="Título da playlist"
+        label-placement="floating"
+        fill="solid"
+        placeholder="Ex: Minha playlist épica"
+        errorText="Preencha com o título da playlist"
+        class="w-full rounded-lg shadow-md"
+      ></ion-input>
+
+      <!-- Botão Salvar -->
+      <ion-button 
+      [disabled]="playlistForm.get('title')?.invalid"
+      shape="round" class="w-full h-12 mt-6 text-white shadow-lg bg-gradient-to-r">
+        Criar playlist
+      </ion-button>
+    </form>
+
+    <!-- Texto de Aviso -->
+    <span class="text-xs text-gray-600 mt-6 max-w-xs text-center">
+      Ao prosseguir, você concorda em conceder à Daisuke acesso à imagem que você escolher enviar. Certifique-se de que
+      você tem o direito de fazer upload da imagem.
+    </span>
+  </div>
+</ion-content>

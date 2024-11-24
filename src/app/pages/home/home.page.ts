@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import {jwtDecode} from 'jwt-decode'; // Corrigir a importação
-import { MusicService } from 'src/app/services/music.service'; // Certifique-se de ajustar o caminho corretamente
+import { ModalController } from '@ionic/angular';
+import {jwtDecode} from 'jwt-decode';
+import { PlaylistCreateComponent } from 'src/app/components/playlist-create/playlist-create.component';
+import { MusicService } from 'src/app/services/music.service'; 
 
 @Component({
   selector: 'app-home',
@@ -11,7 +13,10 @@ export class HomePage implements OnInit {
   musicList: any[] = [];
   isAdmin: boolean = false;
 
-  constructor(private musicService: MusicService) {}
+  constructor(
+    private musicService: MusicService,
+    private modalController: ModalController
+  ) {}
 
   ngOnInit(): void {
     this.loadMusics();
@@ -46,4 +51,13 @@ export class HomePage implements OnInit {
     }
     console.log('Usuário é administrador:', this.isAdmin);
   }
+
+   async openCreatePlaylistModal() {  
+    const modal = await this.modalController.create({
+      component: PlaylistCreateComponent, 
+      cssClass: 'backdrop-blur-sm',
+    });
+    return await modal.present();
+  }
+
 }
