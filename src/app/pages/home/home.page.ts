@@ -3,6 +3,7 @@ import { ModalController } from '@ionic/angular';
 import {jwtDecode} from 'jwt-decode';
 import { PlaylistCreateComponent } from 'src/app/components/playlist-create/playlist-create.component';
 import { MusicService } from 'src/app/services/music.service'; 
+import { PlaylistService } from 'src/app/services/playlist.service';
 
 @Component({
   selector: 'app-home',
@@ -10,15 +11,19 @@ import { MusicService } from 'src/app/services/music.service';
   styleUrls: ['./home.page.scss'],
 })
 export class HomePage implements OnInit {
+  profileId: number = 2;
+  playlists: any[] = [];
   musicList: any[] = [];
   isAdmin: boolean = false;
 
   constructor(
+    private playlistService: PlaylistService,
     private musicService: MusicService,
     private modalController: ModalController
   ) {}
 
   ngOnInit(): void {
+    this.fetchPlaylists();
     this.loadMusics();
     this.checkUserType();
   }
@@ -59,5 +64,17 @@ export class HomePage implements OnInit {
     });
     return await modal.present();
   }
+
+  fetchPlaylists() {
+    this.playlistService.getPlaylistsByProfile(this.profileId).subscribe({
+      next: (playlists) => {
+        this.playlists = playlists;
+      },
+      error: (err) => {
+        console.error('Erro ao buscar playlists:', err);
+      },
+    });
+  }
+  
 
 }

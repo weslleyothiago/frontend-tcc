@@ -20,4 +20,8 @@ export class PlaylistService {
     const payload = { ...dto, profileId }; // Inclui o `profileId` no payload
     return this.http.post<any>(`${environment.apiBaseUrl}/playlists`, payload);
   }
+
+  getPlaylistsByProfile(profileId: number) {
+    return this.http.get<any[]>(`${environment.apiBaseUrl}/playlists/profile/${profileId}`);
+  }
 }
