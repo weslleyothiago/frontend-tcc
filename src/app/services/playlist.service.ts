@@ -18,6 +18,6 @@ export class PlaylistService {
 
   createPlaylist(dto: CreatePlaylistDto, profileId: number): Observable<any> {
     const payload = { ...dto, profileId }; // Inclui o `profileId` no payload
-    return this.http.post<any>(environment.apiBaseUrl, payload);
+    return this.http.post<any>(`${environment.apiBaseUrl}/playlists`, payload);
   }
 }
