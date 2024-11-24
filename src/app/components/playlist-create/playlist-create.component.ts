@@ -11,7 +11,6 @@ import { PlaylistService } from 'src/app/services/playlist.service';
 export class PlaylistCreateComponent implements OnInit {
   previewImage: string | null = null; // Para armazenar o caminho da imagem carregada
   playlistForm!: FormGroup;
-  profileId: number = 1; // Substituir pelo ID dinâmico do perfil do usuário
 
   constructor(
     private toastCtrl: ToastController,
@@ -61,10 +60,11 @@ export class PlaylistCreateComponent implements OnInit {
       this.showToast('Por favor, preencha os campos obrigatórios.');
       return;
     }
-
+  
     const playlistData = this.playlistForm.value;
-
-    this.playlistService.createPlaylist(playlistData, this.profileId).subscribe({
+  
+    // Supondo que o profileId já foi recuperado do token ao carregar o componente
+    this.playlistService.createPlaylist(playlistData).subscribe({
       next: (response) => {
         console.log('Playlist criada com sucesso:', response);
         this.showToast('Playlist criada com sucesso!');

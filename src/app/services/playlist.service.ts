@@ -16,22 +16,34 @@ export class PlaylistService {
 
   constructor(private http: HttpClient) {}
 
-  createPlaylist(dto: CreatePlaylistDto, profileId: number): Observable<any> {
-    const payload = { ...dto, profileId }; // Inclui o `profileId` no payload
+  createPlaylist(dto: CreatePlaylistDto): Observable<any> {
+    // Recupera o profileId do token armazenado
+    const profileId = this.getProfileIdFromToken(); // Supondo que essa função já exista
+  
+    if (!profileId) {
+      throw new Error('Profile ID não encontrado no token.');
+    }
+  
+    const payload = { ...dto, profileId }; // Inclui o profileId no payload
     return this.http.post<any>(`${environment.apiBaseUrl}/playlists`, payload);
   }
+  
+  private getProfileIdFromToken(): number | null {
+    const token = sessionStorage.getItem('access_token'); // Substitua pelo local onde o token é armazenado
+    if (!token) return null;
+  
+    try {
+      const decoded = JSON.parse(atob(token.split('.')[1])); // Decodifica o JWT
+      return decoded?.profileId || null; // Retorna o profileId, caso exista
+    } catch (error) {
+      console.error('Erro ao decodificar o token:', error);
+      return null;
+    }
+  }
+  
 
   getPlaylistsByProfile(profileId: number) {
     return this.http.get<any[]>(`${environment.apiBaseUrl}/playlists/profile/${profileId}`);
-  }
-
-  private getProfileIdFromToken(): number | null {
-    const token = sessionStorage.getItem('access_token'); // Obtem o JWT do sessionStorage
-    if (token) {
-      const decoded = JSON.parse(atob(token.split('.')[1])); // Decodifica o payload do token
-      return decoded?.profileId || null; // Retorna o profileId
-    }
-    return null; // Se o token não existir
   }
 
   // Faz a requisição para buscar as playlists com base no profileId
