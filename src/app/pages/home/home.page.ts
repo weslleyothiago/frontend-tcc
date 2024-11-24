@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import {jwtDecode} from 'jwt-decode';
@@ -11,7 +12,7 @@ import { PlaylistService } from 'src/app/services/playlist.service';
   styleUrls: ['./home.page.scss'],
 })
 export class HomePage implements OnInit {
-  profileId: number = 2;
+  errorMessage: string = '';
   playlists: any[] = [];
   musicList: any[] = [];
   isAdmin: boolean = false;
@@ -23,7 +24,7 @@ export class HomePage implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.fetchPlaylists();
+    this.loadPlaylists();
     this.loadMusics();
     this.checkUserType();
   }
@@ -65,16 +66,16 @@ export class HomePage implements OnInit {
     return await modal.present();
   }
 
-  fetchPlaylists() {
-    this.playlistService.getPlaylistsByProfile(this.profileId).subscribe({
-      next: (playlists) => {
-        this.playlists = playlists;
-      },
-      error: (err) => {
-        console.error('Erro ao buscar playlists:', err);
+  loadPlaylists(): void {
+    this.playlistService.getPlaylists().subscribe({
+      next: (data: any) => (this.playlists = data), // Temporário, até que o tipo seja definido
+      error: (err: HttpErrorResponse) => {
+        console.error('Erro ao carregar playlists:', err.message);
+        this.errorMessage = 'Erro ao carregar playlists';
       },
     });
   }
+  
   
 
 }

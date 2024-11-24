@@ -24,4 +24,23 @@ export class PlaylistService {
   getPlaylistsByProfile(profileId: number) {
     return this.http.get<any[]>(`${environment.apiBaseUrl}/playlists/profile/${profileId}`);
   }
+
+  private getProfileIdFromToken(): number | null {
+    const token = sessionStorage.getItem('access_token'); // Obtem o JWT do sessionStorage
+    if (token) {
+      const decoded = JSON.parse(atob(token.split('.')[1])); // Decodifica o payload do token
+      return decoded?.profileId || null; // Retorna o profileId
+    }
+    return null; // Se o token não existir
+  }
+
+  // Faz a requisição para buscar as playlists com base no profileId
+  getPlaylists(): any {
+    const profileId = this.getProfileIdFromToken();
+    if (!profileId) {
+      throw new Error('Profile ID não encontrado no token.');
+    }
+    // Envia o profileId diretamente na URL ou no corpo da requisição
+    return this.http.get(`${environment.apiBaseUrl}/playlists/profile/${profileId}`);
+  }
 }
