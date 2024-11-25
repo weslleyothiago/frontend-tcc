@@ -14,11 +14,12 @@ import { HttpErrorResponse } from '@angular/common/http';
 export class HomePage implements OnInit {
   playlists: any[] = [];
   musicList: any[] = [];
+  filteredMusicList: any[] = []; // Lista de músicas filtradas com base na busca
   errorMessage: string = '';
   selectedPlaylist: any = null; // Playlist selecionada
   isAdmin: boolean = false;
   randomGradient: string = '';
-
+  searchQuery: string = ''; // Variável para a pesquisa
 
   constructor(
     private playlistService: PlaylistService,
@@ -31,6 +32,18 @@ export class HomePage implements OnInit {
     this.loadMusics();
     this.loadPlaylists();
     this.checkUserType();
+  }
+
+  // Método para filtrar músicas com base na pesquisa
+  filterMusics(): void {
+    if (this.searchQuery.trim() === '') {
+      this.filteredMusicList = this.musicList; // Se não houver pesquisa, exibe todas as músicas
+    } else {
+      this.filteredMusicList = this.musicList.filter(music => 
+        music.titulo.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
+        (music.MusicaArtista?.[0]?.artista?.nome || '').toLowerCase().includes(this.searchQuery.toLowerCase())
+      );
+    }
   }
 
   private generateRandomGradient(): string {
@@ -55,6 +68,7 @@ export class HomePage implements OnInit {
     this.musicService.getMusicas().subscribe(
       (data) => {
         this.musicList = data;
+        this.filteredMusicList = data; // Inicialmente, todas as músicas são exibidas
       },
       (error) => {
         console.error('Erro ao carregar músicas:', error);
@@ -76,7 +90,6 @@ export class HomePage implements OnInit {
       },
     });
   }
-  
 
   selectPlaylist(playlist: any) {
     this.selectedPlaylist = playlist;

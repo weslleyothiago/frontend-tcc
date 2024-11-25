@@ -1,24 +1,19 @@
 <ion-header class="flex items-center justify-between p-2 ion-no-border bg-gradient-to-b bg-black shadow-md">
-  <!-- Ícone de configurações para administradores -->
   <div class="flex items-center justify-center w-12 h-12 mr-2">
     <a *ngIf="isAdmin" href="/admin" class="text-white text-2xl">
       <ion-icon class="hover:text-purple-700 align-middle text-3xl" name="settings-outline"></ion-icon>
     </a>
   </div>
 
-  <!-- Campo de busca com ícone "Home" ao lado esquerdo -->
   <div class="flex items-center flex-grow max-w-lg mx-auto relative">
-    <!-- Ícone "Home" -->
     <div (click)="showDefaultMusic()"
       class="cursor-pointer flex items-center justify-center w-12 h-12 rounded-full hover:bg-purple-700 transition mr-2">
       <ion-icon name="home-sharp" class="text-3xl text-white"></ion-icon>
     </div>
 
-    <!-- Campo de busca -->
     <div class="relative flex-grow">
-      <ion-icon name="search-outline" class="absolute left-4 top-1/2 transform -translate-y-1/2 text-zinc-400 text-xl">
-      </ion-icon>
-      <input type="text" placeholder="O que você está procurando?"
+      <ion-icon name="search-outline" class="absolute left-4 top-1/2 transform -translate-y-1/2 text-zinc-400 text-xl"></ion-icon>
+      <input type="text" [(ngModel)]="searchQuery" (input)="filterMusics()" placeholder="O que você está procurando?"
         class="h-12 pl-12 pr-4 w-full rounded-full bg-transparent border border-zinc-500 text-zinc-100 text-base focus:outline-none focus:border-purple-600 focus:ring-2 focus:ring-purple-600" />
     </div>
   </div>
@@ -26,7 +21,6 @@
 
 <div class="flex h-screen bg-black text-zinc-100 flex-col lg:flex-row">
   <div class="w-full ml-2 mr-2 lg:w-96 bg-zinc-900 text-white flex flex-col rounded-lg shadow-lg">
-    <!-- Cabeçalho da Biblioteca -->
     <header class="p-4 flex items-center justify-between border-b border-zinc-700 rounded-t-lg">
       <div class="flex items-center gap-2">
         <ion-icon name="library-outline" class="text-2xl text-zinc-400"></ion-icon>
@@ -44,7 +38,6 @@
       </div>
     </header>
 
-    <!-- Lista de Playlists -->
     <div *ngIf="playlists.length === 0" class="p-4 text-center text-gray-400">
       Cadê as playlists? Bora criar uma!
     </div>
@@ -61,12 +54,11 @@
   </div>
 
   <div class="flex-1 p-4 bg-gradient-to-b bg-zinc-900 rounded-lg shadow-lg">
-
-    <!-- Exibe as músicas padrão (sem playlist selecionada) -->
+    <!-- Exibe as músicas filtradas com base na busca -->
     <div *ngIf="!selectedPlaylist">
       <h2 class="text-2xl font-bold text-white mb-6">Explore suas músicas</h2>
       <div id="home" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-        <app-music-card *ngFor="let music of musicList" [title]="music.titulo"
+        <app-music-card *ngFor="let music of filteredMusicList" [title]="music.titulo"
           [artist]="music.MusicaArtista?.[0]?.artista?.nome || 'Artista desconhecido'"
           [videoUrl]="'https://www.youtube.com/embed/' + music.link.split('v=')[1]"
           [thumbnail]="music.thumbnail"
@@ -76,12 +68,8 @@
       </div>
     </div>
 
-    <!-- Exibe as músicas da playlist selecionada -->
     <div *ngIf="selectedPlaylist">
-      <app-playlist-musics [playlist]="selectedPlaylist" [randomGradient]="randomGradient"
-        class="flex-1"></app-playlist-musics>
+      <app-playlist-musics [playlist]="selectedPlaylist" [randomGradient]="randomGradient" class="flex-1"></app-playlist-musics>
     </div>
-
   </div>
-
 </div>
