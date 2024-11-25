@@ -17,6 +17,8 @@ export class HomePage implements OnInit {
   errorMessage: string = '';
   selectedPlaylist: any = null; // Playlist selecionada
   isAdmin: boolean = false;
+  randomGradient: string = '';
+
 
   constructor(
     private playlistService: PlaylistService,
@@ -25,9 +27,28 @@ export class HomePage implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.randomGradient = this.generateRandomGradient();
     this.loadMusics();
     this.loadPlaylists();
     this.checkUserType();
+  }
+
+  private generateRandomGradient(): string {
+    const randomColor = this.getRandomColor();
+    return `linear-gradient(to right, ${randomColor}, black)`;
+  }
+
+  private getRandomColor(): string {
+    const letters = '0123456789ABCDEF';
+    let color = '#';
+    for (let i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+  }
+
+  showDefaultMusic() {
+    this.selectedPlaylist = null;
   }
 
   loadMusics(): void {
@@ -55,6 +76,7 @@ export class HomePage implements OnInit {
 
   selectPlaylist(playlist: any) {
     this.selectedPlaylist = playlist;
+    this.randomGradient = this.generateRandomGradient();
   }
 
   checkUserType(): void {
