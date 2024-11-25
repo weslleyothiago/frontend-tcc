@@ -26,6 +26,15 @@ export class PlaylistMusicsComponent implements OnInit {
         music.artista?.toLowerCase().includes(search)
     );
   }
+
+  getArtistNames(musicaArtista: any[]): string {
+    if (!musicaArtista || musicaArtista.length === 0) {
+      return 'Artista desconhecido';
+    }
+    // Mapeia os nomes dos artistas e os junta com vírgulas
+    return musicaArtista.map(artistaRel => artistaRel.artista.nome).join(', ');
+  }
+  
   
 
   

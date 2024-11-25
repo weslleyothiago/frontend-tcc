@@ -32,8 +32,7 @@
     <thead>
       <tr class="border-b border-zinc-700">
         <th class="py-2">#</th>
-        <th>Título</th>
-        <th>Artista</th>
+        <th>Título e Artista</th>
         <th>Data adicionada</th>
         <th>Duração</th>
       </tr>
@@ -44,8 +43,21 @@
         class="hover:bg-zinc-700 border-b border-zinc-700"
       >
         <td class="py-2 px-4">{{ i + 1 }}</td>
-        <td class="py-2 px-4">{{ music.titulo || '—' }}</td>
-        <td class="py-2 px-4">{{ music.artista || '—' }}</td>
+        <td class="py-2 px-4 flex items-center gap-4">
+          <!-- Thumbnail -->
+          <img
+            [src]="music.thumbnail || 'assets/default-thumbnail.png'"
+            alt="Thumbnail da música"
+            class="w-12 h-12 rounded-md shadow-sm"
+          />
+          <!-- Título e Artista -->
+          <div>
+            <p class="font-bold text-zinc-100">{{ music.titulo || '—' }}</p>
+            <p class="text-sm text-zinc-400">
+              {{ getArtistNames(music.MusicaArtista) }}
+            </p>
+          </div>
+        </td>
         <td class="py-2 px-4">{{ music.createdAt | date: 'shortDate' || '—' }}</td>
         <td class="py-2 px-4">{{ music.duracao || '00:00' }}</td>
       </tr>
@@ -55,6 +67,5 @@
         </td>
       </tr>
     </tbody>
-    
   </table>
 </div>
