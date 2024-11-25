@@ -68,7 +68,8 @@
       <div id="home" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
         <app-music-card *ngFor="let music of musicList" [title]="music.titulo"
           [artist]="music.MusicaArtista?.[0]?.artista?.nome || 'Artista desconhecido'"
-          [videoUrl]="'https://www.youtube.com/embed/' + music.link.split('v=')[1]" [thumbnail]="music.thumbnail"
+          [videoUrl]="'https://www.youtube.com/embed/' + music.link.split('v=')[1]"
+          [thumbnail]="music.thumbnail"
           [musicaId]="music.id" class="mt-2">
           <img [src]="music.thumbnail" alt="Thumbnail da música" />
         </app-music-card>
