@@ -45,7 +45,7 @@
 
 <!-- Menu de contexto -->
 <div
-  class="context-menu bg-gray-800 text-white rounded-lg shadow-lg p-2"
+  class="context-menu bg-gray-800 text-white rounded-lg shadow-lg p-2 z-50 absolute transition-all ease-in-out duration-200"
   *ngIf="contextMenuVisible"
   [style.left.px]="contextMenuPosition.x"
   [style.top.px]="contextMenuPosition.y"
@@ -53,18 +53,19 @@
 >
   <ul class="list-none m-0 p-0">
     <li
-      class="p-2 hover:bg-gray-700 cursor-pointer relative"
+      class="p-2 hover:bg-gray-700 cursor-pointer relative transition-all ease-in-out duration-200"
       (mouseenter)="showSubMenu = true"
       (mouseleave)="showSubMenu = false"
     >
       Adicionar à playlist
+      <!-- Submenu -->
       <ul
-        class="absolute left-full top-0 bg-gray-800 text-white rounded-lg shadow-lg p-2 list-none"
+        class="absolute left-full top-0 bg-gray-700 text-white rounded-lg shadow-lg p-2 list-none transition-all ease-in-out duration-200"
         *ngIf="showSubMenu"
       >
         <li
           *ngFor="let playlist of playlists"
-          class="p-2 hover:bg-gray-700 cursor-pointer"
+          class="p-2 hover:bg-gray-600 cursor-pointer transition-colors ease-in-out duration-200"
           (click)="addToPlaylist(playlist.id)"
         >
           {{ playlist.nome }}
