@@ -83,6 +83,7 @@
         [artist]="music.MusicaArtista?.[0]?.artista?.nome || 'Artista desconhecido'"
         [videoUrl]="'https://www.youtube.com/embed/' + music.link.split('v=')[1]"
         [thumbnail]="music.thumbnail"
+        [musicaId]="music.id"
         class="mt-2"
       >
         <img 

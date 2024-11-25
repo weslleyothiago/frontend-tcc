@@ -16,6 +16,8 @@ export class PlaylistService {
 
   constructor(private http: HttpClient) {}
 
+
+
   createPlaylist(dto: CreatePlaylistDto): Observable<any> {
     // Recupera o profileId do token armazenado
     const profileId = this.getProfileIdFromToken(); // Supondo que essa função já exista
@@ -54,5 +56,9 @@ export class PlaylistService {
     }
     // Envia o profileId diretamente na URL ou no corpo da requisição
     return this.http.get(`${environment.apiBaseUrl}/playlists/profile/${profileId}`);
+  }
+
+  addToPlaylist(playlistId: number, musicaId: number): Observable<any> {
+    return this.http.post(`${environment.apiBaseUrl}/playlists/add-to-playlist`, { playlistId, musicaId });
   }
 }

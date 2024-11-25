@@ -1,6 +1,6 @@
-import { HttpErrorResponse } from '@angular/common/http';
 import { Component, Input, ElementRef, ViewChild, HostListener } from '@angular/core';
 import { PlaylistService } from 'src/app/services/playlist.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-music-card',
@@ -8,16 +8,18 @@ import { PlaylistService } from 'src/app/services/playlist.service';
   styleUrls: ['./music-card.component.scss'],
 })
 export class MusicCardComponent {
-  @Input() title: string = ''; // Título do vídeo
+  @Input() title: string = ''; // Título da música
   @Input() artist: string = ''; // Nome do artista
   @Input() videoUrl: string = ''; // URL do vídeo
   @Input() thumbnail: string = ''; // URL da thumbnail
+  @Input() musicaId: number = 0; // ID da música (deve ser passado de fora, ou capturado dinamicamente)
 
   @ViewChild('videoIframe') videoIframe!: ElementRef<HTMLIFrameElement>;
 
   playlists: any[] = [];  // Playlists carregadas
   contextMenuVisible: boolean = false;  // Controle de visibilidade do menu de contexto
   contextMenuPosition = { x: 0, y: 0 };  // Posição do menu de contexto
+  selectedMusicaId: number | null = null; // Armazenar o ID da música selecionada dinamicamente
   showSubMenu: boolean = false;  // Controle de exibição do sub-menu de playlists
   isIframeLoaded: boolean = false;
 
@@ -39,9 +41,10 @@ export class MusicCardComponent {
     });
   }
 
-  // Método para abrir o menu de contexto
-  openContextMenu(event: MouseEvent): void {
+  // Método para abrir o menu de contexto e capturar o ID da música
+  openContextMenu(event: MouseEvent, musicaId: number): void {
     event.preventDefault();
+    this.selectedMusicaId = musicaId;  // Armazenar o ID da música clicada
     this.contextMenuVisible = true;
     this.contextMenuPosition = { x: event.clientX, y: event.clientY };
   }
@@ -52,13 +55,6 @@ export class MusicCardComponent {
     this.showSubMenu = false;
   }
 
-  // Adicionar música à playlist
-  addToPlaylist(playlistId: number): void {
-    console.log(`Adicionar música à playlist ID: ${playlistId}`);
-    // Faça a chamada para a API ou lógica para adicionar música à playlist
-    this.closeContextMenu();
-  }
-
   // Fechar o menu de contexto ao clicar fora
   @HostListener('document:click', ['$event'])
   onClickOutside(event: Event): void {
@@ -67,8 +63,9 @@ export class MusicCardComponent {
     }
   }
 
-  // Método para carregar o vídeo em tela cheia
-  loadVideo(): void {
+  // Método para carregar o vídeo e definir o musicaId dinamicamente
+  loadVideo(musicaId: number): void {
+    this.selectedMusicaId = musicaId;  // Atualiza o ID da música ao clicar no card
     this.videoUrl = `${this.videoUrl}?autoplay=1`;
     this.isIframeLoaded = true;
 
@@ -113,6 +110,20 @@ export class MusicCardComponent {
   onFullscreenChange(): void {
     if (!document.fullscreenElement) {
       this.isIframeLoaded = false; // Sai do modo tela cheia
+    }
+  }
+
+  // Método para adicionar música à playlist
+  addToPlaylist(playlistId: number): void {
+    if (this.selectedMusicaId !== null) {
+      this.playlistService.addToPlaylist(playlistId, this.selectedMusicaId).subscribe({
+        next: (response) => {
+          console.log('Música adicionada:', response);
+        },
+        error: (error) => {
+          console.error('Erro ao adicionar música:', error);
+        }
+      });
     }
   }
 }

@@ -1,7 +1,7 @@
 <div
   class="bg-gray-700 rounded-lg w-40 p-4 flex-none hover:bg-gray-600 transition-colors cursor-pointer"
-  (contextmenu)="openContextMenu($event)"
-  (click)="loadVideo()"
+  (contextmenu)="openContextMenu($event, musicaId)"
+  (click)="loadVideo(musicaId)"
 >
   <!-- Player ou Thumbnail -->
   <div class="relative">

@@ -1,7 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
-import {jwtDecode} from 'jwt-decode';
+import { jwtDecode } from 'jwt-decode';
 import { PlaylistCreateComponent } from 'src/app/components/playlist-create/playlist-create.component';
 import { MusicService } from 'src/app/services/music.service'; 
 import { PlaylistService } from 'src/app/services/playlist.service';
@@ -37,6 +37,7 @@ export class HomePage implements OnInit {
       },
       (error) => {
         console.error('Erro ao carregar músicas:', error);
+        this.errorMessage = 'Erro ao carregar músicas. Tente novamente mais tarde.';
       }
     );
   }
@@ -54,11 +55,11 @@ export class HomePage implements OnInit {
       }
     } else {
       console.warn('Token não encontrado.');
+      this.isAdmin = false;
     }
-    console.log('Usuário é administrador:', this.isAdmin);
   }
 
-   async openCreatePlaylistModal() {  
+  async openCreatePlaylistModal() {  
     const modal = await this.modalController.create({
       component: PlaylistCreateComponent, 
       cssClass: 'backdrop-blur-sm',
@@ -68,14 +69,13 @@ export class HomePage implements OnInit {
 
   loadPlaylists(): void {
     this.playlistService.getPlaylists().subscribe({
-      next: (data: any) => (this.playlists = data), // Temporário, até que o tipo seja definido
+      next: (data: any) => {
+        this.playlists = data;
+      },
       error: (err: HttpErrorResponse) => {
         console.error('Erro ao carregar playlists:', err.message);
         this.errorMessage = 'Erro ao carregar playlists';
       },
     });
   }
-  
-  
-
 }
