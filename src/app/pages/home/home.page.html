@@ -4,13 +4,13 @@
     <a *ngIf="isAdmin" href="/admin" class="text-white text-2xl">
       <ion-icon class="hover:text-purple-700 align-middle text-3xl" name="settings-outline"></ion-icon>
     </a>
-    </div>
+  </div>
 
   <!-- Campo de busca com ícone "Home" ao lado esquerdo -->
   <div class="flex items-center flex-grow max-w-lg mx-auto relative">
     <!-- Ícone "Home" -->
     <a href="/home">
-    <div class="flex items-center justify-center w-12 h-12 rounded-full hover:bg-purple-700 transition mr-2">
+      <div class="flex items-center justify-center w-12 h-12 rounded-full hover:bg-purple-700 transition mr-2">
         <ion-icon name="home-sharp" class="text-3xl text-white"></ion-icon>
       </div>
     </a>
@@ -31,7 +31,6 @@
 </ion-header>
 
 <div class="flex h-screen bg-black text-zinc-100 flex-col lg:flex-row">
-  <!-- Aside (Barra Lateral) -->
   <div class="w-full ml-2 mr-2 lg:w-96 bg-zinc-900 text-white flex flex-col rounded-lg shadow-lg">
     <!-- Cabeçalho da Biblioteca -->
     <header class="p-4 flex items-center justify-between border-b border-zinc-700 rounded-t-lg">
@@ -40,12 +39,9 @@
         <span class="text-lg font-semibold text-zinc-100">Sua Biblioteca</span>
       </div>
       <div class="relative group">
-        <!-- O ícone do botão -->
         <div class="flex items-center justify-center w-8 h-8 rounded-full hover:bg-zinc-600 transition mr-2" (click)="openCreatePlaylistModal()">
           <ion-icon name="add-outline" class="text-2xl cursor-pointer hover:text-zinc-400"></ion-icon>
-        </div>        
-      
-        <!-- Tooltip -->
+        </div>
         <div class="text-base z-10 absolute bottom-full mb-2 left-1/2 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 bg-gray-700 text-white rounded px-2 py-1 whitespace-nowrap transition-opacity duration-300">
           Criar uma nova playlist
         </div>
@@ -58,27 +54,22 @@
     </div>
     
     <ul>
-      <li
-        *ngFor="let playlist of playlists"
-        class="p-2 hover:bg-zinc-700 rounded cursor-pointer"
-      >
+      <li *ngFor="let playlist of playlists" (click)="selectPlaylist(playlist)" class="p-2 hover:bg-zinc-700 rounded cursor-pointer">
         <div class="flex items-center gap-3">
           <ion-icon name="musical-notes-outline" class="text-xl text-zinc-400"></ion-icon>
           <span>{{ playlist.nome }}</span>
         </div>
       </li>
     </ul>
-    
   </div>
 
   <div class="flex-1 p-4 bg-gradient-to-b bg-zinc-900 rounded-lg shadow-lg">
-    <!--
+
+    
+    <!-- Exibe as músicas padrão (sem playlist selecionada) -->
+    <div *ngIf="!selectedPlaylist">
     <h2 class="text-2xl font-bold text-white mb-6">Explore suas músicas</h2>
-  
-    <div
-      class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4"
-    >
-   
+    <div id="home" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
       <app-music-card
         *ngFor="let music of musicList"
         [title]="music.titulo"
@@ -93,12 +84,15 @@
           alt="Thumbnail da música"
         />
       </app-music-card>
-    
-  </div>
-  -->
-  <div class="flex-1 flex flex-col bg-gradient-to-b bg-zinc-900 rounded-lg shadow-lg">
-    <app-playlist-musics class="flex-1"></app-playlist-musics>
+    </div>
   </div>
   
-</div>
+    <!-- Exibe as músicas da playlist selecionada -->
+    <div *ngIf="selectedPlaylist">
+      <app-playlist-musics [playlist]="selectedPlaylist" class="flex-1"></app-playlist-musics>
+    </div>
+  
+  </div>
+  
+
 </div>

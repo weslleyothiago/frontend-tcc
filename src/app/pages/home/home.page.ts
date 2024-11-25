@@ -1,10 +1,10 @@
-import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { jwtDecode } from 'jwt-decode';
-import { PlaylistCreateComponent } from 'src/app/components/playlist-create/playlist-create.component';
-import { MusicService } from 'src/app/services/music.service'; 
 import { PlaylistService } from 'src/app/services/playlist.service';
+import { MusicService } from 'src/app/services/music.service';
+import { PlaylistCreateComponent } from 'src/app/components/playlist-create/playlist-create.component';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-home',
@@ -12,9 +12,10 @@ import { PlaylistService } from 'src/app/services/playlist.service';
   styleUrls: ['./home.page.scss'],
 })
 export class HomePage implements OnInit {
-  errorMessage: string = '';
   playlists: any[] = [];
   musicList: any[] = [];
+  errorMessage: string = '';
+  selectedPlaylist: any = null; // Playlist selecionada
   isAdmin: boolean = false;
 
   constructor(
@@ -24,12 +25,11 @@ export class HomePage implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.loadPlaylists();
     this.loadMusics();
+    this.loadPlaylists();
     this.checkUserType();
   }
 
-  // Método para carregar músicas do backend
   loadMusics(): void {
     this.musicService.getMusicas().subscribe(
       (data) => {
@@ -42,31 +42,6 @@ export class HomePage implements OnInit {
     );
   }
 
-  // Método para verificar o tipo de usuário com base no token
-  checkUserType(): void {
-    const token = sessionStorage.getItem('access_token');
-    if (token) {
-      try {
-        const decodedToken: any = jwtDecode(token); // Decodificar o token
-        this.isAdmin = decodedToken.type === 'Administrador';
-      } catch (error) {
-        console.error('Erro ao decodificar o token:', error);
-        this.isAdmin = false;
-      }
-    } else {
-      console.warn('Token não encontrado.');
-      this.isAdmin = false;
-    }
-  }
-
-  async openCreatePlaylistModal() {  
-    const modal = await this.modalController.create({
-      component: PlaylistCreateComponent, 
-      cssClass: 'backdrop-blur-sm',
-    });
-    return await modal.present();
-  }
-
   loadPlaylists(): void {
     this.playlistService.getPlaylists().subscribe({
       next: (data: any) => {
@@ -74,8 +49,33 @@ export class HomePage implements OnInit {
       },
       error: (err: HttpErrorResponse) => {
         console.error('Erro ao carregar playlists:', err.message);
-        this.errorMessage = 'Erro ao carregar playlists';
       },
     });
+  }
+
+  selectPlaylist(playlist: any) {
+    this.selectedPlaylist = playlist;
+  }
+
+  checkUserType(): void {
+    const token = sessionStorage.getItem('access_token');
+    if (token) {
+      try {
+        const decodedToken: any = jwtDecode(token);
+        this.isAdmin = decodedToken.type === 'Administrador';
+      } catch (error) {
+        this.isAdmin = false;
+      }
+    } else {
+      this.isAdmin = false;
+    }
+  }
+
+  async openCreatePlaylistModal() {
+    const modal = await this.modalController.create({
+      component: PlaylistCreateComponent,
+      cssClass: 'backdrop-blur-sm',
+    });
+    return await modal.present();
   }
 }
