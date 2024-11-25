@@ -46,7 +46,7 @@
         <td class="py-2 px-4">{{ i + 1 }}</td>
         <td class="py-2 px-4">{{ music.titulo || '—' }}</td>
         <td class="py-2 px-4">{{ music.artista || '—' }}</td>
-        <td class="py-2 px-4">{{ music.dataAdicionada | date: 'shortDate' || '—' }}</td>
+        <td class="py-2 px-4">{{ music.createdAt | date: 'shortDate' || '—' }}</td>
         <td class="py-2 px-4">{{ music.duracao || '00:00' }}</td>
       </tr>
       <tr *ngIf="filteredMusics.length === 0">
@@ -55,5 +55,6 @@
         </td>
       </tr>
     </tbody>
+    
   </table>
 </div>

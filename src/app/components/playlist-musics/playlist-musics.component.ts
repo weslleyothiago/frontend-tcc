@@ -17,13 +17,16 @@ export class PlaylistMusicsComponent implements OnInit {
   // Função para filtrar as músicas com base no texto de busca
   get filteredMusics(): any[] {
     if (!this.searchText) {
-      return this.playlist.songs || [];
+      return this.playlist?.songs || [];
     }
     const search = this.searchText.toLowerCase();
-    return (this.playlist.songs || []).filter(
+    return (this.playlist?.songs || []).filter(
       (music: any) =>
         music.titulo?.toLowerCase().includes(search) ||
         music.artista?.toLowerCase().includes(search)
     );
   }
+  
+
+  
 }

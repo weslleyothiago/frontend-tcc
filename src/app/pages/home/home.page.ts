@@ -66,13 +66,17 @@ export class HomePage implements OnInit {
   loadPlaylists(): void {
     this.playlistService.getPlaylists().subscribe({
       next: (data: any) => {
-        this.playlists = data;
+        this.playlists = data.map((playlist: any) => ({
+          ...playlist,
+          songs: playlist.PlaylistMusica.map((pm: any) => pm.musica), // Extrai as músicas
+        }));
       },
       error: (err: HttpErrorResponse) => {
         console.error('Erro ao carregar playlists:', err.message);
       },
     });
   }
+  
 
   selectPlaylist(playlist: any) {
     this.selectedPlaylist = playlist;
