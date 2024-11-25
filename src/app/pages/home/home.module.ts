@@ -10,6 +10,7 @@ import { HomePage } from './home.page';
 import { MusicCardComponent } from 'src/app/components/music-card/music-card.component';
 import { SafeUrlPipe } from '../../pipes/safe-url.pipe';
 import { PlaylistCreateComponent } from 'src/app/components/playlist-create/playlist-create.component';
+import { PlaylistMusicsComponent } from 'src/app/components/playlist-musics/playlist-musics.component';
 
 @NgModule({
   imports: [
@@ -19,7 +20,7 @@ import { PlaylistCreateComponent } from 'src/app/components/playlist-create/play
     IonicModule,
     HomePageRoutingModule
   ],
-  declarations: [HomePage, MusicCardComponent, SafeUrlPipe, PlaylistCreateComponent],
+  declarations: [HomePage, MusicCardComponent, SafeUrlPipe, PlaylistCreateComponent, PlaylistMusicsComponent],
   exports: [MusicCardComponent, SafeUrlPipe]
 })
 export class HomePageModule {}
