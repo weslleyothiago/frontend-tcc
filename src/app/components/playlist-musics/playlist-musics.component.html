@@ -1,0 +1,45 @@
+<div class="flex flex-col bg-zinc-900 text-white p-4 h-full">
+    <!-- Cabeçalho -->
+    <header
+    class="flex items-center gap-4 mb-6 p-6 rounded-md shadow-md h-full"
+    [ngStyle]="{ background: randomGradient }"
+  >
+    <img
+      alt="Playlist thumbnail"
+      class="w-40 h-40 rounded-md shadow-md"
+    />
+    <div class="flex flex-col justify-center">
+      <h1 class="text-7xl font-bold">playlist.name</h1>
+      <p class="text-white text-sm mt-5">
+        playlist.songs.length músicas • totalDuration
+      </p>
+    </div>
+  </header>
+  
+  
+  
+    <!-- Lista de Músicas -->
+    <table class="w-full text-left text-zinc-100">
+      <thead>
+        <tr class="border-b border-zinc-700">
+          <th class="py-2">#</th>
+          <th>Título</th>
+          <th>Artista</th>
+          <th>Data adicionada</th>
+          <th>Duração</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          class="hover:bg-zinc-700 cursor-pointer"
+        >
+          <td class="py-2"> i + 1 </td>
+          <td> song.title </td>
+          <td> song.artist </td>
+          <td> song.album </td>
+          <td> song.duration </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  
