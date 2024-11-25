@@ -29,9 +29,6 @@
       </div>
     </div>
 
-
-
-
     <!-- Botão de Ação -->
     <button (click)="onActionClick()" class="bg-purple-600 text-white py-2 px-6 rounded-lg hover:bg-purple-800">
       <ion-icon class="align-middle text-2xl" [name]="actionButtonIcon"></ion-icon> {{ actionButtonLabel }}
@@ -105,10 +102,6 @@
           </td>
         </tr>
         
-        
-        
-        
-           
         <tr *ngIf="filteredData.length === 0">
           <td colspan="100%" class="text-center text-zinc-400 p-4">Que silêncio... nada encontrado por aqui! 🎵 Tente
             outra busca!</td>

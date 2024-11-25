@@ -1,14 +1,31 @@
 <div *ngIf="playlist" class="flex flex-col bg-zinc-900 text-white p-4 h-full">
   <!-- Cabeçalho da Playlist -->
-  <header class="flex items-center gap-4 mb-6 p-6 rounded-md shadow-md h-auto" [ngStyle]="{ background: randomGradient}">
-    <img alt="Playlist thumbnail" class="w-40 h-40 rounded-md shadow-md" />
+  <header
+    class="flex items-center gap-4 mb-6 p-6 rounded-md shadow-md h-auto"
+    [ngStyle]="{ background: randomGradient }"
+  >
+    <img
+      alt="Playlist thumbnail"
+      class="w-40 h-40 rounded-md shadow-md"
+      [src]="playlist.thumbnail || 'assets/default-thumbnail.png'"
+    />
     <div class="flex flex-col justify-center">
       <h1 class="text-7xl font-bold">{{ playlist.nome }}</h1>
       <p class="text-white text-sm mt-5">
-        {{ playlist.songs?.length }} músicas • {{ playlist.totalDuration }}
+        {{ playlist.songs?.length || 0 }} músicas • {{ playlist.totalDuration || '00:00' }}
       </p>
     </div>
   </header>
+
+  <!-- Busca -->
+  <div class="flex items-center mb-4">
+    <input
+      type="text"
+      [(ngModel)]="searchText"
+      placeholder="Busque por título ou artista..."
+      class="flex-1 p-3 rounded border border-zinc-600 bg-zinc-800 text-zinc-100 focus:outline-none focus:border-purple-600"
+    />
+  </div>
 
   <!-- Lista de Músicas -->
   <table class="w-full text-left text-zinc-100">
@@ -22,12 +39,20 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let song of playlist.songs; let i = index" class="hover:bg-zinc-700 cursor-pointer">
-        <td class="py-2">{{ i + 1 }}</td>
-        <td>{{ song.title }}</td>
-        <td>{{ song.artist }}</td>
-        <td>{{ song.album }}</td>
-        <td>{{ song.duration }}</td>
+      <tr
+        *ngFor="let music of filteredMusics; index as i"
+        class="hover:bg-zinc-700 border-b border-zinc-700"
+      >
+        <td class="py-2 px-4">{{ i + 1 }}</td>
+        <td class="py-2 px-4">{{ music.titulo || '—' }}</td>
+        <td class="py-2 px-4">{{ music.artista || '—' }}</td>
+        <td class="py-2 px-4">{{ music.dataAdicionada | date: 'shortDate' || '—' }}</td>
+        <td class="py-2 px-4">{{ music.duracao || '00:00' }}</td>
+      </tr>
+      <tr *ngIf="filteredMusics.length === 0">
+        <td colspan="5" class="text-center py-4 text-zinc-400">
+          Essa playlist ainda está vazia... Adicione músicas para começar a festa! 🎶
+        </td>
       </tr>
     </tbody>
   </table>
