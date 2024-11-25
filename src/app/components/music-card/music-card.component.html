@@ -1,16 +1,12 @@
 <div
   class="bg-gray-700 rounded-lg w-40 p-4 flex-none hover:bg-gray-600 transition-colors cursor-pointer"
-  (click)="loadVideo()"
+  (contextmenu)="openContextMenu($event)"
 >
   <!-- Player ou Thumbnail -->
   <div class="relative">
     <ng-container *ngIf="!isIframeLoaded; else iframeView">
       <div class="thumbnail-container">
-        <img
-          [src]="thumbnail"
-          alt="Thumbnail"
-          class="thumbnail"
-        />
+        <img [src]="thumbnail" alt="Thumbnail" class="thumbnail" />
       </div>
       <!-- Ícone de play -->
       <div class="play-icon">
@@ -19,9 +15,7 @@
         </svg>
       </div>
     </ng-container>
-    
-    
-    
+
     <ng-template #iframeView>
       <iframe
         #videoIframe
@@ -32,7 +26,6 @@
         allowfullscreen
         class="w-full h-32 object-cover rounded-lg"
       ></iframe>
-      <!-- Botão para sair da tela cheia -->
       <button
         class="absolute top-2 right-2 bg-red-600 text-white px-2 py-1 text-xs rounded-lg hover:bg-red-500"
         (click)="exitFullscreen($event)"
@@ -47,4 +40,35 @@
     <p class="text-sm font-semibold text-white truncate">{{ title }}</p>
     <p class="text-xs text-gray-400 truncate">{{ artist }}</p>
   </div>
+</div>
+
+<!-- Menu de contexto -->
+<div
+  class="context-menu bg-gray-800 text-white rounded-lg shadow-lg p-2"
+  *ngIf="contextMenuVisible"
+  [style.left.px]="contextMenuPosition.x"
+  [style.top.px]="contextMenuPosition.y"
+  (mouseleave)="closeContextMenu()"
+>
+  <ul class="list-none m-0 p-0">
+    <li
+      class="p-2 hover:bg-gray-700 cursor-pointer relative"
+      (mouseenter)="showSubMenu = true"
+      (mouseleave)="showSubMenu = false"
+    >
+      Adicionar à playlist
+      <ul
+        class="absolute left-full top-0 bg-gray-800 text-white rounded-lg shadow-lg p-2 list-none"
+        *ngIf="showSubMenu"
+      >
+        <li
+          *ngFor="let playlist of playlists"
+          class="p-2 hover:bg-gray-700 cursor-pointer"
+          (click)="addToPlaylist(playlist.id)"
+        >
+          {{ playlist.nome }}
+        </li>
+      </ul>
+    </li>
+  </ul>
 </div>

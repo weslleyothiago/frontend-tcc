@@ -93,3 +93,31 @@ svg {
 .mt-2 {
   margin-top: 0.5rem;
 }
+
+/* Adicionar no arquivo .scss ou tailwind.config */
+.menu-item {
+  position: relative;
+}
+
+.submenu {
+  position: absolute;
+  left: 100%;
+  top: 0;
+  width: auto;
+  min-width: 150px; /* Largura mínima para o submenu */
+  padding: 5px 0;
+  display: block;
+  z-index: 10;
+}
+
+.submenu-item {
+  padding: 8px;
+  background-color: #333;
+  color: white;
+  text-align: left;
+  transition: background-color 0.3s ease;
+}
+
+.submenu-item:hover {
+  background-color: #444;
+}
