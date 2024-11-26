@@ -12,21 +12,24 @@ export class MusicCardComponent {
   @Input() artist: string = ''; // Nome do artista
   @Input() videoUrl: string = ''; // URL do vídeo
   @Input() thumbnail: string = ''; // URL da thumbnail
-  @Input() musicaId: number = 0; // ID da música (deve ser passado de fora, ou capturado dinamicamente)
+  @Input() musicaId: number = 0; // ID da música
 
   @ViewChild('videoIframe') videoIframe!: ElementRef<HTMLIFrameElement>;
 
-  playlists: any[] = [];  // Playlists carregadas
-  contextMenuVisible: boolean = false;  // Controle de visibilidade do menu de contexto
-  contextMenuPosition = { x: 0, y: 0 };  // Posição do menu de contexto
-  selectedMusicaId: number | null = null; // Armazenar o ID da música selecionada dinamicamente
-  showSubMenu: boolean = false;  // Controle de exibição do sub-menu de playlists
+  playlists: any[] = []; // Playlists carregadas
+  contextMenuVisible: boolean = false; // Controle de visibilidade do menu de contexto
+  contextMenuPosition = { x: 0, y: 0 }; // Posição do menu de contexto
+  selectedMusicaId: number | null = null; // Armazenar o ID da música selecionada
+  showSubMenu: boolean = false; // Controle de exibição do sub-menu de playlists
   isIframeLoaded: boolean = false;
+  
+  toastVisible: boolean = false; // Controle de visibilidade do Toast
+  toastMessage: string = ''; // Mensagem do Toast
 
   constructor(private playlistService: PlaylistService, private elementRef: ElementRef) {}
 
   ngOnInit() {
-    this.loadPlaylists();  // Carrega as playlists quando o componente é inicializado
+    this.loadPlaylists(); // Carrega as playlists ao iniciar o componente
   }
 
   // Método para carregar as playlists
@@ -44,7 +47,7 @@ export class MusicCardComponent {
   // Método para abrir o menu de contexto e capturar o ID da música
   openContextMenu(event: MouseEvent, musicaId: number): void {
     event.preventDefault();
-    this.selectedMusicaId = musicaId;  // Armazenar o ID da música clicada
+    this.selectedMusicaId = musicaId; // Armazenar o ID da música clicada
     this.contextMenuVisible = true;
     this.contextMenuPosition = { x: event.clientX, y: event.clientY };
   }
@@ -63,9 +66,34 @@ export class MusicCardComponent {
     }
   }
 
+  // Método para adicionar música à playlist e mostrar feedback
+  addToPlaylist(playlistId: number): void {
+    if (this.selectedMusicaId !== null) {
+      this.playlistService.addToPlaylist(playlistId, this.selectedMusicaId).subscribe({
+        next: (response) => {
+          console.log('Música adicionada:', response);
+          this.showToast('Música adicionada à playlist!');
+        },
+        error: (error) => {
+          console.error('Erro ao adicionar música:', error);
+          this.showToast('Erro ao adicionar música!');
+        }
+      });
+    }
+  }
+
+  // Exibir o Toast
+  showToast(message: string): void {
+    this.toastMessage = message;
+    this.toastVisible = true;
+    setTimeout(() => {
+      this.toastVisible = false;
+    }, 3000); // Toast desaparece após 3 segundos
+  }
+
   // Método para carregar o vídeo e definir o musicaId dinamicamente
   loadVideo(musicaId: number): void {
-    this.selectedMusicaId = musicaId;  // Atualiza o ID da música ao clicar no card
+    this.selectedMusicaId = musicaId;
     this.videoUrl = `${this.videoUrl}?autoplay=1`;
     this.isIframeLoaded = true;
 
@@ -91,7 +119,7 @@ export class MusicCardComponent {
 
   // Sair do modo tela cheia
   exitFullscreen(event: Event): void {
-    event.stopPropagation(); // Impede que o clique feche o card ao sair da tela cheia
+    event.stopPropagation();
 
     if (document.fullscreenElement) {
       document.exitFullscreen();
@@ -110,20 +138,6 @@ export class MusicCardComponent {
   onFullscreenChange(): void {
     if (!document.fullscreenElement) {
       this.isIframeLoaded = false; // Sai do modo tela cheia
-    }
-  }
-
-  // Método para adicionar música à playlist
-  addToPlaylist(playlistId: number): void {
-    if (this.selectedMusicaId !== null) {
-      this.playlistService.addToPlaylist(playlistId, this.selectedMusicaId).subscribe({
-        next: (response) => {
-          console.log('Música adicionada:', response);
-        },
-        error: (error) => {
-          console.error('Erro ao adicionar música:', error);
-        }
-      });
     }
   }
 }

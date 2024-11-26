@@ -44,8 +44,36 @@
 </div>
 
 <!-- Menu de contexto -->
+<!-- Toast Message -->
 <div
-  class="context-menu bg-gray-800 text-white rounded-lg shadow-lg p-2 z-50 absolute transition-all ease-in-out duration-200"
+  *ngIf="toastVisible"
+  class="toast bg-purple-600 text-white rounded-lg shadow-lg p-4 absolute bottom-5 left-1/2 transform -translate-x-1/2 transition-all ease-in-out duration-300"
+  [ngStyle]="{ opacity: toastVisible ? 1 : 0 }"
+>
+  {{ toastMessage }}
+</div>
+
+<!-- Menu de Contexto -->
+<!-- Toast Message -->
+<div
+  *ngIf="toastVisible"
+  class="toast bg-purple-600 text-white rounded-lg shadow-lg p-4 absolute bottom-5 left-1/2 transform -translate-x-1/2 transition-all ease-in-out duration-300"
+  [ngStyle]="{ opacity: toastVisible ? 1 : 0 }"
+>
+  {{ toastMessage }}
+</div>
+
+<!-- Card de Música -->
+<div
+  class="music-card"
+  (contextmenu)="openContextMenu($event, musicaId)"
+>
+  <!-- Seu código do card de música aqui -->
+</div>
+
+<!-- Menu de Contexto -->
+<div
+  class="context-menu bg-gray-800 text-white rounded-lg shadow-2xl p-3 z-50 absolute transition-all ease-in-out duration-500"
   *ngIf="contextMenuVisible"
   [style.left.px]="contextMenuPosition.x"
   [style.top.px]="contextMenuPosition.y"
@@ -53,19 +81,20 @@
 >
   <ul class="list-none m-0 p-0">
     <li
-      class="p-2 hover:bg-gray-700 cursor-pointer relative transition-all ease-in-out duration-200"
+      class="p-3 hover:bg-gray-700 cursor-pointer relative transition-all ease-in-out duration-500 rounded-md"
       (mouseenter)="showSubMenu = true"
       (mouseleave)="showSubMenu = false"
     >
       Adicionar à playlist
       <!-- Submenu -->
       <ul
-        class="absolute left-full top-0 bg-gray-700 text-white rounded-lg shadow-lg p-2 list-none transition-all ease-in-out duration-200"
+        class="absolute left-full top-0 bg-gray-700 text-white rounded-lg shadow-lg p-2 list-none transition-all ease-in-out duration-500 opacity-0 transform scale-95"
         *ngIf="showSubMenu"
+        [ngStyle]="{ transform: showSubMenu ? 'scale(1)' : 'scale(0.95)', opacity: showSubMenu ? 1 : 0 }"
       >
         <li
           *ngFor="let playlist of playlists"
-          class="p-2 hover:bg-gray-600 cursor-pointer transition-colors ease-in-out duration-200"
+          class="p-3 hover:bg-gray-600 cursor-pointer transition-colors ease-in-out duration-300 rounded-md"
           (click)="addToPlaylist(playlist.id)"
         >
           {{ playlist.nome }}
@@ -74,3 +103,8 @@
     </li>
   </ul>
 </div>
+
+
+
+
+
