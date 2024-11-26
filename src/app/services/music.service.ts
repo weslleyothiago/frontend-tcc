@@ -12,6 +12,10 @@ export class MusicService {
 
   constructor(private http: HttpClient) {}
 
+  deleteMusicById(id: number): Observable<void> {
+    return this.http.delete<void>(`${environment.apiBaseUrl}/musics/${id}`);
+  }
+
   createMusicWithArtistRelation(
     music: Music,
     artistId: number

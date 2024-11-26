@@ -38,6 +38,27 @@ export class AdminPage implements OnInit{
     this.setCurrentTable('musicas');
   }
 
+  deleteMusic(music: any): void {
+    if (!music?.id) {
+      console.error('Música inválida ou sem ID!');
+      return;
+    }
+  
+    if (confirm(`Tem certeza que deseja excluir a música "${music.titulo}"?`)) {
+      this.musicService.deleteMusicById(music.id).subscribe({
+        next: () => {
+          this.musicas = this.musicas.filter(m => m.id !== music.id);
+          this.musicCount--;
+          alert('Música excluída com sucesso!');
+        },
+        error: (err) => {
+          console.error('Erro ao excluir música:', err);
+          alert('Ocorreu um erro ao tentar excluir a música.');
+        },
+      });
+    }
+  }  
+
   // Método que será chamado quando o botão for clicado
   onCopyClick(link: string): void {
     this.copyLink(link);  

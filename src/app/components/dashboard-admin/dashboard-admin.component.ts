@@ -1,4 +1,6 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { AlertController } from '@ionic/angular';
+import { MusicService } from 'src/app/services/music.service';
 
 @Component({
   selector: 'app-dashboard-admin',
@@ -23,6 +25,11 @@ export class DashBoardAdminComponent {
 
   searchText: string = ''; // Adicione esta variável
 
+  constructor(
+    private musicService: MusicService, // Injete o serviço para manipular músicas
+    private alertController: AlertController // Opcional para exibir alertas
+  ) {}
+
   // Função para lidar com a busca
   get filteredData(): any[] {
     if (!this.searchText) {
@@ -33,6 +40,33 @@ export class DashBoardAdminComponent {
     return this.data.filter(item =>
       item?.[this.searchType]?.toLowerCase().includes(search)
     );
+  }
+
+  async deleteMusic(music: any) {
+    const alert = await this.alertController.create({
+      header: 'Confirmação',
+      message: `Você tem certeza que deseja excluir a música <strong>${music.titulo}</strong>?`,
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+        },
+        {
+          text: 'Excluir',
+          handler: () => {
+            this.musicService.deleteMusicById(music.id).subscribe({
+              next: () => {
+                console.log(`Música com ID ${music.id} excluída com sucesso!`);
+                // Atualize a lista de músicas se necessário
+              },
+              error: (err) => console.error('Erro ao excluir música:', err),
+            });
+          },
+        },
+      ],
+    });
+
+    await alert.present();
   }
 
   onCopyClick(link: string,) {
