@@ -215,12 +215,12 @@
             <span
               class="absolute left-1/2 bottom-[-30px] -translate-x-1/2 opacity-0 text-xs text-white bg-gray-700 px-2 py-1 rounded transition-opacity duration-300 ease-in-out group-hover:opacity-100 pointer-events-none whitespace-nowrap"
             >
-              Back
+              Voltar
             </span>
           </div>
-          <span class="text-gray-400">Step 3 of 3</span>
+          <span class="text-gray-400">Etapa 3 de 3</span>
         </div>
-        <span class="font-semibold">Tell us about you</span>
+        <span class="font-semibold">Conte-nos sobre você</span>
       </div>
       <form
         [formGroup]="registrationForm"
@@ -232,20 +232,20 @@
           label="Name"
           label-placement="floating"
           fill="solid"
-          helperText="This name will appear on your profile"
-          errorText="Please enter a name for your profile!"
+          helperText="Este é o nome que aparecerá no seu perfil"
+          errorText="Por favor escolha um nome para a sua conta!"
           class="w-5/6 mt-4"
         ></ion-input>
         <div class="flex mt-4 justify-start w-5/6">
           <ion-text>
-            <p>Date of Birth</p>
+            <p>Data de nascimento</p>
           </ion-text>
         </div>
         <!-- Select for day -->
         <div class="flex w-5/6">
           <ion-select
             interface="popover"
-            label="Day"
+            label="Dia"
             label-placement="floating"
             fill="solid"
             formControlName="day"
@@ -255,7 +255,7 @@
           </ion-select>
           <ion-select
             interface="popover"
-            label="Month"
+            label="Mês"
             label-placement="floating"
             fill="solid"
             formControlName="month"
@@ -265,7 +265,7 @@
           </ion-select>
           <ion-select
             interface="popover"
-            label="Year"
+            label="Ano"
             label-placement="floating"
             fill="solid"
             formControlName="year"
@@ -279,7 +279,7 @@
           <!-- Required field check -->
           <ion-text *ngIf="controlErrors['day'].errors?.['required']" color="danger" class="flex items-baseline text-base">
             <ion-icon name="alert-circle" class="mr-2"></ion-icon>
-            First select the month and year fields
+            Primeiro selecione os campos de mês e ano
           </ion-text>
         </div>
         <ion-button
@@ -287,7 +287,7 @@
           class="mt-6 w-5/6 h-12"
           [disabled]="!registrationForm.valid"
           (click)="register()"
-          >Start the show</ion-button
+          >Começar o show</ion-button
         >
       </form>
     </div>

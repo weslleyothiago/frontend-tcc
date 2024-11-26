@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { AlertController } from '@ionic/angular';
 import { MusicService } from 'src/app/services/music.service';
 
@@ -7,7 +7,7 @@ import { MusicService } from 'src/app/services/music.service';
   templateUrl: './dashboard-admin.component.html',
   styleUrls: ['./dashboard-admin.component.scss'],
 })
-export class DashBoardAdminComponent {
+export class DashBoardAdminComponent implements OnInit{
   @Input() header: string = '';
   @Input() subtitle: string = '';
   @Input() columns: { label: string; key: string }[] = [];
@@ -24,6 +24,11 @@ export class DashBoardAdminComponent {
   @Output() linkCopied = new EventEmitter<string>();
 
   searchText: string = ''; // Adicione esta variável
+  musics: any[] = []; // Array para armazenar as músicas
+
+  ngOnInit() {
+    this.loadMusics(); // Carregue as músicas ao iniciar o componente
+  }
 
   constructor(
     private musicService: MusicService, // Injete o serviço para manipular músicas
@@ -42,6 +47,15 @@ export class DashBoardAdminComponent {
     );
   }
 
+  loadMusics() {
+    this.musicService.getMusicas().subscribe({
+      next: (data) => {
+        this.data = data;
+      },
+      error: (err) => console.error('Erro ao carregar músicas:', err),
+    });
+  }
+
   async deleteMusic(music: any) {
     const alert = await this.alertController.create({
       header: 'Confirmação',
@@ -57,7 +71,7 @@ export class DashBoardAdminComponent {
             this.musicService.deleteMusicById(music.id).subscribe({
               next: () => {
                 console.log(`Música com ID ${music.id} excluída com sucesso!`);
-                // Atualize a lista de músicas se necessário
+                this.loadMusics(); // Recarrega a lista de músicas
               },
               error: (err) => console.error('Erro ao excluir música:', err),
             });
@@ -65,9 +79,10 @@ export class DashBoardAdminComponent {
         },
       ],
     });
-
+  
     await alert.present();
   }
+  
 
   onCopyClick(link: string,) {
     this.linkCopied.emit(link)
