@@ -43,14 +43,19 @@
     </div>
 
     <ul>
-      <li *ngFor="let playlist of playlists" (click)="selectPlaylist(playlist)"
-        class="p-2 hover:bg-zinc-700 rounded cursor-pointer">
+      <li 
+        *ngFor="let playlist of playlists" 
+        (click)="selectPlaylist(playlist)"
+        [ngClass]="{ 'selected': playlist === selectedPlaylist }"
+        class="p-2 hover:bg-zinc-700 rounded cursor-pointer"
+      >
         <div class="flex items-center gap-3">
           <ion-icon name="musical-notes-outline" class="text-xl text-zinc-400"></ion-icon>
           <span>{{ playlist.nome }}</span>
         </div>
       </li>
     </ul>
+    
   </div>
 
   <div class="flex-1 p-4 bg-gradient-to-b bg-zinc-900 rounded-lg shadow-lg">

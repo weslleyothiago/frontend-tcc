@@ -5,3 +5,22 @@ input::placeholder {
   input {
     text-align: left;
   }
+
+  .selected {
+    background: linear-gradient(to right, #6b21a8, #4c1d95); /* Gradiente roxo */
+    color: #ffffff; /* Texto branco */
+    font-weight: bold; /* Negrito no texto */
+    border-radius: 8px; /* Bordas arredondadas */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Sombra para destacar */
+    padding: 10px; /* Adiciona espaço interno */
+    transform: scale(1.01); /* Ampliação sutil */
+    transition: all 0.3s ease-in-out; /* Animação suave */
+  }
+  
+  .selected:hover {
+    transform: scale(1.02); /* Aumenta levemente ao passar o mouse */
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.5); /* Realça a sombra */
+  }
+  
+  
+  
