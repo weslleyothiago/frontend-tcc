@@ -6,25 +6,16 @@
   </div>
 
   <div class="flex items-center flex-grow max-w-lg mx-auto relative">
-    <div 
-      (click)="showDefaultMusic()" 
-      class="cursor-pointer flex items-center justify-center w-12 h-12 rounded-full hover:bg-purple-700 transition mr-2"
-    >
+    <div (click)="showDefaultMusic()"
+      class="cursor-pointer flex items-center justify-center w-12 h-12 rounded-full hover:bg-purple-700 transition mr-2">
       <ion-icon name="home-sharp" class="text-3xl text-white"></ion-icon>
     </div>
 
     <div class="relative flex-grow">
-      <ion-icon 
-        name="search-outline" 
-        class="absolute left-4 top-1/2 transform -translate-y-1/2 text-zinc-400 text-xl">
+      <ion-icon name="search-outline" class="absolute left-4 top-1/2 transform -translate-y-1/2 text-zinc-400 text-xl">
       </ion-icon>
-      <input 
-        type="text" 
-        [(ngModel)]="searchQuery" 
-        (input)="filterMusics()" 
-        placeholder="O que você está procurando?" 
-        class="h-12 pl-12 pr-4 w-full rounded-full bg-transparent border border-zinc-500 text-zinc-100 text-base focus:outline-none focus:border-purple-600 focus:ring-2 focus:ring-purple-600" 
-      />
+      <input type="text" [(ngModel)]="searchQuery" (input)="filterMusics()" placeholder="O que você está procurando?"
+        class="h-12 pl-12 pr-4 w-full rounded-full bg-transparent border border-zinc-500 text-zinc-100 text-base focus:outline-none focus:border-purple-600 focus:ring-2 focus:ring-purple-600" />
     </div>
   </div>
 </ion-header>
@@ -38,13 +29,11 @@
         <span class="text-lg font-semibold text-zinc-100">Sua Biblioteca</span>
       </div>
       <div class="relative group">
-        <div 
-          class="flex items-center justify-center w-8 h-8 rounded-full hover:bg-zinc-600 transition mr-2" 
-          (click)="openCreatePlaylistModal()"
-        >
+        <div class="flex items-center justify-center w-8 h-8 rounded-full hover:bg-zinc-600 transition mr-2"
+          (click)="openCreatePlaylistModal()">
           <ion-icon name="add-outline" class="text-2xl cursor-pointer hover:text-zinc-400"></ion-icon>
         </div>
-        <div 
+        <div
           class="text-base z-10 absolute bottom-full mb-2 left-1/2 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 bg-gray-700 text-white rounded px-2 py-1 whitespace-nowrap transition-opacity duration-300">
           Criar uma nova playlist
         </div>
@@ -56,12 +45,8 @@
     </div>
 
     <ul>
-      <li 
-        *ngFor="let playlist of playlists" 
-        (click)="selectPlaylist(playlist)" 
-        [ngClass]="{ 'selected': playlist === selectedPlaylist }" 
-        class="p-2 hover:bg-zinc-700 rounded cursor-pointer"
-      >
+      <li *ngFor="let playlist of playlists" (click)="selectPlaylist(playlist)"
+        [ngClass]="{ 'selected': playlist === selectedPlaylist }" class="p-2 hover:bg-zinc-700 rounded cursor-pointer">
         <div class="flex items-center gap-3">
           <ion-icon name="musical-notes-outline" class="text-xl text-zinc-400"></ion-icon>
           <span>{{ playlist.nome }}</span>
@@ -82,35 +67,24 @@
           {{ category.genero }}
           <span class="flex-grow border-t border-white ml-3"></span> <!-- Linha branca à direita -->
         </h3>
-        
+
         <!-- Grid de músicas -->
         <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-          <app-music-card 
-            *ngFor="let music of category.musics" 
-            [title]="music.titulo" 
-            [artist]="music.MusicaArtista?.[0]?.artista?.nome || 'Artista desconhecido'" 
-            [videoUrl]="'https://www.youtube.com/embed/' + music.link.split('v=')[1]" 
-            [thumbnail]="music.thumbnail" 
-            [musicaId]="music.id"
-            class="mt-2"
-          >
+          <app-music-card *ngFor="let music of category.musics" [title]="music.titulo"
+            [artist]="music.MusicaArtista?.[0]?.artista?.nome || 'Artista desconhecido'"
+            [videoUrl]="'https://www.youtube.com/embed/' + music.link.split('v=')[1]" [thumbnail]="music.thumbnail"
+            [musicaId]="music.id" class="mt-2">
             <img [src]="music.thumbnail" alt="Thumbnail da música" />
           </app-music-card>
         </div>
       </div>
     </div>
-    
-    
-    
-  
+
     <!-- Exibe as músicas da playlist selecionada -->
     <div *ngIf="selectedPlaylist">
-      <app-playlist-musics 
-        [playlist]="selectedPlaylist" 
-        [randomGradient]="randomGradient" 
-        class="flex-1">
+      <app-playlist-musics [playlist]="selectedPlaylist" [randomGradient]="randomGradient" class="flex-1">
       </app-playlist-musics>
     </div>
   </div>
-  
+
 </div>
