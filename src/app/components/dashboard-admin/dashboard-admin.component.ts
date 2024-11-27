@@ -27,7 +27,6 @@ export class DashBoardAdminComponent implements OnInit{
   musics: any[] = []; // Array para armazenar as músicas
 
   ngOnInit() {
-    this.loadMusics(); // Carregue as músicas ao iniciar o componente
   }
 
   constructor(
@@ -47,14 +46,6 @@ export class DashBoardAdminComponent implements OnInit{
     );
   }
 
-  loadMusics() {
-    this.musicService.getMusicas().subscribe({
-      next: (data) => {
-        this.data = data;
-      },
-      error: (err) => console.error('Erro ao carregar músicas:', err),
-    });
-  }
 
   async deleteMusic(music: any) {
     const alert = await this.alertController.create({
@@ -71,7 +62,6 @@ export class DashBoardAdminComponent implements OnInit{
             this.musicService.deleteMusicById(music.id).subscribe({
               next: () => {
                 console.log(`Música com ID ${music.id} excluída com sucesso!`);
-                this.loadMusics(); // Recarrega a lista de músicas
               },
               error: (err) => console.error('Erro ao excluir música:', err),
             });
