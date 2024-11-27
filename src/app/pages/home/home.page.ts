@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
-import { jwtDecode } from 'jwt-decode';
+import {jwtDecode} from 'jwt-decode'; // Certifique-se de importar corretamente
 import { PlaylistService } from 'src/app/services/playlist.service';
 import { MusicService } from 'src/app/services/music.service';
 import { PlaylistCreateComponent } from 'src/app/components/playlist-create/playlist-create.component';
@@ -12,14 +12,15 @@ import { HttpErrorResponse } from '@angular/common/http';
   styleUrls: ['./home.page.scss'],
 })
 export class HomePage implements OnInit {
-  playlists: any[] = [];
-  musicList: any[] = [];
-  filteredMusicList: any[] = []; // Lista de músicas filtradas com base na busca
-  errorMessage: string = '';
+  playlists: any[] = []; // Lista de playlists do usuário
+  musicList: any[] = []; // Todas as músicas
+  filteredMusicList: any[] = []; // Músicas filtradas pela busca
+  categorizedMusic: { genero: string; musics: any[] }[] = []; // Músicas categorizadas por gênero
+  errorMessage: string = ''; // Mensagem de erro para feedback
   selectedPlaylist: any = null; // Playlist selecionada
-  isAdmin: boolean = false;
-  randomGradient: string = '';
-  searchQuery: string = ''; // Variável para a pesquisa
+  isAdmin: boolean = false; // Determina se o usuário é administrador
+  randomGradient: string = ''; // Gradiente gerado aleatoriamente
+  searchQuery: string = ''; // Busca do usuário
 
   constructor(
     private playlistService: PlaylistService,
@@ -28,29 +29,46 @@ export class HomePage implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.randomGradient = this.generateRandomGradient();
-    this.loadMusics();
-    this.loadPlaylists();
-    this.checkUserType();
+    this.initializePage();
   }
 
-  // Método para filtrar músicas com base na pesquisa
+  /**
+   * Inicializa os dados necessários na página.
+   */
+  private initializePage(): void {
+    this.randomGradient = this.generateRandomGradient();
+    this.checkUserType();
+    this.loadMusics();
+    this.loadPlaylists();
+  }
+
+  /**
+   * Filtra as músicas com base na pesquisa do usuário.
+   */
   filterMusics(): void {
     if (this.searchQuery.trim() === '') {
-      this.filteredMusicList = this.musicList; // Se não houver pesquisa, exibe todas as músicas
+      this.filteredMusicList = this.musicList; // Exibe todas as músicas se não houver busca
     } else {
-      this.filteredMusicList = this.musicList.filter(music => 
-        music.titulo.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
-        (music.MusicaArtista?.[0]?.artista?.nome || '').toLowerCase().includes(this.searchQuery.toLowerCase())
+      const query = this.searchQuery.toLowerCase();
+      this.filteredMusicList = this.musicList.filter((music) =>
+        music.titulo.toLowerCase().includes(query) ||
+        (music.MusicaArtista?.[0]?.artista?.nome || '').toLowerCase().includes(query)
       );
+      this.categorizeMusics(); // Reaplica a categorização nos resultados filtrados
     }
   }
 
+  /**
+   * Gera um gradiente aleatório para a página.
+   */
   private generateRandomGradient(): string {
     const randomColor = this.getRandomColor();
     return `linear-gradient(to right, ${randomColor}, black)`;
   }
 
+  /**
+   * Retorna uma cor hexadecimal aleatória.
+   */
   private getRandomColor(): string {
     const letters = '0123456789ABCDEF';
     let color = '#';
@@ -60,27 +78,50 @@ export class HomePage implements OnInit {
     return color;
   }
 
-  showDefaultMusic() {
-    this.selectedPlaylist = null;
-  }
-
-  loadMusics(): void {
-    this.musicService.getMusicas().subscribe(
-      (data) => {
+  /**
+   * Carrega a lista de músicas do serviço.
+   */
+  private loadMusics(): void {
+    this.musicService.getMusicas().subscribe({
+      next: (data: any[]) => {
         this.musicList = data;
-        this.filteredMusicList = data; // Inicialmente, todas as músicas são exibidas
+        this.filteredMusicList = [...data];
+        this.categorizeMusics();
       },
-      (error) => {
-        console.error('Erro ao carregar músicas:', error);
+      error: (error: HttpErrorResponse) => {
+        console.error('Erro ao carregar músicas:', error.message);
         this.errorMessage = 'Erro ao carregar músicas. Tente novamente mais tarde.';
-      }
-    );
+      },
+    });
   }
 
-  loadPlaylists(): void {
+  /**
+   * Agrupa as músicas por gênero.
+   */
+  private categorizeMusics(): void {
+    const categories: { [key: string]: any[] } = {};
+
+    this.filteredMusicList.forEach((music) => {
+      const genre = music.generoMusical?.generoMusical || 'Sem gênero';
+      if (!categories[genre]) {
+        categories[genre] = [];
+      }
+      categories[genre].push(music);
+    });
+
+    this.categorizedMusic = Object.keys(categories).map((genre) => ({
+      genero: genre,
+      musics: categories[genre],
+    }));
+  }
+
+  /**
+   * Carrega a lista de playlists do serviço.
+   */
+  private loadPlaylists(): void {
     this.playlistService.getPlaylists().subscribe({
-      next: (data: any) => {
-        this.playlists = data.map((playlist: any) => ({
+      next: (data: any[]) => {
+        this.playlists = data.map((playlist) => ({
           ...playlist,
           songs: playlist.PlaylistMusica.map((pm: any) => pm.musica), // Extrai as músicas
         }));
@@ -91,12 +132,25 @@ export class HomePage implements OnInit {
     });
   }
 
-  selectPlaylist(playlist: any) {
+  /**
+   * Exibe todas as músicas quando nenhuma playlist está selecionada.
+   */
+  showDefaultMusic(): void {
+    this.selectedPlaylist = null;
+  }
+
+  /**
+   * Seleciona uma playlist para exibição.
+   */
+  selectPlaylist(playlist: any): void {
     this.selectedPlaylist = playlist;
     this.randomGradient = this.generateRandomGradient();
   }
 
-  checkUserType(): void {
+  /**
+   * Verifica o tipo de usuário com base no token JWT.
+   */
+  private checkUserType(): void {
     const token = sessionStorage.getItem('access_token');
     if (token) {
       try {
@@ -110,11 +164,14 @@ export class HomePage implements OnInit {
     }
   }
 
-  async openCreatePlaylistModal() {
+  /**
+   * Abre o modal para criar uma nova playlist.
+   */
+  async openCreatePlaylistModal(): Promise<void> {
     const modal = await this.modalController.create({
       component: PlaylistCreateComponent,
       cssClass: 'backdrop-blur-sm',
     });
-    return await modal.present();
+    return modal.present();
   }
 }
