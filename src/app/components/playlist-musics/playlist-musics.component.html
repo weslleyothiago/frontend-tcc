@@ -7,7 +7,7 @@
     <img
       alt="Playlist thumbnail"
       class="w-40 h-40 rounded-md shadow-md"
-      [src]="playlist.thumbnail || 'https://img.youtube.com/vi//hqdefault.jpg'"
+      [src]="playlist.thumbnail || 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSPdnalgViRV21z_AZZj2Lm8h35-53uVGnpAnm8HUgSNIWhxCvwTOfVdnMoPBTwfiEh3jw&usqp=CAU'"
     />
     <div class="flex flex-col justify-center">
       <h1 class="text-7xl font-bold">{{ playlist.nome }}</h1>
@@ -22,7 +22,7 @@
     <input
       type="text"
       [(ngModel)]="searchText"
-      placeholder="Busque por título ou artista..."
+      placeholder="Busque pelo título da faixa que deseja ouvir!"
       class="flex-1 p-3 rounded border border-zinc-600 bg-zinc-800 text-zinc-100 focus:outline-none focus:border-purple-600"
     />
   </div>
