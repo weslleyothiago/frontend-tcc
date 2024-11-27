@@ -62,20 +62,27 @@ export class HomePage implements OnInit {
    * Gera um gradiente aleatório para a página.
    */
   private generateRandomGradient(): string {
-    const randomColor = this.getRandomColor();
-    return `linear-gradient(to right, ${randomColor}, black)`;
+    const randomPurple = this.getRandomPurpleColor();
+    return `linear-gradient(to right, ${randomPurple}, black)`;
   }
-
+  
   /**
-   * Retorna uma cor hexadecimal aleatória.
+   * Retorna uma cor roxa hexadecimal aleatória.
    */
-  private getRandomColor(): string {
-    const letters = '0123456789ABCDEF';
-    let color = '#';
-    for (let i = 0; i < 6; i++) {
-      color += letters[Math.floor(Math.random() * 16)];
-    }
-    return color;
+  private getRandomPurpleColor(): string {
+    const red = this.getRandomHex(128, 255);   // Red deve ser um valor mais alto para roxo
+    const green = this.getRandomHex(0, 128);   // Green deve ser mais baixo para roxo
+    const blue = this.getRandomHex(128, 255);  // Blue também deve ser um valor mais alto para roxo
+    
+    return `#${red}${green}${blue}`;
+  }
+  
+  /**
+   * Gera um valor hexadecimal aleatório dentro de um intervalo.
+   */
+  private getRandomHex(min: number, max: number): string {
+    const value = Math.floor(Math.random() * (max - min + 1)) + min;
+    return value.toString(16).padStart(2, '0'); // Garante que o valor tenha 2 caracteres hexadecimais
   }
 
   /**
